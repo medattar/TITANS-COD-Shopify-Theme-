@@ -1,0 +1,633 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {},
+      "blocks": {
+        "product-header": {
+          "type": "_product-header",
+          "settings": {
+            "gap": 10,
+            "align": "left"
+          },
+          "static": true,
+          "blocks": {
+            "badge_21": {
+              "type": "badge",
+              "settings": {
+                "text": "✦ Pago contra entrega ✦",
+                "style": "eyebrow"
+              }
+            },
+            "product_title_22": {
+              "type": "product-title",
+              "settings": {
+                "product": "{{ closest.product }}"
+              }
+            },
+            "product_rating_23": {
+              "type": "product-rating",
+              "settings": {
+                "product": "{{ closest.product }}"
+              }
+            },
+            "product_subtitle_24": {
+              "type": "product-subtitle",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "source": "metafield"
+              }
+            }
+          },
+          "block_order": [
+            "badge_21",
+            "product_title_22",
+            "product_rating_23",
+            "product_subtitle_24"
+          ]
+        },
+        "group_27": {
+          "type": "group",
+          "settings": {
+            "direction": "row",
+            "direction_mobile": "row",
+            "align": "center",
+            "justify": "space-between"
+          },
+          "blocks": {
+            "stock_status_25": {
+              "type": "stock-status",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "style": "inline"
+              }
+            },
+            "product_details_26": {
+              "type": "product-details",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "button_style": "secondary"
+              }
+            }
+          },
+          "block_order": [
+            "stock_status_25",
+            "product_details_26"
+          ]
+        },
+        "offer_stack_31": {
+          "type": "offer-stack",
+          "settings": {
+            "product": "{{ closest.product }}"
+          },
+          "blocks": {
+            "offer_item_28": {
+              "type": "_offer-item",
+              "settings": {
+                "title": "Envío con seguimiento",
+                "value": "Incluido",
+                "icon": "truck"
+              }
+            },
+            "offer_item_29": {
+              "type": "_offer-item",
+              "settings": {
+                "title": "Pago contra entrega",
+                "value": "Disponible",
+                "icon": "cash"
+              }
+            },
+            "offer_item_30": {
+              "type": "_offer-item",
+              "settings": {
+                "title": "Atención por WhatsApp",
+                "value": "Incluido",
+                "icon": "whatsapp"
+              }
+            }
+          },
+          "block_order": [
+            "offer_item_28",
+            "offer_item_29",
+            "offer_item_30"
+          ]
+        },
+        "variant_picker_32": {
+          "type": "variant-picker",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "style": "cards"
+          }
+        },
+        "delivery_estimate_33": {
+          "type": "delivery-estimate",
+          "settings": {}
+        },
+        "buy_buttons_34": {
+          "type": "buy-buttons",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "purchase_mode": "inherit"
+          }
+        },
+        "payment_icons_35": {
+          "type": "payment-icons",
+          "settings": {}
+        },
+        "cod_notice_36": {
+          "type": "cod-notice",
+          "settings": {
+            "style": "soft",
+            "icon": "whatsapp",
+            "title": "Confirma tu pedido por WhatsApp",
+            "text": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+          }
+        },
+        "guarantee_card_37": {
+          "type": "guarantee-card",
+          "settings": {
+            "title": "Compra con confianza",
+            "text": "<p>Describe aquí tu política real de cambios y devoluciones.</p>"
+          }
+        },
+        "tabs_45": {
+          "type": "tabs",
+          "settings": {
+            "style": "folder"
+          },
+          "blocks": {
+            "tab_42": {
+              "type": "_tab",
+              "settings": {
+                "label": "Preguntas",
+                "heading": "Preguntas frecuentes"
+              },
+              "blocks": {
+                "accordion_41": {
+                  "type": "accordion",
+                  "settings": {
+                    "style": "lines"
+                  },
+                  "blocks": {
+                    "accordion_item_38": {
+                      "type": "_accordion-item",
+                      "settings": {
+                        "title": "¿Cómo funciona el pago contra entrega?",
+                        "content": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo cuando el repartidor te entregue el paquete.</p>"
+                      }
+                    },
+                    "accordion_item_39": {
+                      "type": "_accordion-item",
+                      "settings": {
+                        "title": "¿Cómo confirmo mi pedido?",
+                        "content": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+                      }
+                    },
+                    "accordion_item_40": {
+                      "type": "_accordion-item",
+                      "settings": {
+                        "title": "¿Cuánto tarda el envío?",
+                        "content": "<p>Indica aquí tus tiempos reales de entrega por zona.</p>"
+                      }
+                    }
+                  },
+                  "block_order": [
+                    "accordion_item_38",
+                    "accordion_item_39",
+                    "accordion_item_40"
+                  ]
+                }
+              },
+              "block_order": [
+                "accordion_41"
+              ]
+            },
+            "tab_44": {
+              "type": "_tab",
+              "settings": {
+                "label": "Descripción"
+              },
+              "blocks": {
+                "product_description_43": {
+                  "type": "product-description",
+                  "settings": {
+                    "product": "{{ closest.product }}",
+                    "collapsible": false
+                  }
+                }
+              },
+              "block_order": [
+                "product_description_43"
+              ]
+            }
+          },
+          "block_order": [
+            "tab_42",
+            "tab_44"
+          ]
+        }
+      },
+      "block_order": [
+        "group_27",
+        "offer_stack_31",
+        "variant_picker_32",
+        "delivery_estimate_33",
+        "buy_buttons_34",
+        "payment_icons_35",
+        "cod_notice_36",
+        "guarantee_card_37",
+        "tabs_45"
+      ]
+    },
+    "nav": {
+      "type": "anchor-nav",
+      "settings": {},
+      "blocks": {
+        "l1": {
+          "type": "link",
+          "settings": {
+            "label": "Beneficios",
+            "anchor": "beneficios"
+          }
+        },
+        "l2": {
+          "type": "link",
+          "settings": {
+            "label": "Comparación",
+            "anchor": "comparacion"
+          }
+        },
+        "l3": {
+          "type": "link",
+          "settings": {
+            "label": "Cómo funciona",
+            "anchor": "pago-contra-entrega"
+          }
+        },
+        "l4": {
+          "type": "link",
+          "settings": {
+            "label": "Preguntas",
+            "anchor": "faq"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4"
+      ]
+    },
+    "marquee": {
+      "type": "marquee",
+      "settings": {},
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "text": "Pago contra entrega"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "text": "Envío a todo México"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "text": "Confirmación por WhatsApp"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ]
+    },
+    "editorial": {
+      "type": "editorial-hero",
+      "settings": {},
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "text": "Café de la mañana",
+            "mark": "✓"
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "text": "Trabajo",
+            "mark": "✓"
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "text": "Ejercicio",
+            "mark": "✓"
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "text": "10 minutos para ti",
+            "mark": "✕"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ]
+    },
+    "benefits": {
+      "type": "icon-grid",
+      "settings": {
+        "anchor": "beneficios"
+      },
+      "blocks": {
+        "b1": {
+          "type": "item",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Beneficio uno",
+            "text": "<p>Explica el beneficio en una frase.</p>"
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "icon": "heart",
+            "title": "Beneficio dos",
+            "text": "<p>Explica el beneficio en una frase.</p>"
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "title": "Beneficio tres",
+            "text": "<p>Explica el beneficio en una frase.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "comparison": {
+      "type": "comparison-table",
+      "settings": {},
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "Pago contra entrega",
+            "value_1": "yes",
+            "value_2": "no",
+            "value_3": "yes"
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Envío con seguimiento",
+            "value_1": "yes",
+            "value_2": "yes",
+            "value_3": "no"
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "feature": "Soporte por WhatsApp",
+            "value_1": "yes",
+            "value_2": "no",
+            "value_3": "no"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ]
+    },
+    "image_text": {
+      "type": "image-with-text",
+      "settings": {},
+      "blocks": {
+        "e": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "✦ Hecho para ti ✦"
+          }
+        },
+        "h": {
+          "type": "heading",
+          "settings": {
+            "text": "cuenta por qué este producto es diferente"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Describe con tus palabras qué problema resuelve y cómo se usa en el día a día.</p>"
+          }
+        },
+        "p": {
+          "type": "price",
+          "settings": {}
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "label": "Lo quiero",
+            "link": "#buy",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "e",
+        "h",
+        "t",
+        "p",
+        "b"
+      ]
+    },
+    "timeline": {
+      "type": "timeline",
+      "settings": {
+        "eyebrow": "✦ Qué esperar ✦",
+        "heading": "de tu pedido a tu puerta"
+      },
+      "blocks": {
+        "w1": {
+          "type": "step",
+          "settings": {
+            "label": "Día 1",
+            "title": "Haces tu pedido",
+            "text": "<p>Sin pagar en línea.</p>"
+          }
+        },
+        "w2": {
+          "type": "step",
+          "settings": {
+            "label": "Día 1–2",
+            "title": "Confirmas por WhatsApp",
+            "text": "<p>Tu pedido se prepara solo después de tu confirmación.</p>"
+          }
+        },
+        "w3": {
+          "type": "step",
+          "settings": {
+            "label": "Entrega",
+            "title": "Lo recibes y pagas",
+            "text": "<p>Escribe aquí tus tiempos reales de entrega.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ]
+    },
+    "cod_steps": {
+      "type": "steps",
+      "settings": {
+        "eyebrow": "✦ Pago contra entrega ✦",
+        "heading": "¿cómo funciona?",
+        "anchor": "pago-contra-entrega"
+      },
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "icon": "tag",
+            "title": "Haz tu pedido",
+            "text": "<p>Llena tus datos de envío. No necesitas tarjeta.</p>"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Confirma por WhatsApp",
+            "text": "<p>Recibirás un mensaje para confirmar tu pedido. Sin tu confirmación no se envía.</p>"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "icon": "cash",
+            "title": "Paga al recibir",
+            "text": "<p>Pagas en efectivo cuando el repartidor te entrega tu paquete.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "anchor": "faq"
+      },
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo funciona el pago contra entrega?",
+            "answer": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo al recibirlo.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo confirmo mi pedido?",
+            "answer": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuánto tarda el envío?",
+            "answer": "<p>Escribe aquí tus tiempos reales de entrega.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo devolver mi producto?",
+            "answer": "<p>Resume aquí tu política de devoluciones real.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ]
+    },
+    "final_cta": {
+      "type": "final-cta",
+      "settings": {}
+    },
+    "disclaimer": {
+      "type": "rich-text",
+      "settings": {
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20
+      },
+      "blocks": {
+        "d1": {
+          "type": "text",
+          "settings": {
+            "small": true,
+            "text": "<p>*Reemplaza este texto con tus aclaraciones legales o de resultados, o elimina esta sección.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "d1"
+      ]
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "nav",
+    "marquee",
+    "editorial",
+    "benefits",
+    "comparison",
+    "image_text",
+    "timeline",
+    "cod_steps",
+    "faq",
+    "final_cta",
+    "disclaimer",
+    "recommendations"
+  ]
+}

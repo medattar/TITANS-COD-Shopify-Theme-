@@ -1,0 +1,253 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {},
+      "blocks": {
+        "product-header": {
+          "type": "_product-header",
+          "settings": {
+            "gap": 10,
+            "align": "left"
+          },
+          "static": true,
+          "blocks": {
+            "badge_1": {
+              "type": "badge",
+              "settings": {
+                "text": "✦ Pago contra entrega ✦",
+                "style": "eyebrow"
+              }
+            },
+            "product_title_2": {
+              "type": "product-title",
+              "settings": {
+                "product": "{{ closest.product }}"
+              }
+            },
+            "product_rating_3": {
+              "type": "product-rating",
+              "settings": {
+                "product": "{{ closest.product }}"
+              }
+            },
+            "product_subtitle_4": {
+              "type": "product-subtitle",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "source": "metafield"
+              }
+            }
+          },
+          "block_order": [
+            "badge_1",
+            "product_title_2",
+            "product_rating_3",
+            "product_subtitle_4"
+          ]
+        },
+        "product_price_5": {
+          "type": "product-price",
+          "settings": {
+            "product": "{{ closest.product }}"
+          }
+        },
+        "variant_picker_6": {
+          "type": "variant-picker",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "style": "buttons"
+          }
+        },
+        "quantity_7": {
+          "type": "quantity",
+          "settings": {
+            "product": "{{ closest.product }}"
+          }
+        },
+        "delivery_estimate_8": {
+          "type": "delivery-estimate",
+          "settings": {}
+        },
+        "buy_buttons_9": {
+          "type": "buy-buttons",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "purchase_mode": "inherit"
+          }
+        },
+        "cod_notice_10": {
+          "type": "cod-notice",
+          "settings": {
+            "style": "card",
+            "icon": "cash",
+            "title": "Pago contra entrega",
+            "text": "<p>Paga cuando recibas tu pedido.</p>"
+          }
+        },
+        "cod_notice_11": {
+          "type": "cod-notice",
+          "settings": {
+            "style": "soft",
+            "icon": "whatsapp",
+            "title": "Confirma tu pedido por WhatsApp",
+            "text": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+          }
+        },
+        "trust_badges_15": {
+          "type": "trust-badges",
+          "settings": {
+            "style": "row"
+          },
+          "blocks": {
+            "trust_badge_12": {
+              "type": "_trust-badge",
+              "settings": {
+                "icon": "cash",
+                "text": "Pago contra entrega"
+              }
+            },
+            "trust_badge_13": {
+              "type": "_trust-badge",
+              "settings": {
+                "icon": "truck",
+                "text": "Envío con seguimiento"
+              }
+            },
+            "trust_badge_14": {
+              "type": "_trust-badge",
+              "settings": {
+                "icon": "whatsapp",
+                "text": "Soporte por WhatsApp"
+              }
+            }
+          },
+          "block_order": [
+            "trust_badge_12",
+            "trust_badge_13",
+            "trust_badge_14"
+          ]
+        },
+        "product_description_16": {
+          "type": "product-description",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "collapsible": true
+          }
+        },
+        "accordion_20": {
+          "type": "accordion",
+          "settings": {
+            "style": "lines"
+          },
+          "blocks": {
+            "accordion_item_17": {
+              "type": "_accordion-item",
+              "settings": {
+                "title": "¿Cómo funciona el pago contra entrega?",
+                "content": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo cuando el repartidor te entregue el paquete.</p>"
+              }
+            },
+            "accordion_item_18": {
+              "type": "_accordion-item",
+              "settings": {
+                "title": "¿Cómo confirmo mi pedido?",
+                "content": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+              }
+            },
+            "accordion_item_19": {
+              "type": "_accordion-item",
+              "settings": {
+                "title": "¿Cuánto tarda el envío?",
+                "content": "<p>Indica aquí tus tiempos reales de entrega por zona.</p>"
+              }
+            }
+          },
+          "block_order": [
+            "accordion_item_17",
+            "accordion_item_18",
+            "accordion_item_19"
+          ]
+        }
+      },
+      "block_order": [
+        "product_price_5",
+        "variant_picker_6",
+        "quantity_7",
+        "delivery_estimate_8",
+        "buy_buttons_9",
+        "cod_notice_10",
+        "cod_notice_11",
+        "trust_badges_15",
+        "product_description_16",
+        "accordion_20"
+      ]
+    },
+    "trust": {
+      "type": "icon-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "style": "bar",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "icon_size": 28,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "anchor": "",
+        "color_scheme": "scheme-2"
+      },
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "cash",
+            "title": "Pago contra entrega",
+            "text": ""
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Envío a todo México",
+            "text": ""
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Soporte por WhatsApp",
+            "text": ""
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Compra segura",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "trust",
+    "recommendations"
+  ]
+}

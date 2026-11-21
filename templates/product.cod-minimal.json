@@ -1,0 +1,165 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "gallery_layout": "bottom",
+        "sticky_gallery": false
+      },
+      "blocks": {
+        "product-header": {
+          "type": "_product-header",
+          "settings": {
+            "gap": 10,
+            "align": "left"
+          },
+          "static": true,
+          "blocks": {
+            "product_title_46": {
+              "type": "product-title",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "size_desktop": 48,
+                "size_mobile": 32
+              }
+            },
+            "product_price_47": {
+              "type": "product-price",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "size": "medium"
+              }
+            }
+          },
+          "block_order": [
+            "product_title_46",
+            "product_price_47"
+          ]
+        },
+        "variant_picker_48": {
+          "type": "variant-picker",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "style": "buttons"
+          }
+        },
+        "buy_buttons_49": {
+          "type": "buy-buttons",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "purchase_mode": "inherit",
+            "show_savings": false
+          }
+        },
+        "cod_notice_50": {
+          "type": "cod-notice",
+          "settings": {
+            "style": "inline",
+            "icon": "whatsapp",
+            "title": "Confirma por WhatsApp",
+            "text": "<p>Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+          }
+        },
+        "trust_badges_54": {
+          "type": "trust-badges",
+          "settings": {
+            "style": "row"
+          },
+          "blocks": {
+            "trust_badge_51": {
+              "type": "_trust-badge",
+              "settings": {
+                "icon": "cash",
+                "text": "Pago contra entrega"
+              }
+            },
+            "trust_badge_52": {
+              "type": "_trust-badge",
+              "settings": {
+                "icon": "truck",
+                "text": "Envío con seguimiento"
+              }
+            },
+            "trust_badge_53": {
+              "type": "_trust-badge",
+              "settings": {
+                "icon": "whatsapp",
+                "text": "Soporte por WhatsApp"
+              }
+            }
+          },
+          "block_order": [
+            "trust_badge_51",
+            "trust_badge_52",
+            "trust_badge_53"
+          ]
+        },
+        "product_description_55": {
+          "type": "product-description",
+          "settings": {
+            "product": "{{ closest.product }}",
+            "collapsible": true
+          }
+        }
+      },
+      "block_order": [
+        "variant_picker_48",
+        "buy_buttons_49",
+        "cod_notice_50",
+        "trust_badges_54",
+        "product_description_55"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "anchor": "faq",
+        "layout": "stacked",
+        "style": "lines",
+        "color_scheme": "scheme-1",
+        "padding_top": 56,
+        "padding_bottom": 72
+      },
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo funciona el pago contra entrega?",
+            "answer": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo al recibirlo.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo confirmo mi pedido?",
+            "answer": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cuánto tarda el envío?",
+            "answer": "<p>Escribe aquí tus tiempos reales de entrega.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo devolver mi producto?",
+            "answer": "<p>Resume aquí tu política de devoluciones real.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}
