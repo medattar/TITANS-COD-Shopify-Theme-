@@ -1,0 +1,135 @@
+{%- comment -%}
+  Product card. Visual options come from Theme settings > Product cards,
+  with optional overrides passed by the calling section.
+  Params:
+  - product (required; blank renders a placeholder card)
+  - sizes: image sizes attribute
+  - eager: true for above-the-fold cards
+  - action: override of settings.card_action
+  - button_label: override label
+  - index: used for placeholder art
+{%- endcomment -%}
+{%- liquid
+  assign card_action = action | default: settings.card_action
+  assign label = button_label | default: settings.card_button_label
+  assign img_sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
+  assign loading = 'lazy'
+  if eager
+    assign loading = 'eager'
+  endif
+
+  case settings.card_image_ratio
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'tall'
+      assign ratio = '2 / 3'
+    when 'landscape'
+      assign ratio = '4 / 3'
+    else
+      assign ratio = '1 / 1'
+  endcase
+
+  if product != blank
+    assign variant = product.selected_or_first_available_variant
+    assign on_sale = false
+    if product.compare_at_price > product.price
+      assign on_sale = true
+      assign saved = product.compare_at_price | minus: product.price
+      assign percent = saved | times: 100.0 | divided_by: product.compare_at_price | round
+    endif
+    assign card_label = product.metafields.custom.card_label.value
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_count = product.metafields.reviews.rating_count.value
+  endif
+-%}
+
+<article
+  class="product-card product-card--{{ settings.card_style }} product-card--hover-{{ settings.card_hover }} color-{{ settings.card_color_scheme }}"
+  style="--ratio: {{ ratio }}; --fit: {{ settings.card_image_fit }}; --card-align: {{ settings.card_text_align }};"
+>
+  {%- if product != blank -%}
+    <a class="product-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {%- render 'image', image: product.featured_media.preview_image, sizes: img_sizes, widths: '240, 360, 480, 600, 720, 900', loading: loading, priority: eager, class: 'product-card__image' -%}
+        {%- if settings.card_secondary_image and product.media[1] -%}
+          {%- render 'image', image: product.media[1].preview_image, sizes: img_sizes, widths: '240, 360, 480, 600, 720, 900', class: 'product-card__image product-card__image--secondary' -%}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+
+    {%- if settings.card_show_badge -%}
+      {%- if product.available == false -%}
+        <span class="product-card__badge product-card__badge--{{ settings.card_badge_position }} badge badge--ink">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif on_sale -%}
+        <span class="product-card__badge product-card__badge--{{ settings.card_badge_position }} badge">
+          {%- case settings.sale_badge_format -%}
+            {%- when 'amount' -%}
+              {%- capture saved_money %}{% render 'format-money', amount: saved %}{% endcapture -%}
+              {{- 'products.product.save_amount' | t: amount: saved_money -}}
+            {%- when 'text' -%}
+              {{- 'products.product.on_sale' | t -}}
+            {%- else -%}
+              {{- 'products.product.percent_off' | t: percent: percent -}}
+          {%- endcase -%}
+        </span>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="product-card__body">
+      {%- if settings.card_show_vendor -%}
+        <span class="product-card__vendor">{{ product.vendor }}</span>
+      {%- endif -%}
+
+      <h3 class="product-card__title">
+        <a href="{{ product.url }}">{{ product.title | escape }}</a>
+      </h3>
+
+      {%- if settings.card_show_label and card_label != blank -%}
+        <p class="product-card__label">{{ card_label | escape }}</p>
+      {%- endif -%}
+
+      {%- if settings.card_show_rating and rating != blank -%}
+        <div class="product-card__rating">
+          {%- render 'stars', rating: rating.rating, scale: rating.scale_max, count: rating_count -%}
+        </div>
+      {%- endif -%}
+
+      {%- render 'price', product: product, use_range: true, class: 'product-card__price' -%}
+
+      {%- if card_action != 'none' or settings.card_details_link -%}
+        <div class="product-card__actions">
+          {%- if card_action == 'quick_add' and product.available and product.has_only_default_variant -%}
+            {%- form 'product', product, class: 'product-card__form', data-quick-add: '' -%}
+              <input type="hidden" name="id" value="{{ variant.id }}">
+              <button type="submit" class="button button--full" aria-label="{{ 'products.product.add_named_to_cart' | t: title: product.title | escape }}">
+                {%- if label != blank -%}{{ label }}{%- else -%}{{ 'products.product.add_to_cart' | t }}{%- endif -%}
+              </button>
+            {%- endform -%}
+          {%- elsif card_action != 'none' -%}
+            <a href="{{ product.url }}" class="button button--full">
+              {%- if product.available -%}
+                {%- if label != blank -%}{{ label }}{%- elsif card_action == 'quick_add' -%}{{ 'products.product.choose_options' | t }}{%- else -%}{{ 'products.product.shop_now' | t }}{%- endif -%}
+              {%- else -%}
+                {{- 'products.product.sold_out' | t -}}
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+          {%- if settings.card_details_link -%}
+            <a href="{{ product.url }}" class="product-card__details">{{ 'products.product.see_details' | t }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <div class="product-card__media">
+      {%- assign placeholder_index = index | default: 1 | modulo: 6 | plus: 1 -%}
+      {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <div class="product-card__body">
+      <h3 class="product-card__title">{{ 'products.product.placeholder_title' | t }}</h3>
+      <div class="price product-card__price"><span class="price__current">{% render 'format-money', amount: 49900 %}</span></div>
+    </div>
+  {%- endif -%}
+</article>

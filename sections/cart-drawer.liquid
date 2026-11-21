@@ -1,0 +1,104 @@
+<dialog
+  id="CartDrawer"
+  class="drawer drawer--right cart-drawer color-{{ section.settings.color_scheme }}"
+  aria-label="{{ 'cart.general.title' | t }}"
+>
+  <div class="cart-drawer__inner" data-cart-drawer-inner data-cart-count-value="{{ cart.item_count }}" style="display: contents;">
+    <div class="drawer__header" style="border-bottom: var(--border-width) solid var(--color-border);">
+      <h2 class="drawer__title">
+        {{- 'cart.general.title' | t }}
+        <span class="badge badge--ink" aria-label="{{ 'cart.general.item_count' | t: count: cart.item_count }}">{{ cart.item_count }}</span>
+      </h2>
+      <button type="button" class="drawer__close" data-close-dialog aria-label="{{ 'accessibility.close' | t }}">
+        {%- render 'icon', icon: 'close' -%}
+      </button>
+    </div>
+
+    <cart-items class="drawer__body">
+      <div class="cart-errors form-message--error" data-cart-errors role="alert"></div>
+      {%- if cart.item_count > 0 -%}
+        {%- render 'cart-line-items' -%}
+      {%- else -%}
+        <div class="cart-empty">
+          <h3>
+            {%- if section.settings.empty_heading != blank -%}
+              {{ section.settings.empty_heading }}
+            {%- else -%}
+              {{ 'cart.general.empty' | t }}
+            {%- endif -%}
+          </h3>
+          {%- if section.settings.empty_text != blank -%}
+            <p class="muted">{{ section.settings.empty_text }}</p>
+          {%- endif -%}
+          {%- assign suggestions = settings.cart_empty_collection -%}
+          {%- if suggestions != blank and suggestions.products_count > 0 -%}
+            <div class="cart-suggestions">
+              {%- for product in suggestions.products limit: 4 -%}
+                <a class="cart-suggestion" href="{{ product.url }}">
+                  {%- if product.featured_image -%}
+                    {{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', width: 56, height: 56, alt: '' }}
+                  {%- else -%}
+                    <span></span>
+                  {%- endif -%}
+                  <span>
+                    <b style="display: block; font-size: 14.5px;">{{ product.title | escape }}</b>
+                    {%- render 'price', product: product, use_range: true -%}
+                  </span>
+                  {%- render 'icon', icon: 'arrow-right' -%}
+                </a>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.general.continue_shopping' | t }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </cart-items>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="drawer__footer">
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <ul class="cart-item__discounts" role="list" style="margin-bottom: 8px;">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <li>{{ discount.title }} (−{% render 'format-money', amount: discount.total_allocated_amount %})</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        <div class="cart-totals">
+          <span>{{ 'cart.general.subtotal' | t }}</span>
+          <span class="cart-totals__value">{% render 'format-money', amount: cart.total_price %}</span>
+        </div>
+        <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form">
+          {%- if settings.cart_note -%}
+            <div class="field cart-note">
+              <label class="field__label" for="CartDrawer-Note">{{ 'cart.general.note' | t }}</label>
+              <textarea id="CartDrawer-Note" class="field__input" name="note" rows="2">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+          <button type="submit" name="checkout" class="button button--full button--large">
+            {{- 'cart.general.checkout' | t -}}
+          </button>
+        </form>
+        {%- if settings.cart_trust_text != blank -%}
+          <p class="cart-trust">{{ settings.cart_trust_text }}</p>
+        {%- endif -%}
+        <p style="margin-top: 10px; text-align: center;">
+          <a href="{{ routes.cart_url }}" class="link" style="font-size: 13.5px;">{{ 'cart.general.view_cart' | t }}</a>
+        </p>
+      </div>
+    {%- endif -%}
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "class": "section-cart-drawer",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "empty_heading", "label": "Empty cart heading" },
+    { "type": "text", "id": "empty_text", "label": "Empty cart text" }
+  ]
+}
+{% endschema %}

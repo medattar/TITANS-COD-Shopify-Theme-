@@ -1,0 +1,23 @@
+{%- comment -%} Desktop menu with native details dropdowns. Params: menu {%- endcomment -%}
+{%- for link in menu.links -%}
+  <div class="header__menu-item">
+    {%- if link.links.size > 0 -%}
+      <details data-disclosure>
+        <summary{% if link.child_active %} aria-current="true"{% endif %}>
+          {{- link.title | escape -}}
+          {%- render 'icon', icon: 'chevron-down' -%}
+        </summary>
+        <div class="header__submenu">
+          {%- for child in link.links -%}
+            <a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+            {%- for grandchild in child.links -%}
+              <a href="{{ grandchild.url }}" style="padding-left: 30px;"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </details>
+    {%- else -%}
+      <a class="header__menu-link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+    {%- endif -%}
+  </div>
+{%- endfor -%}

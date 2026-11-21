@@ -1,0 +1,59 @@
+{%- comment -%}
+  Price display driven by real product/variant data.
+  Params:
+  - product (required)
+  - variant (optional, defaults to selected or first available)
+  - use_range: true to show "From" price when variants differ (cards)
+  - show_compare (default true), show_savings (default false)
+  - savings_format: 'amount' | 'percent'
+  - class
+  Elements carry data-* hooks so variant changes can update them client side.
+{%- endcomment -%}
+{%- liquid
+  assign target = variant | default: product.selected_or_first_available_variant
+  assign price = target.price
+  assign compare = target.compare_at_price
+  if use_range and product.price_varies
+    assign price = product.price_min
+    assign compare = product.compare_at_price_min
+  endif
+
+  assign on_sale = false
+  if compare > price
+    assign on_sale = true
+    assign saved = compare | minus: price
+    assign percent = saved | times: 100.0 | divided_by: compare | round
+  endif
+-%}
+<div class="price{% if on_sale %} price--sale{% endif %}{% if class %} {{ class }}{% endif %}">
+  <span class="price__current" data-price-current>
+    {%- if use_range and product.price_varies -%}
+      {{- 'products.product.from' | t }}&nbsp;
+    {%- endif -%}
+    {%- render 'format-money', amount: price -%}
+  </span>
+  {%- unless show_compare == false -%}
+    <s class="price__compare" data-price-compare{% unless on_sale %} hidden{% endunless %}>
+      {%- if on_sale %}{% render 'format-money', amount: compare %}{% endif -%}
+    </s>
+  {%- endunless -%}
+  {%- if show_savings -%}
+    <span class="price__savings badge" data-price-savings data-savings-format="{{ savings_format | default: 'amount' }}"{% unless on_sale %} hidden{% endunless %}>
+      {%- if on_sale -%}
+        {%- if savings_format == 'percent' -%}
+          {{- 'products.product.save_percent' | t: percent: percent -}}
+        {%- else -%}
+          {%- capture saved_money %}{% render 'format-money', amount: saved %}{% endcapture -%}
+          {{- 'products.product.save_amount' | t: amount: saved_money -}}
+        {%- endif -%}
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+  {%- if target.unit_price_measurement -%}
+    <small class="unit-price">
+      {%- render 'format-money', amount: target.unit_price -%}/
+      {%- if target.unit_price_measurement.reference_value != 1 %}{{ target.unit_price_measurement.reference_value }}{% endif -%}
+      {{- target.unit_price_measurement.reference_unit -}}
+    </small>
+  {%- endif -%}
+</div>

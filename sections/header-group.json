@@ -1,0 +1,42 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_1": {
+          "type": "announcement",
+          "settings": {
+            "text": "<strong>Pago contra entrega</strong> · Paga cuando recibas tu pedido",
+            "icon": "cash",
+            "badge": ""
+          }
+        },
+        "announcement_2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Envío con seguimiento a todo México",
+            "icon": "truck",
+            "badge": ""
+          }
+        }
+      },
+      "block_order": ["announcement_1", "announcement_2"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "mode": "rotate"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "layout": "center",
+        "sticky": "always",
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": ["announcement_bar", "header"]
+}

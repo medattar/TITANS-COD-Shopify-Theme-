@@ -1,0 +1,23 @@
+{%- comment -%}
+  Countdown to a merchant-set end date/time. Hidden after expiry (or shows expired text).
+  Params:
+  - date: 'YYYY-MM-DD' (required)
+  - time: 'HH:MM' (optional, default 23:59)
+  - style: 'inline' | 'tiles'
+  - expired_text (optional)
+{%- endcomment -%}
+{%- if date != blank -%}
+  {%- assign end_time = time | default: '23:59' -%}
+  <countdown-timer
+    class="countdown countdown--{{ style | default: 'inline' }}"
+    data-end="{{ date | strip }}T{{ end_time | strip }}:00"
+    data-expired-text="{{ expired_text | escape }}"
+    role="timer"
+    aria-live="off"
+  >
+    <span class="countdown__unit"><span class="countdown__value" data-days>00</span><small>{{ 'general.countdown.days_short' | t }}</small></span>
+    <span class="countdown__unit"><span class="countdown__value" data-hours>00</span><small>{{ 'general.countdown.hours_short' | t }}</small></span>
+    <span class="countdown__unit"><span class="countdown__value" data-minutes>00</span><small>{{ 'general.countdown.minutes_short' | t }}</small></span>
+    <span class="countdown__unit"><span class="countdown__value" data-seconds>00</span><small>{{ 'general.countdown.seconds_short' | t }}</small></span>
+  </countdown-timer>
+{%- endif -%}

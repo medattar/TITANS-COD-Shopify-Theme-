@@ -1,0 +1,31 @@
+{%- comment -%}
+  Renders a preset icon or a merchant-uploaded image icon.
+  Params:
+  - icon: preset name ('none' renders nothing unless an image is set)
+  - image: image_picker value (optional, wins over icon)
+  - size: number in px (optional)
+  - color: color setting (optional, preset SVG icons only)
+  - stroke: number (optional)
+  - class: extra classes
+{%- endcomment -%}
+{%- liquid
+  assign style = ''
+  if size != blank and size > 0
+    assign style = style | append: '--icon-size:' | append: size | append: 'px;'
+  endif
+  if color != blank and color.alpha != 0
+    assign style = style | append: 'color:' | append: color | append: ';'
+  endif
+  if stroke != blank and stroke > 0
+    assign style = style | append: '--icon-stroke:' | append: stroke | append: ';'
+  endif
+-%}
+{%- if image != blank -%}
+  <span class="icon-wrap{% if class %} {{ class }}{% endif %}"{% if style != '' %} style="{{ style }}"{% endif %}>
+    {{- image | image_url: width: 160 | image_tag: loading: 'lazy', alt: image.alt, width: size, height: size -}}
+  </span>
+{%- elsif icon != blank and icon != 'none' -%}
+  <span class="icon-wrap{% if class %} {{ class }}{% endif %}"{% if style != '' %} style="{{ style }}"{% endif %}>
+    {%- render 'icon', icon: icon -%}
+  </span>
+{%- endif -%}

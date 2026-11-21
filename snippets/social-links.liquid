@@ -1,0 +1,30 @@
+{%- comment -%} Social links from Theme settings > Social media. Params: style ('pills' | 'icons') {%- endcomment -%}
+{%- liquid
+  assign networks = 'instagram,facebook,tiktok,youtube,whatsapp,pinterest,x' | split: ','
+  assign labels = 'Instagram,Facebook,TikTok,YouTube,WhatsApp,Pinterest,X' | split: ','
+  assign has_any = false
+  for network in networks
+    assign key = 'social_' | append: network | append: '_link'
+    if settings[key] != blank
+      assign has_any = true
+    endif
+  endfor
+-%}
+{%- if has_any -%}
+  <ul class="social-links{% if style == 'icons' %} social-links--icons{% endif %}" role="list">
+    {%- for network in networks -%}
+      {%- assign key = 'social_' | append: network | append: '_link' -%}
+      {%- if settings[key] != blank -%}
+        <li>
+          <a href="{{ settings[key] }}" target="_blank" rel="noopener" aria-label="{{ labels[forloop.index0] }}">
+            {%- if style == 'icons' -%}
+              {%- render 'icon', icon: network -%}
+            {%- else -%}
+              {{- labels[forloop.index0] -}}
+            {%- endif -%}
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

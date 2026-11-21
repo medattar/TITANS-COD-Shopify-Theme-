@@ -1,0 +1,184 @@
+{%- liquid
+  assign display_font = settings.type_display_font
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign body_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_black = body_font | font_modify: 'weight', '800'
+  assign body_italic = body_font | font_modify: 'style', 'italic'
+  assign heading_italic = heading_font | font_modify: 'style', 'italic'
+
+  case settings.button_shape
+    when 'pill'
+      assign button_radius = '999px'
+    when 'rounded'
+      assign button_radius = settings.button_radius | append: 'px'
+    else
+      assign button_radius = '0px'
+  endcase
+
+  case settings.badge_shape
+    when 'pill'
+      assign badge_radius = '999px'
+    when 'rounded'
+      assign badge_radius = '6px'
+    else
+      assign badge_radius = '0px'
+  endcase
+-%}
+
+{%- style -%}
+  {{ display_font | font_face: font_display: 'swap' }}
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ heading_italic | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_bold | font_face: font_display: 'swap' }}
+  {{ body_black | font_face: font_display: 'swap' }}
+  {{ body_italic | font_face: font_display: 'swap' }}
+
+  :root {
+    --font-display-family: {{ display_font.family }}, {{ display_font.fallback_families }};
+    --font-display-weight: {{ display_font.weight }};
+    --font-display-style: {{ display_font.style }};
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-weight: {{ heading_font.weight }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-weight-bold: {% if body_bold %}{{ body_bold.weight }}{% else %}700{% endif %};
+    --font-body-weight-black: {% if body_black %}{{ body_black.weight }}{% else %}800{% endif %};
+
+    --font-h1-family: var(--font-{{ settings.h1_font }}-family);
+    --font-h1-weight: var(--font-{{ settings.h1_font }}-weight);
+    --font-h2-family: var(--font-{{ settings.h2_font }}-family);
+    --font-h2-weight: var(--font-{{ settings.h2_font }}-weight);
+    --font-h3-family: var(--font-{{ settings.h3_font }}-family);
+    --font-h3-weight: var(--font-{{ settings.h3_font }}-weight);
+
+    --body-size-mobile: {{ settings.body_size_mobile }}px;
+    --body-size-desktop: {{ settings.body_size_desktop }}px;
+    --body-line-height: {{ settings.body_line_height | divided_by: 10.0 }};
+    --body-letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em;
+    --text-max-width: {{ settings.text_max_width }}px;
+
+    --h1-size-mobile: {{ settings.h1_size_mobile }}px;
+    --h1-size-desktop: {{ settings.h1_size_desktop }}px;
+    --h2-size-mobile: {{ settings.h2_size_mobile }}px;
+    --h2-size-desktop: {{ settings.h2_size_desktop }}px;
+    --h3-size-mobile: {{ settings.h3_size_mobile }}px;
+    --h3-size-desktop: {{ settings.h3_size_desktop }}px;
+    --heading-line-height: {{ settings.heading_line_height | divided_by: 10.0 }};
+    --heading-letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em;
+    --display-letter-spacing: {{ settings.display_letter_spacing | divided_by: 100.0 }}em;
+    --display-transform: {{ settings.display_transform }};
+    --heading-transform: {{ settings.heading_transform }};
+    --eyebrow-size: {{ settings.eyebrow_size }}px;
+    --eyebrow-letter-spacing: {{ settings.eyebrow_letter_spacing | divided_by: 100.0 }}em;
+    --accent-gradient: {{ settings.accent_gradient | default: 'linear-gradient(90deg, #8A2A2B, #E8979E)' }};
+
+    --page-width: {{ settings.page_width }}px;
+    --narrow-width: {{ settings.narrow_width }}px;
+    --page-margin-mobile: {{ settings.page_margin_mobile }}px;
+    --page-margin-desktop: {{ settings.page_margin_desktop }}px;
+    --grid-gap-mobile: {{ settings.grid_gap_mobile }}px;
+    --grid-gap-desktop: {{ settings.grid_gap_desktop }}px;
+
+    --border-width: {{ settings.border_width }}px;
+    --radius-card: {{ settings.radius_card }}px;
+    --radius-media: {{ settings.radius_media }}px;
+    --radius-input: {{ settings.radius_input }}px;
+    --radius-badge: {{ badge_radius }};
+    --shadow-offset: {{ settings.shadow_offset }}px;
+
+    --button-radius: {{ button_radius }};
+    --button-border-width: {{ settings.button_border_width }}px;
+    --button-font-family: var(--font-{{ settings.button_font }}-family);
+    --button-size-mobile: {{ settings.button_size_mobile }}px;
+    --button-size-desktop: {{ settings.button_size_desktop }}px;
+    --button-weight: {{ settings.button_weight }};
+    --button-transform: {% if settings.button_uppercase %}uppercase{% else %}none{% endif %};
+    --button-letter-spacing: {{ settings.button_letter_spacing | divided_by: 100.0 }}em;
+    --button-padding-y: {{ settings.button_padding_y }}px;
+    --button-padding-x: {{ settings.button_padding_x }}px;
+
+    --badge-size: {{ settings.badge_size }}px;
+    --badge-transform: {% if settings.badge_uppercase %}uppercase{% else %}none{% endif %};
+
+    --card-border-width: {{ settings.card_border_width }}px;
+    --card-radius: {{ settings.card_radius }}px;
+    --card-title-size: {{ settings.card_title_size }}px;
+    --card-price-size: {{ settings.card_price_size }}px;
+
+    --icon-stroke: {{ settings.icon_stroke }};
+    --icon-size: {{ settings.icon_size }}px;
+
+    --logo-width-mobile: {{ settings.logo_width_mobile }}px;
+    --logo-width-desktop: {{ settings.logo_width_desktop }}px;
+
+    --policy-width: {{ settings.policy_width }}px;
+    --policy-padding-top: {{ settings.policy_padding_top }}px;
+    --policy-padding-bottom: {{ settings.policy_padding_bottom }}px;
+    --policy-title-family: var(--font-{{ settings.policy_title_font }}-family);
+    --policy-title-weight: var(--font-{{ settings.policy_title_font }}-weight);
+    --policy-title-size-mobile: {{ settings.policy_title_size_mobile }}px;
+    --policy-title-size-desktop: {{ settings.policy_title_size_desktop }}px;
+    --policy-body-size: {{ settings.policy_body_size }}px;
+    --policy-line-height: {{ settings.policy_line_height | divided_by: 10.0 }};
+    --policy-divider-style: {% if settings.policy_divider == 'none' %}none{% else %}{{ settings.policy_divider }}{% endif %};
+  }
+
+  {% for scheme in settings.color_schemes -%}
+    {%- liquid
+      assign s = scheme.settings
+      assign gradient = s.background_gradient | default: s.background
+    -%}
+    .color-{{ scheme.id }} {
+      --color-bg: {{ s.background }};
+      --gradient-bg: {{ gradient }};
+      --color-surface: {{ s.surface }};
+      --color-highlight: {{ s.highlight }};
+      --color-text: {{ s.text }};
+      --color-text-rgb: {{ s.text.red }}, {{ s.text.green }}, {{ s.text.blue }};
+      --color-heading: {{ s.heading }};
+      --color-muted: {{ s.muted }};
+      --color-accent: {{ s.accent }};
+      --color-on-accent: {{ s.on_accent }};
+      --color-button: {{ s.button }};
+      --color-button-label: {{ s.button_label }};
+      --color-button-border: {{ s.button_border }};
+      --color-button-hover: {{ s.button_hover }};
+      --color-button-hover-label: {{ s.button_hover_label }};
+      --color-button-2: {{ s.secondary_button }};
+      --color-button-2-label: {{ s.secondary_button_label }};
+      --color-border: {{ s.border }};
+      --color-divider: {{ s.divider }};
+      --color-shadow-rgb: {{ s.shadow.red }}, {{ s.shadow.green }}, {{ s.shadow.blue }};
+      --color-price: {{ s.price }};
+      --color-compare: {{ s.compare_price }};
+      --color-badge: {{ s.badge }};
+      --color-badge-label: {{ s.badge_label }};
+      --color-success: {{ s.success }};
+      --color-success-rgb: {{ s.success.red }}, {{ s.success.green }}, {{ s.success.blue }};
+      --color-icon: {{ s.icon }};
+    }
+  {% endfor %}
+
+  {% for scheme in settings.color_schemes -%}
+    .color-{{ scheme.id }}{% unless forloop.last %},{% endunless %}
+  {%- endfor %} {
+    {%- case settings.shadow_style -%}
+      {%- when 'hard' %}
+      --shadow-card: var(--shadow-offset) var(--shadow-offset) 0 rgb(var(--color-shadow-rgb));
+      --shadow-small: calc(var(--shadow-offset) * 0.66) calc(var(--shadow-offset) * 0.66) 0 rgb(var(--color-shadow-rgb));
+      --shadow-large: calc(var(--shadow-offset) * 1.34) calc(var(--shadow-offset) * 1.34) 0 rgb(var(--color-shadow-rgb));
+      {%- when 'soft' %}
+      --shadow-card: 0 var(--shadow-offset) {{ settings.shadow_blur }}px rgba(var(--color-shadow-rgb), {{ settings.shadow_opacity | divided_by: 100.0 }});
+      --shadow-small: 0 2px {{ settings.shadow_blur | divided_by: 2 }}px rgba(var(--color-shadow-rgb), {{ settings.shadow_opacity | divided_by: 100.0 }});
+      --shadow-large: 0 calc(var(--shadow-offset) * 2) {{ settings.shadow_blur | times: 2 }}px rgba(var(--color-shadow-rgb), {{ settings.shadow_opacity | divided_by: 100.0 }});
+      {%- else %}
+      --shadow-card: none;
+      --shadow-small: none;
+      --shadow-large: none;
+    {%- endcase %}
+    --button-shadow: {% if settings.button_shadow and settings.shadow_style != 'none' %}var(--shadow-small){% else %}none{% endif %};
+  }
+{%- endstyle -%}

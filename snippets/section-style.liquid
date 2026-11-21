@@ -1,0 +1,5 @@
+{%- comment -%}
+  Outputs the spacing custom properties shared by all sections.
+  Expects section.settings.padding_top/_bottom (desktop) and padding_top_mobile/padding_bottom_mobile.
+{%- endcomment -%}
+--pt-desktop: {{ section.settings.padding_top | default: 0 }}px; --pb-desktop: {{ section.settings.padding_bottom | default: 0 }}px; --pt-mobile: {{ section.settings.padding_top_mobile | default: 0 }}px; --pb-mobile: {{ section.settings.padding_bottom_mobile | default: 0 }}px;
