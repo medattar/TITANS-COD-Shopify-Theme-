@@ -7,10 +7,16 @@
   - expired_text (optional)
 {%- endcomment -%}
 {%- if date != blank -%}
-  {%- assign end_time = time | default: '23:59' -%}
+  {%- liquid
+    assign end_time = time | default: '23:59'
+    assign tz = 'now' | date: '%z'
+    assign tz_hours = tz | slice: 0, 3
+    assign tz_minutes = tz | slice: 3, 2
+    assign tz_offset = tz_hours | append: ':' | append: tz_minutes
+  -%}
   <countdown-timer
     class="countdown countdown--{{ style | default: 'inline' }}"
-    data-end="{{ date | strip }}T{{ end_time | strip }}:00"
+    data-end="{{ date | strip }}T{{ end_time | strip }}:00{{ tz_offset }}"
     data-expired-text="{{ expired_text | escape }}"
     role="timer"
     aria-live="off"

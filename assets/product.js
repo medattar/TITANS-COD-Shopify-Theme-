@@ -1,5 +1,7 @@
 /* TITANS COD — product page behaviour: variants, gallery, add to cart, delivery estimate, sticky bar. */
 (() => {
+  if (window.__titansProductJs) return;
+  window.__titansProductJs = true;
   const Titans = window.Titans || {};
   const strings = Titans.strings || {};
 
@@ -46,6 +48,7 @@
       const form = this.form;
       if (form) form.querySelectorAll('input[name="id"]').forEach((input) => this.syncInput(input, variant));
 
+      this.classList.toggle('is-unavailable', !variant);
       if (!variant) {
         this.setUnavailable();
         return;
@@ -204,6 +207,11 @@
 
   document.addEventListener('submit', async (event) => {
     const form = event.target.closest('form[data-product-form]');
+    /* In COD app mode the native form only carries the variant for the app; block implicit (Enter key) submits. */
+    if (form && form.closest('[data-purchase-mode="app"]') && !event.submitter) {
+      event.preventDefault();
+      return;
+    }
     if (!form || Titans.cartType !== 'drawer' || !document.getElementById('CartDrawer')) return;
     event.preventDefault();
 

@@ -50,9 +50,11 @@
       params.delete('section_id');
       const clean = params.toString();
       params.set('section_id', this.sectionId);
+      this._abort?.abort();
+      this._abort = new AbortController();
       this.setAttribute('aria-busy', 'true');
       try {
-        const response = await fetch(`${window.location.pathname}?${params.toString()}`);
+        const response = await fetch(`${window.location.pathname}?${params.toString()}`, { signal: this._abort.signal });
         if (!response.ok) throw new Error(String(response.status));
         const html = await response.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -68,10 +70,10 @@
         if (push) window.history.pushState({}, '', clean ? `${window.location.pathname}?${clean}` : window.location.pathname);
         if (scroll) this.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (error) {
+        if (error.name === 'AbortError') return;
         window.location.search = clean;
-      } finally {
-        this.removeAttribute('aria-busy');
       }
+      this.removeAttribute('aria-busy');
     }
   }
 

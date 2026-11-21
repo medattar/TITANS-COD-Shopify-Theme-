@@ -16,7 +16,7 @@
         {%- for property in item.properties -%}
           {%- assign first_char = property.first | slice: 0 -%}
           {%- if property.last != blank and first_char != '_' -%}
-            <p class="cart-item__meta">{{ property.first }}: {{ property.last }}</p>
+            <p class="cart-item__meta">{{ property.first | escape }}: {{ property.last | escape }}</p>
           {%- endif -%}
         {%- endfor -%}
         {%- if item.selling_plan_allocation -%}
@@ -47,13 +47,14 @@
               {% endif %}
               step="{{ item.variant.quantity_rule.increment | default: 1 }}"
               data-line="{{ item.index | plus: 1 }}"
+              data-key="{{ item.key }}"
               aria-label="{{ 'cart.general.quantity_for' | t: product: item.product.title | escape }}"
             >
             <button type="button" class="quantity__button" data-qty="plus" aria-label="{{ 'cart.general.increase' | t: product: item.product.title | escape }}">
               {%- render 'icon', icon: 'plus' -%}
             </button>
           </quantity-input>
-          <button type="button" class="cart-item__remove" data-remove-line="{{ item.index | plus: 1 }}">
+          <button type="button" class="cart-item__remove" data-remove-line="{{ item.index | plus: 1 }}" data-key="{{ item.key }}">
             {{- 'cart.general.remove' | t -}}
           </button>
         </div>
@@ -63,10 +64,10 @@
         <div class="price">
           <span class="price__current">{% render 'format-money', amount: item.final_line_price %}</span>
           {%- if item.original_line_price > item.final_line_price -%}
-            <s class="price__compare">{% render 'format-money', amount: item.original_line_price %}</s>
+            <s class="price__compare"><span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>{% render 'format-money', amount: item.original_line_price %}</s>
           {%- elsif item.variant.compare_at_price > item.variant.price -%}
             {%- assign compare_line = item.variant.compare_at_price | times: item.quantity -%}
-            <s class="price__compare">{% render 'format-money', amount: compare_line %}</s>
+            <s class="price__compare"><span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>{% render 'format-money', amount: compare_line %}</s>
           {%- endif -%}
         </div>
       </div>

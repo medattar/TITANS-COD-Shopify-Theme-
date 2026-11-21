@@ -7,7 +7,7 @@
 >
   <div class="anchor-nav__inner page-width">
     {%- for block in section.blocks -%}
-      {%- assign anchor = block.settings.anchor | strip | remove: '#' -%}
+      {%- assign anchor = block.settings.anchor | remove: '#' | handle -%}
       {%- if anchor != blank and block.settings.label != blank -%}
         <a href="#{{ anchor }}" data-anchor-link {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
       {%- endif -%}

@@ -151,8 +151,32 @@
     });
   };
 
+  /* Remember which cart control had focus so it can be restored after a re-render. */
+  const cartFocusSelector = () => {
+    const el = document.activeElement;
+    if (!el || !el.closest('cart-items, [data-cart-drawer-inner]')) return null;
+    const key = el.dataset.key || el.closest('[data-key]')?.dataset.key || el.closest('.cart-item')?.querySelector('[data-key]')?.dataset.key;
+    if (el.matches('[data-remove-line]')) return key ? `[data-remove-line][data-key="${CSS.escape(key)}"]` : null;
+    if (el.matches('[data-qty]')) return key ? `[data-key="${CSS.escape(key)}"]` : null;
+    if (el.matches('input[data-line]')) return key ? `input[data-key="${CSS.escape(key)}"]` : null;
+    return el.id ? `#${CSS.escape(el.id)}` : null;
+  };
+
+  const restoreCartFocus = (selector) => {
+    if (!selector) return;
+    const target = document.querySelector(selector);
+    if (target) {
+      const qty = target.closest('.cart-item')?.querySelector('input[data-line]');
+      (target.matches('[data-remove-line], input') ? target : qty || target).focus({ preventScroll: true });
+      return;
+    }
+    const drawer = document.getElementById('CartDrawer');
+    if (drawer?.open) drawer.querySelector('[data-close-dialog]')?.focus({ preventScroll: true });
+  };
+
   const renderCartSections = (sections) => {
     if (!sections) return;
+    const focus = cartFocusSelector();
     Object.entries(sections).forEach(([id, html]) => {
       if (!html) return;
       const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -164,10 +188,23 @@
         if (count) updateCartCount(parseInt(count.dataset.cartCountValue, 10));
         return;
       }
+      const root = document.getElementById(`shopify-section-${id}`);
+      const nextRoot = doc.getElementById(`shopify-section-${id}`) || doc.body;
+      const hadItems = !!root?.querySelector('[data-cart-has-items]');
+      const hasItems = !!nextRoot.querySelector('[data-cart-has-items]');
+      if (root && hadItems !== hasItems) {
+        root.innerHTML = nextRoot.innerHTML;
+        return;
+      }
       const target = document.querySelector(`cart-items[data-section-id="${id}"]`);
-      const source = doc.querySelector('cart-items');
+      const source = nextRoot.querySelector('cart-items');
       if (target && source) target.innerHTML = source.innerHTML;
+      (root || document).querySelectorAll('[data-cart-refresh]').forEach((el) => {
+        const fresh = nextRoot.querySelector(`[data-cart-refresh="${el.dataset.cartRefresh}"]`);
+        if (fresh) el.innerHTML = fresh.innerHTML;
+      });
     });
+    restoreCartFocus(focus);
   };
 
   const addToCart = async (formData) => {
@@ -189,17 +226,25 @@
     return data;
   };
 
-  const changeCart = async (line, quantity) => {
-    const sections = cartSections();
-    const data = await fetchJSON(`${Titans.routes.cartChange}.js`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ line, quantity, sections, sections_url: window.location.pathname }),
-    });
-    renderCartSections(data.sections);
-    updateCartCount(data.item_count);
-    document.dispatchEvent(new CustomEvent('cart:changed', { detail: { cart: data } }));
-    return data;
+  /* Cart changes run one at a time so line numbers and keys never go stale mid-flight. */
+  let cartQueue = Promise.resolve();
+  const changeCart = (lineOrKey, quantity) => {
+    const run = async () => {
+      const sections = cartSections();
+      const target = typeof lineOrKey === 'number' ? { line: lineOrKey } : { id: String(lineOrKey) };
+      const data = await fetchJSON(`${Titans.routes.cartChange}.js`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...target, quantity, sections, sections_url: window.location.pathname }),
+      });
+      renderCartSections(data.sections);
+      updateCartCount(data.item_count);
+      document.dispatchEvent(new CustomEvent('cart:changed', { detail: { cart: data } }));
+      return data;
+    };
+    const next = cartQueue.then(run, run);
+    cartQueue = next.catch(() => {});
+    return next;
   };
 
   Titans.cart = { addToCart, changeCart, updateCartCount, renderCartSections };
@@ -225,27 +270,36 @@
     connectedCallback() {
       if (this._bound) return;
       this._bound = true;
-      this._onChange = debounce((input) => this.update(input.dataset.line, parseInt(input.value, 10)), 350);
+      this._timers = new Map();
       this.addEventListener('change', (event) => {
-        const input = event.target.closest('[data-line]');
-        if (input && input.matches('input')) this._onChange(input);
+        const input = event.target.closest('input[data-line]');
+        if (!input) return;
+        const ref = input.dataset.key || input.dataset.line;
+        clearTimeout(this._timers.get(ref));
+        this._timers.set(
+          ref,
+          setTimeout(() => {
+            this._timers.delete(ref);
+            this.update(input.dataset.key || parseInt(input.dataset.line, 10), parseInt(input.value, 10));
+          }, 350)
+        );
       });
       this.addEventListener('click', (event) => {
         const remove = event.target.closest('[data-remove-line]');
-        if (remove) {
-          event.preventDefault();
-          this.update(remove.dataset.removeLine, 0);
-        }
+        if (!remove) return;
+        event.preventDefault();
+        remove.disabled = true;
+        this.update(remove.dataset.key || parseInt(remove.dataset.removeLine, 10), 0);
       });
     }
 
-    async update(line, quantity) {
-      if (!line || Number.isNaN(quantity)) return;
+    async update(ref, quantity) {
+      if (!ref || Number.isNaN(quantity)) return;
       this.setAttribute('aria-busy', 'true');
       try {
-        await changeCart(parseInt(line, 10), quantity);
+        await changeCart(ref, quantity);
       } catch (error) {
-        const errors = this.querySelector('[data-cart-errors]');
+        const errors = document.querySelector(`cart-items[data-section-id="${this.dataset.sectionId}"] [data-cart-errors]`) || this.querySelector('[data-cart-errors]');
         if (errors) errors.textContent = error.message;
         else toast(error.message, 'error');
       } finally {
@@ -434,18 +488,26 @@
   class InviewVideo extends HTMLElement {
     connectedCallback() {
       this.video = this.querySelector('video');
-      if (!this.video) return;
+      if (!this.video || this._bound) return;
+      this._bound = true;
+      this.querySelector('[data-video-sound]')?.addEventListener('click', (event) => {
+        event.preventDefault();
+        this.video.muted = !this.video.muted;
+        event.currentTarget.setAttribute('aria-pressed', String(!this.video.muted));
+      });
       if (reducedMotion() && !this.hasAttribute('data-force')) {
         this.video.removeAttribute('autoplay');
+        this.video.controls = true;
         return;
       }
+      this.addToggle();
       this._io = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !this._userPaused) {
               if (this.video.preload === 'none') this.video.preload = 'metadata';
               this.video.play().catch(() => {});
-            } else {
+            } else if (!entry.isIntersecting) {
               this.video.pause();
             }
           });
@@ -453,11 +515,32 @@
         { threshold: 0.25 }
       );
       this._io.observe(this);
-      this.querySelector('[data-video-sound]')?.addEventListener('click', (event) => {
+    }
+
+    addToggle() {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'video-toggle';
+      const sync = () => {
+        const paused = this.video.paused;
+        button.setAttribute('aria-label', paused ? strings.playVideo || 'Play' : strings.pauseVideo || 'Pause');
+        button.classList.toggle('is-paused', paused);
+      };
+      button.innerHTML = '<span class="video-toggle__pause" aria-hidden="true"></span><span class="video-toggle__play" aria-hidden="true"></span>';
+      button.addEventListener('click', (event) => {
         event.preventDefault();
-        this.video.muted = !this.video.muted;
-        event.currentTarget.setAttribute('aria-pressed', String(!this.video.muted));
+        if (this.video.paused) {
+          this._userPaused = false;
+          this.video.play().catch(() => {});
+        } else {
+          this._userPaused = true;
+          this.video.pause();
+        }
       });
+      this.video.addEventListener('play', sync);
+      this.video.addEventListener('pause', sync);
+      sync();
+      this.appendChild(button);
     }
 
     disconnectedCallback() {

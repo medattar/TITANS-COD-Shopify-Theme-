@@ -3242,3 +3242,59 @@ html.scroll-lock {
   width: 14px;
   height: 14px;
 }
+
+/* ---------- Autoplay video pause toggle ---------- */
+
+.video-toggle {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: pointer;
+}
+
+.video-toggle__pause {
+  width: 10px;
+  height: 12px;
+  border-inline: 3px solid currentColor;
+}
+
+.video-toggle__play {
+  display: none;
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-block: 7px solid transparent;
+  border-left: 11px solid currentColor;
+}
+
+.video-toggle.is-paused .video-toggle__pause {
+  display: none;
+}
+
+.video-toggle.is-paused .video-toggle__play {
+  display: block;
+}
+
+.video-toggle:focus-visible,
+.video-sound:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---------- Marquee pause on focus ---------- */
+
+.marquee:focus-within .marquee__track {
+  animation-play-state: paused;
+}
+

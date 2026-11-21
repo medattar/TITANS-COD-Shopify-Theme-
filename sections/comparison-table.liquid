@@ -39,11 +39,14 @@
       {%- for block in section.blocks -%}
         <div class="compare__row" role="row" {{ block.shopify_attributes }}>
           <span role="rowheader">{{ block.settings.feature }}</span>
-          {%- for i in (1..cols) -%}
+          {%- for i in (1..4) -%}
+            {%- assign col_key = 'col_' | append: i -%}
+            {%- if i > 1 and s[col_key] == blank -%}{%- continue -%}{%- endif -%}
             {%- assign key = 'value_' | append: i -%}
             {%- assign value = block.settings[key] | strip -%}
+            {%- assign match = value | downcase -%}
             <span role="cell"{% if forloop.first %} class="compare__us"{% endif %}>
-              {%- case value -%}
+              {%- case match -%}
                 {%- when 'yes', 'si', 'sí', '✓' -%}
                   <i class="compare__mark compare__mark--yes{% unless forloop.first %} compare__mark--soft{% endunless %}">{%- render 'icon', icon: 'check' -%}</i>
                   <span class="visually-hidden">{{ 'sections.comparison.yes' | t }}</span>

@@ -74,7 +74,7 @@
                   {%- if vv -%}
                     <span class="variant-card__price">
                       <b>{% render 'format-money', amount: vv.price %}</b>
-                      {%- if card_saved > 0 -%}<s>{% render 'format-money', amount: vv.compare_at_price %}</s>{%- endif -%}
+                      {%- if card_saved > 0 -%}<s><span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>{% render 'format-money', amount: vv.compare_at_price %}</s>{%- endif -%}
                     </span>
                   {%- endif -%}
                 </label>

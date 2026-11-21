@@ -1378,3 +1378,17 @@ product-info[aria-busy='true'] [data-variant-update] {
     transition: none;
   }
 }
+
+/* ---------- Unavailable option combination ---------- */
+
+product-info.is-unavailable [data-variant-update^='price-'],
+product-info.is-unavailable [data-variant-update^='offer-'],
+product-info.is-unavailable [data-variant-update^='sticky-price-'] {
+  opacity: 0.35;
+}
+
+product-info.is-unavailable .buy-buttons__dynamic {
+  opacity: 0.4;
+  pointer-events: none;
+}
+

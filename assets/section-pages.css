@@ -159,6 +159,11 @@ facet-filters[aria-busy='true'] [data-facet-update='results'] {
   cursor: pointer;
 }
 
+.facets__list--swatch {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 4px 12px;
+}
+
 .facets__option input {
   position: absolute;
   opacity: 0;

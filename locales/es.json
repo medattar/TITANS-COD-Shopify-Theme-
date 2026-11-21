@@ -123,6 +123,7 @@
       "media": {
         "gallery_viewer": "Galería",
         "load_media": "Ver elemento {{ index }} en la galería",
+        "pause_video": "Pausar video",
         "play_video": "Reproducir video",
         "slide": "Elemento",
         "toggle_sound": "Activar o desactivar sonido"
@@ -130,6 +131,10 @@
       "on_sale": "Oferta",
       "percent_off": "-{{ percent }}%",
       "placeholder_title": "Producto de ejemplo",
+      "price": {
+        "regular_price": "Precio regular",
+        "sale_price": "Precio de oferta"
+      },
       "quantity": {
         "decrease": "Disminuir cantidad de {{ product }}",
         "increase": "Aumentar cantidad de {{ product }}"

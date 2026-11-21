@@ -1,6 +1,6 @@
 {%- assign s = block.settings -%}
 {%- if s.quote != blank -%}
-  <figure
+  <div
     class="testimonial-card{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}{% if s.shadow %} testimonial-card--shadow{% endif %}"
     {{ block.shopify_attributes }}
   >
@@ -12,15 +12,15 @@
         {%- render 'stars', rating: s.rating, scale: 5 -%}
       {%- endif -%}
       <blockquote class="testimonial-card__quote">{{ s.quote }}</blockquote>
-      <figcaption>
+      <div class="testimonial-card__author">
         <b class="testimonial-card__name">{{ s.name }}</b>
         {%- if s.role != blank -%}<span class="testimonial-card__role"> · {{ s.role }}</span>{%- endif -%}
         {%- if s.verified_label != blank -%}
           <span class="testimonial-card__verified">{%- render 'icon', icon: 'verified' -%}{{ s.verified_label }}</span>
         {%- endif -%}
-      </figcaption>
+      </div>
     </div>
-  </figure>
+  </div>
 {%- else -%}
   <div {{ block.shopify_attributes }}></div>
 {%- endif -%}

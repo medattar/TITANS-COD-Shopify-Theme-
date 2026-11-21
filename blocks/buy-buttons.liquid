@@ -48,7 +48,7 @@
             {%- endif -%}
             {%- if s.show_price and v.available -%}
               <span class="atc__price"> – {% render 'format-money', amount: v.price %}</span>
-              {%- if on_sale -%}<s>{% render 'format-money', amount: v.compare_at_price %}</s>{%- endif -%}
+              {%- if on_sale -%}<s><span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>{% render 'format-money', amount: v.compare_at_price %}</s>{%- endif -%}
             {%- endif -%}
           </span>
           {%- if s.show_savings and on_sale and v.available and s.savings_label != blank -%}

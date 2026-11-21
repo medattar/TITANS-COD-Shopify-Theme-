@@ -11,6 +11,9 @@
 {%- endcomment -%}
 {%- liquid
   assign card_action = action | default: settings.card_action
+  if card_action == 'quick_add' and settings.purchase_mode == 'app'
+    assign card_action = 'details'
+  endif
   assign label = button_label | default: settings.card_button_label
   assign img_sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
   assign loading = 'lazy'

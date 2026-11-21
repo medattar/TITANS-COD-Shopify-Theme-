@@ -71,7 +71,7 @@
   border-block: var(--border-width) solid var(--color-border);
 }
 
-.anchor-nav--sticky {
+.shopify-section.section-anchor-nav:has(.anchor-nav--sticky) {
   position: sticky;
   top: var(--header-offset, 0px);
   z-index: 3;

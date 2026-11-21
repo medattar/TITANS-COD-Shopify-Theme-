@@ -4,14 +4,14 @@
 <section class="section cart-page color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
   <div class="page-width">
     <h1 class="h1 cart-page__title">{{ 'cart.general.title' | t }}</h1>
-    <cart-items class="cart-page__items" data-section-id="{{ section.id }}">
-      <div class="cart-errors form-message--error" data-cart-errors role="alert"></div>
-      {%- if cart.item_count > 0 -%}
-        <div class="cart-page__grid">
-          <div class="cart-page__lines lf-card">
-            {%- render 'cart-line-items' -%}
-          </div>
-          <aside class="cart-page__summary lf-card" aria-label="{{ 'cart.general.summary' | t }}">
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-page__grid" data-cart-has-items>
+        <cart-items class="cart-page__lines lf-card" data-section-id="{{ section.id }}">
+          <div class="cart-errors form-message--error" data-cart-errors role="alert"></div>
+          {%- render 'cart-line-items' -%}
+        </cart-items>
+        <aside class="cart-page__summary lf-card" aria-label="{{ 'cart.general.summary' | t }}">
+          <div class="cart-page__totals" data-cart-refresh="totals">
             {%- if cart.cart_level_discount_applications.size > 0 -%}
               <ul class="cart-item__discounts" role="list">
                 {%- for discount in cart.cart_level_discount_applications -%}
@@ -23,34 +23,36 @@
               <span>{{ 'cart.general.subtotal' | t }}</span>
               <span class="cart-totals__value">{% render 'format-money', amount: cart.total_price %}</span>
             </div>
-            <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
-            <form action="{{ routes.cart_url }}" method="post" id="CartPage-Form">
-              {%- if settings.cart_note -%}
-                <div class="field cart-note">
-                  <label class="field__label" for="CartPage-Note">{{ 'cart.general.note' | t }}</label>
-                  <textarea id="CartPage-Note" class="field__input" name="note" rows="3">{{ cart.note }}</textarea>
-                </div>
-              {%- endif -%}
-              <button type="submit" name="checkout" class="button button--full button--large">{{ 'cart.general.checkout' | t }}</button>
-            </form>
-            {%- if additional_checkout_buttons and s.show_dynamic_checkout -%}
-              <div class="cart-page__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+          </div>
+          <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
+          <form action="{{ routes.cart_url }}" method="post" id="CartPage-Form">
+            {%- if settings.cart_note -%}
+              <div class="field cart-note">
+                <label class="field__label" for="CartPage-Note">{{ 'cart.general.note' | t }}</label>
+                <textarea id="CartPage-Note" class="field__input" name="note" rows="3">{{ cart.note }}</textarea>
+              </div>
             {%- endif -%}
-            {%- if settings.cart_trust_text != blank -%}
-              <p class="cart-trust">{{ settings.cart_trust_text }}</p>
-            {%- endif -%}
-            {%- if s.cod_note != blank -%}
-              <div class="cart-page__cod rte">{{ s.cod_note }}</div>
-            {%- endif -%}
-          </aside>
-        </div>
-      {%- else -%}
+            <button type="submit" name="checkout" class="button button--full button--large">{{ 'cart.general.checkout' | t }}</button>
+          </form>
+          {%- if additional_checkout_buttons and s.show_dynamic_checkout -%}
+            <div class="cart-page__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+          {%- endif -%}
+          {%- if settings.cart_trust_text != blank -%}
+            <p class="cart-trust">{{ settings.cart_trust_text }}</p>
+          {%- endif -%}
+          {%- if s.cod_note != blank -%}
+            <div class="cart-page__cod rte">{{ s.cod_note }}</div>
+          {%- endif -%}
+        </aside>
+      </div>
+    {%- else -%}
+      <cart-items class="cart-page__items" data-section-id="{{ section.id }}">
         <div class="collection__empty">
           <h2 class="h3">{{ 'cart.general.empty' | t }}</h2>
           <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.general.continue_shopping' | t }}</a>
         </div>
-      {%- endif -%}
-    </cart-items>
+      </cart-items>
+    {%- endif -%}
   </div>
 </section>
 

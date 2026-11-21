@@ -49,7 +49,7 @@
       <div class="offer-stack__today-left">
         <span>{{ s.today_label }}</span>
         <div class="offer-stack__today-price">
-          {%- if on_sale -%}<s>{% render 'format-money', amount: v.compare_at_price %}</s>{%- endif -%}
+          {%- if on_sale -%}<s><span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>{% render 'format-money', amount: v.compare_at_price %}</s>{%- endif -%}
           <b>{% render 'format-money', amount: v.price %}</b>
         </div>
       </div>

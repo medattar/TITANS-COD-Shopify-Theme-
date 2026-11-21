@@ -7,7 +7,8 @@
     <div class="drawer__header" style="border-bottom: var(--border-width) solid var(--color-border);">
       <h2 class="drawer__title">
         {{- 'cart.general.title' | t }}
-        <span class="badge badge--ink" aria-label="{{ 'cart.general.item_count' | t: count: cart.item_count }}">{{ cart.item_count }}</span>
+        <span class="badge badge--ink" aria-hidden="true">{{ cart.item_count }}</span>
+        <span class="visually-hidden">{{ 'cart.general.item_count' | t: count: cart.item_count }}</span>
       </h2>
       <button type="button" class="drawer__close" data-close-dialog aria-label="{{ 'accessibility.close' | t }}">
         {%- render 'icon', icon: 'close' -%}

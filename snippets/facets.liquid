@@ -104,11 +104,11 @@
                   <div class="facets__price">
                     <div class="field">
                       <label class="field__label" for="{{ filter_id }}-min">{{ 'products.facets.from' | t }}</label>
-                      <input class="field__input" id="{{ filter_id }}-min" type="number" inputmode="decimal" min="0" max="{{ filter.range_max | money_without_currency | remove: ',' }}" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="0">
+                      <input class="field__input" id="{{ filter_id }}-min" type="number" inputmode="decimal" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 }}" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100.0 }}{% endif %}" placeholder="0">
                     </div>
                     <div class="field">
                       <label class="field__label" for="{{ filter_id }}-max">{{ 'products.facets.to' | t }}</label>
-                      <input class="field__input" id="{{ filter_id }}-max" type="number" inputmode="decimal" min="0" max="{{ filter.range_max | money_without_currency | remove: ',' }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}">
+                      <input class="field__input" id="{{ filter_id }}-max" type="number" inputmode="decimal" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100.0 }}{% endif %}" placeholder="{{ filter.range_max | divided_by: 100.0 }}">
                     </div>
                   </div>
                 {%- else -%}
@@ -121,7 +121,7 @@
                             type="checkbox"
                             id="{{ value_id }}"
                             name="{{ value.param_name }}"
-                            value="{{ value.value }}"
+                            value="{{ value.value | escape }}"
                             {% if value.active %}checked{% endif %}
                             {% if value.count == 0 and value.active == false %}disabled{% endif %}
                           >

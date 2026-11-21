@@ -13,20 +13,20 @@
     {%- capture cards -%}
       {%- for block in section.blocks -%}
         {%- assign b = block.settings -%}
-        <figure class="testimonial-card testimonial-card--shadow" {{ block.shopify_attributes }}>
+        <div class="testimonial-card testimonial-card--shadow" {{ block.shopify_attributes }}>
           {%- if b.avatar != blank -%}
             {{ b.avatar | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', class: 'testimonial-card__avatar', width: 64, height: 64, alt: b.name }}
           {%- endif -%}
           <div class="testimonial-card__body">
             {%- if b.rating > 0 -%}{%- render 'stars', rating: b.rating, scale: 5 -%}{%- endif -%}
             <blockquote class="testimonial-card__quote">{{ b.quote }}</blockquote>
-            <figcaption>
+            <div class="testimonial-card__author">
               <b class="testimonial-card__name">{{ b.name }}</b>
               {%- if b.role != blank -%}<span class="testimonial-card__role"> · {{ b.role }}</span>{%- endif -%}
               {%- if b.verified_label != blank -%}<span class="testimonial-card__verified">{%- render 'icon', icon: 'verified' -%}{{ b.verified_label }}</span>{%- endif -%}
-            </figcaption>
+            </div>
           </div>
-        </figure>
+        </div>
       {%- endfor -%}
     {%- endcapture -%}
     {%- if s.layout == 'carousel' -%}

@@ -57,7 +57,9 @@
           adding: {{ 'products.product.adding' | t | json }},
           added: {{ 'products.product.added' | t | json }},
           cartError: {{ 'cart.general.error' | t | json }},
-          quantityError: {{ 'cart.general.quantity_error' | t | json }}
+          quantityError: {{ 'cart.general.quantity_error' | t | json }},
+          playVideo: {{ 'products.product.media.play_video' | t | json }},
+          pauseVideo: {{ 'products.product.media.pause_video' | t | json }}
         },
         reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
       };
