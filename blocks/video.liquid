@@ -1,0 +1,88 @@
+{%- liquid
+  assign s = block.settings
+  case s.ratio
+    when 'portrait'
+      assign ratio = '9 / 16'
+    when 'square'
+      assign ratio = '1 / 1'
+    when 'vertical'
+      assign ratio = '4 / 5'
+    else
+      assign ratio = '16 / 9'
+  endcase
+-%}
+<div
+  class="video-block{% if s.border %} image-block--border{% endif %}{% if s.shadow %} image-block--shadow{% endif %}"
+  style="--ib-radius: {{ s.radius }}px;"
+  {{ block.shopify_attributes }}
+>
+  {%- if s.mode == 'ambient' and s.video != blank -%}
+    <inview-video class="media" style="--ratio: {{ ratio }};">
+      {{ s.video | video_tag: autoplay: false, muted: true, loop: true, playsinline: true, controls: false, preload: 'none', image_size: '1200x' }}
+      {%- if s.sound_toggle -%}
+        <button type="button" class="video-sound" data-video-sound aria-pressed="false" aria-label="{{ 'products.product.media.toggle_sound' | t }}">
+          {%- render 'icon', icon: 'volume-off', class: 'video-sound__off' -%}
+          {%- render 'icon', icon: 'volume-on', class: 'video-sound__on' -%}
+        </button>
+      {%- endif -%}
+    </inview-video>
+  {%- elsif s.video != blank or s.video_url != blank -%}
+    <deferred-media class="media deferred-media" style="--ratio: {{ ratio }};">
+      <button type="button" class="deferred-media__poster" data-deferred-poster aria-label="{{ 'products.product.media.play_video' | t }}">
+        {%- if s.poster != blank -%}
+          {%- render 'image', image: s.poster, sizes: '(min-width: 990px) 50vw, 100vw' -%}
+        {%- elsif s.video != blank -%}
+          {{ s.video.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: s.video.alt }}
+        {%- endif -%}
+        <span class="play-button" aria-hidden="true">{%- render 'icon', icon: 'play' -%}</span>
+      </button>
+      <template>
+        {%- if s.video != blank -%}
+          {{ s.video | video_tag: autoplay: true, controls: true, playsinline: true, image_size: '1200x' }}
+        {%- elsif s.video_url.type == 'youtube' -%}
+          <iframe src="https://www.youtube-nocookie.com/embed/{{ s.video_url.id }}?autoplay=1&rel=0" title="{{ s.title | default: 'Video' | escape }}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        {%- else -%}
+          <iframe src="https://player.vimeo.com/video/{{ s.video_url.id }}?autoplay=1" title="{{ s.title | default: 'Video' | escape }}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        {%- endif -%}
+      </template>
+    </deferred-media>
+  {%- else -%}
+    <div class="media" style="--ratio: {{ ratio }};">{{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+  {%- endif -%}
+  {%- if s.caption != blank -%}
+    <p class="image-block__caption">{{ s.caption }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Video",
+  "tag": null,
+  "settings": [
+    { "type": "video", "id": "video", "label": "Shopify-hosted video" },
+    { "type": "video_url", "id": "video_url", "label": "Or YouTube / Vimeo URL", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "poster", "label": "Cover image" },
+    { "type": "text", "id": "title", "label": "Video title (accessibility)" },
+    {
+      "type": "select", "id": "mode", "label": "Playback", "default": "click",
+      "options": [
+        { "value": "click", "label": "Play on click, with sound" },
+        { "value": "ambient", "label": "Autoplay muted loop (Shopify video only)" }
+      ]
+    },
+    { "type": "checkbox", "id": "sound_toggle", "label": "Show sound toggle (ambient mode)", "default": true },
+    {
+      "type": "select", "id": "ratio", "label": "Aspect ratio", "default": "landscape",
+      "options": [
+        { "value": "landscape", "label": "16:9" }, { "value": "square", "label": "1:1" },
+        { "value": "vertical", "label": "4:5" }, { "value": "portrait", "label": "9:16" }
+      ]
+    },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "checkbox", "id": "border", "label": "Border", "default": false },
+    { "type": "checkbox", "id": "shadow", "label": "Shadow", "default": false },
+    { "type": "inline_richtext", "id": "caption", "label": "Caption" }
+  ],
+  "presets": [{ "name": "Video" }]
+}
+{% endschema %}

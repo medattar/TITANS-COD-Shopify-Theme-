@@ -1,0 +1,38 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+-%}
+{%- if p.description != blank -%}
+  <div class="product-description" {{ block.shopify_attributes }}>
+    {%- if s.heading != blank -%}<h3 class="product-description__heading">{{ s.heading }}</h3>{%- endif -%}
+    {%- if s.collapsible -%}
+      <details class="product-description__more">
+        <summary>
+          <div class="rte product-description__preview">{{ p.description | strip_html | truncatewords: s.preview_words }}</div>
+          <span class="link">{{ 'products.product.read_more' | t }}</span>
+        </summary>
+        <div class="rte">{{ p.description }}</div>
+      </details>
+    {%- else -%}
+      <div class="rte">{{ p.description }}</div>
+    {%- endif -%}
+  </div>
+{%- else -%}
+  <div {{ block.shopify_attributes }}></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product description",
+  "tag": null,
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "checkbox", "id": "collapsible", "label": "Show preview with \"Read more\"", "default": false },
+    { "type": "range", "id": "preview_words", "label": "Preview length (words)", "min": 10, "max": 80, "step": 5, "default": 30 }
+  ],
+  "presets": [
+    { "name": "Product description", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}

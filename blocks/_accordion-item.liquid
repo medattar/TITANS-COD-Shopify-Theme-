@@ -1,0 +1,35 @@
+{%- assign s = block.settings -%}
+{%- if s.title != blank -%}
+  <details class="accordion__item"{% if s.open %} open{% endif %} {{ block.shopify_attributes }}>
+    <summary class="accordion__summary">
+      {%- if s.icon != 'none' -%}
+        <span class="accordion__lead-icon">{%- render 'icon', icon: s.icon -%}</span>
+      {%- endif -%}
+      <span class="accordion__title">{{ s.title }}</span>
+      <span class="accordion__toggle" aria-hidden="true">
+        {%- render 'icon', icon: 'plus', class: 'accordion__icon-plus' -%}
+        {%- render 'icon', icon: 'chevron-down', class: 'accordion__icon-chevron' -%}
+      </span>
+    </summary>
+    <div class="accordion__content rte">
+      {{- s.content -}}
+      {%- if s.page != blank -%}
+        {{ s.page.content }}
+      {%- endif -%}
+    </div>
+  </details>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Accordion item",
+  "tag": null,
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Question / title", "default": "Pregunta frecuente" },
+    { "type": "richtext", "id": "content", "label": "Answer / content", "default": "<p>Escribe la respuesta aquí.</p>" },
+    { "type": "page", "id": "page", "label": "Append page content" },
+    { "type": "select", "id": "icon", "label": "Leading icon", "default": "none", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+  ]
+}
+{% endschema %}

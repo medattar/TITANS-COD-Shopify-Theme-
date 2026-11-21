@@ -1,0 +1,84 @@
+{%- liquid
+  assign s = block.settings
+  assign classes = 'block-group'
+  if s.use_scheme
+    assign classes = classes | append: ' color-' | append: s.color_scheme | append: ' gradient'
+  endif
+  if s.border
+    assign classes = classes | append: ' block-group--border'
+  endif
+  if s.shadow
+    assign classes = classes | append: ' block-group--shadow'
+  endif
+  if s.hide_on != 'none'
+    assign classes = classes | append: ' hide-' | append: s.hide_on
+  endif
+-%}
+<div
+  class="{{ classes }}"
+  style="--g-dir: {{ s.direction }}; --g-dir-m: {{ s.direction_mobile }}; --g-gap: {{ s.gap }}px; --g-align: {{ s.align }}; --g-justify: {{ s.justify }}; --g-wrap: {% if s.wrap %}wrap{% else %}nowrap{% endif %}; --g-pad: {{ s.padding }}px; --g-pad-m: {{ s.padding_mobile }}px; --g-radius: {{ s.radius }}px; --g-mt: {{ s.margin_top }}px; --g-mb: {{ s.margin_bottom }}px;{% if s.max_width > 0 %} --g-max: {{ s.max_width }}px;{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Group",
+  "tag": null,
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select", "id": "direction", "label": "Direction (desktop)", "default": "column",
+      "options": [ { "value": "column", "label": "Vertical" }, { "value": "row", "label": "Horizontal" } ]
+    },
+    {
+      "type": "select", "id": "direction_mobile", "label": "Direction (mobile)", "default": "column",
+      "options": [ { "value": "column", "label": "Vertical" }, { "value": "row", "label": "Horizontal" } ]
+    },
+    { "type": "checkbox", "id": "wrap", "label": "Wrap items", "default": true },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 12 },
+    {
+      "type": "select", "id": "align", "label": "Cross-axis alignment", "default": "stretch",
+      "options": [
+        { "value": "stretch", "label": "Stretch" }, { "value": "flex-start", "label": "Start" },
+        { "value": "center", "label": "Center" }, { "value": "flex-end", "label": "End" }
+      ]
+    },
+    {
+      "type": "select", "id": "justify", "label": "Main-axis alignment", "default": "flex-start",
+      "options": [
+        { "value": "flex-start", "label": "Start" }, { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "End" }, { "value": "space-between", "label": "Space between" }
+      ]
+    },
+    { "type": "range", "id": "max_width", "label": "Max width (0 = full)", "min": 0, "max": 1400, "step": 20, "unit": "px", "default": 0 },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "use_scheme", "label": "Use a color scheme", "default": false },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" },
+    { "type": "range", "id": "padding", "label": "Inner padding (desktop)", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_mobile", "label": "Inner padding (mobile)", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 0 },
+    { "type": "checkbox", "id": "border", "label": "Border", "default": false },
+    { "type": "checkbox", "id": "shadow", "label": "Shadow", "default": false },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "range", "id": "margin_top", "label": "Space above", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "margin_bottom", "label": "Space below", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    {
+      "type": "select", "id": "hide_on", "label": "Visibility", "default": "none",
+      "options": [ { "value": "none", "label": "All devices" }, { "value": "mobile", "label": "Hide on mobile" }, { "value": "desktop", "label": "Hide on desktop" } ]
+    }
+  ],
+  "presets": [
+    { "name": "Group" },
+    {
+      "name": "Row",
+      "settings": { "direction": "row", "direction_mobile": "row", "align": "center" }
+    },
+    {
+      "name": "Card",
+      "settings": { "use_scheme": true, "border": true, "shadow": true, "padding": 20, "padding_mobile": 16 }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+{%- assign s = block.settings -%}
+<div
+  class="tabs-block__panel"
+  id="Tab-{{ block.id }}"
+  role="tabpanel"
+  data-tab-panel
+  data-tab-label="{{ s.label | escape }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if s.heading != blank -%}
+    <h3 class="tabs-block__heading">{{ s.heading }}</h3>
+  {%- endif -%}
+  <div class="tabs-block__content">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tab",
+  "tag": null,
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    { "type": "text", "id": "label", "label": "Tab label", "default": "Pestaña" },
+    { "type": "inline_richtext", "id": "heading", "label": "Panel heading" }
+  ]
+}
+{% endschema %}

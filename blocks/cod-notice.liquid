@@ -1,0 +1,75 @@
+{%- assign s = block.settings -%}
+<div
+  class="cod-notice cod-notice--{{ s.style }}{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  {%- if s.icon != 'none' or s.image != blank -%}
+    <span class="cod-notice__icon">
+      {%- if s.image != blank -%}
+        {{ s.image | image_url: width: 120 | image_tag: loading: 'lazy', width: 40, height: 40, alt: '' }}
+      {%- else -%}
+        {%- render 'icon', icon: s.icon -%}
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+  <div class="cod-notice__body">
+    {%- if s.title != blank -%}<b class="cod-notice__title">{{ s.title }}</b>{%- endif -%}
+    {%- if s.text != blank -%}<div class="cod-notice__text">{{ s.text }}</div>{%- endif -%}
+    {%- if s.link_label != blank and s.link != blank -%}
+      <a class="cod-notice__link link" href="{{ s.link }}">{{ s.link_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "COD message",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Informational only. The theme does not send WhatsApp messages; that requires a separate app." },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "card",
+      "options": [
+        { "value": "card", "label": "Card" }, { "value": "soft", "label": "Soft highlight" },
+        { "value": "inline", "label": "Inline" }, { "value": "pill", "label": "Badge pill" }
+      ]
+    },
+    { "type": "checkbox", "id": "use_scheme", "label": "Use a color scheme", "default": false },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-5" },
+    { "type": "select", "id": "icon", "label": "Icon", "default": "cash", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    { "type": "image_picker", "id": "image", "label": "Image instead of icon" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Pago contra entrega" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Paga cuando recibas tu pedido.</p>" },
+    { "type": "text", "id": "link_label", "label": "Link label" },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "presets": [
+    { "name": "COD: Pay on delivery" },
+    {
+      "name": "COD: WhatsApp confirmation",
+      "settings": {
+        "icon": "whatsapp",
+        "style": "soft",
+        "title": "Confirma tu pedido por WhatsApp",
+        "text": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
+      }
+    },
+    {
+      "name": "COD: Delivery reassurance",
+      "settings": { "icon": "truck", "style": "inline", "title": "Envío con seguimiento", "text": "<p>Te compartimos la guía para que sigas tu paquete hasta tu puerta.</p>" }
+    },
+    {
+      "name": "COD: Delivery regions",
+      "settings": { "icon": "location", "style": "inline", "title": "Entregamos en todo México", "text": "<p>Indica aquí las zonas o ciudades con pago contra entrega disponible.</p>" }
+    },
+    {
+      "name": "COD: Customer support",
+      "settings": { "icon": "headset", "style": "inline", "title": "¿Tienes dudas?", "text": "<p>Escríbenos y te ayudamos antes y después de tu compra.</p>" }
+    },
+    {
+      "name": "COD: Returns",
+      "settings": { "icon": "return", "style": "inline", "title": "Cambios y devoluciones", "text": "<p>Consulta nuestra política de devoluciones.</p>", "link_label": "Ver política", "link": "shopify://policies/refund-policy" }
+    }
+  ]
+}
+{% endschema %}

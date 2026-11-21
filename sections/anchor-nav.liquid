@@ -1,0 +1,52 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+<anchor-nav
+  class="anchor-nav color-{{ section.settings.color_scheme }} gradient{% if section.settings.sticky %} anchor-nav--sticky{% endif %}"
+  aria-label="{{ section.settings.aria_label | escape }}"
+  role="navigation"
+>
+  <div class="anchor-nav__inner page-width">
+    {%- for block in section.blocks -%}
+      {%- assign anchor = block.settings.anchor | strip | remove: '#' -%}
+      {%- if anchor != blank and block.settings.label != blank -%}
+        <a href="#{{ anchor }}" data-anchor-link {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</anchor-nav>
+
+{% schema %}
+{
+  "name": "Anchor navigation",
+  "class": "section-anchor-nav",
+  "tag": "div",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "paragraph", "content": "Links to sections on this page. Give each target section an anchor ID in its settings (for example \"faq\")." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "sticky", "label": "Stick below the header while scrolling", "default": true },
+    { "type": "text", "id": "aria_label", "label": "Accessible name", "default": "En esta página" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Beneficios" },
+        { "type": "text", "id": "anchor", "label": "Target anchor ID", "default": "beneficios" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anchor navigation",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Beneficios", "anchor": "beneficios" } },
+        { "type": "link", "settings": { "label": "Comparación", "anchor": "comparacion" } },
+        { "type": "link", "settings": { "label": "Cómo se usa", "anchor": "como-se-usa" } },
+        { "type": "link", "settings": { "label": "Preguntas", "anchor": "faq" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,126 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign cols = 1
+  if s.col_2 != blank
+    assign cols = cols | plus: 1
+  endif
+  if s.col_3 != blank
+    assign cols = cols | plus: 1
+  endif
+  if s.col_4 != blank
+    assign cols = cols | plus: 1
+  endif
+-%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+
+    <div class="compare lf-card" role="table" aria-label="{{ s.heading | strip_html | escape }}" style="--compare-cols: {{ cols }};">
+      <div class="compare__row compare__row--head" role="row">
+        <span role="columnheader"><span class="visually-hidden">{{ 'sections.comparison.feature' | t }}</span></span>
+        <span class="compare__us" role="columnheader">
+          {%- if s.col_1_image != blank -%}
+            {{ s.col_1_image | image_url: width: 200, height: 200, crop: 'center' | image_tag: loading: 'lazy', width: 92, height: 92, alt: '' }}
+          {%- endif -%}
+          {{ s.col_1 | default: shop.name }}
+        </span>
+        {%- if s.col_2 != blank -%}<span role="columnheader">{{ s.col_2 }}</span>{%- endif -%}
+        {%- if s.col_3 != blank -%}<span role="columnheader">{{ s.col_3 }}</span>{%- endif -%}
+        {%- if s.col_4 != blank -%}<span role="columnheader">{{ s.col_4 }}</span>{%- endif -%}
+      </div>
+      {%- for block in section.blocks -%}
+        <div class="compare__row" role="row" {{ block.shopify_attributes }}>
+          <span role="rowheader">{{ block.settings.feature }}</span>
+          {%- for i in (1..cols) -%}
+            {%- assign key = 'value_' | append: i -%}
+            {%- assign value = block.settings[key] | strip -%}
+            <span role="cell"{% if forloop.first %} class="compare__us"{% endif %}>
+              {%- case value -%}
+                {%- when 'yes', 'si', 'sí', '✓' -%}
+                  <i class="compare__mark compare__mark--yes{% unless forloop.first %} compare__mark--soft{% endunless %}">{%- render 'icon', icon: 'check' -%}</i>
+                  <span class="visually-hidden">{{ 'sections.comparison.yes' | t }}</span>
+                {%- when 'no', '✕', 'x' -%}
+                  <i class="compare__mark compare__mark--no">{%- render 'icon', icon: 'close' -%}</i>
+                  <span class="visually-hidden">{{ 'sections.comparison.no' | t }}</span>
+                {%- else -%}
+                  <small>{{ value }}</small>
+              {%- endcase -%}
+            </span>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <div class="lf-cta-row"><a class="button" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comparison table",
+  "class": "section-comparison",
+  "tag": "div",
+  "max_blocks": 14,
+  "settings": [
+    { "type": "paragraph", "content": "Compare against generic alternatives, not named competitors, and only state facts you can support." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-5" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "comparacion" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ 02 · La diferencia ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "por qué elegirnos" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "header", "content": "Columns" },
+    { "type": "text", "id": "col_1", "label": "Your product column", "default": "Nuestro producto" },
+    { "type": "image_picker", "id": "col_1_image", "label": "Your product image" },
+    { "type": "text", "id": "col_2", "label": "Column 2", "default": "Alternativa A" },
+    { "type": "text", "id": "col_3", "label": "Column 3", "default": "Alternativa B" },
+    { "type": "text", "id": "col_4", "label": "Column 4" },
+    { "type": "richtext", "id": "note", "label": "Note below table" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "text", "id": "button_link", "label": "Button link", "default": "#buy" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Feature", "default": "Característica" },
+        { "type": "paragraph", "content": "Type yes or no for check / cross icons, or any short text." },
+        { "type": "text", "id": "value_1", "label": "Your product", "default": "yes" },
+        { "type": "text", "id": "value_2", "label": "Column 2", "default": "no" },
+        { "type": "text", "id": "value_3", "label": "Column 3", "default": "no" },
+        { "type": "text", "id": "value_4", "label": "Column 4" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison table",
+      "blocks": [
+        { "type": "row", "settings": { "feature": "Pago contra entrega", "value_1": "yes", "value_2": "no", "value_3": "yes" } },
+        { "type": "row", "settings": { "feature": "Envío con seguimiento", "value_1": "yes", "value_2": "yes", "value_3": "no" } },
+        { "type": "row", "settings": { "feature": "Soporte por WhatsApp", "value_1": "yes", "value_2": "no", "value_3": "no" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

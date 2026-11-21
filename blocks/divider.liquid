@@ -1,0 +1,27 @@
+{%- assign s = block.settings -%}
+<hr
+  class="divider-block"
+  style="--d-thickness: {{ s.thickness }}px; --d-style: {{ s.style }}; --d-color: var(--color-{{ s.color }}); --d-space: {{ s.spacing }}px; --d-width: {{ s.width }}%;"
+  {{ block.shopify_attributes }}
+>
+
+{% schema %}
+{
+  "name": "Divider",
+  "tag": null,
+  "settings": [
+    { "type": "range", "id": "thickness", "label": "Thickness", "min": 1, "max": 6, "step": 1, "unit": "px", "default": 1 },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "solid",
+      "options": [ { "value": "solid", "label": "Solid" }, { "value": "dashed", "label": "Dashed" }, { "value": "dotted", "label": "Dotted" } ]
+    },
+    {
+      "type": "select", "id": "color", "label": "Color", "default": "divider",
+      "options": [ { "value": "divider", "label": "Divider" }, { "value": "border", "label": "Border" }, { "value": "accent", "label": "Accent" }, { "value": "highlight", "label": "Highlight" } ]
+    },
+    { "type": "range", "id": "spacing", "label": "Vertical spacing", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "width", "label": "Width", "min": 10, "max": 100, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "presets": [{ "name": "Divider" }]
+}
+{% endschema %}

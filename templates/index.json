@@ -1,0 +1,80 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "blocks": {
+        "tag": {
+          "type": "tag",
+          "settings": { "text": "Pago contra entrega", "style": "highlight", "icon": "cash" }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Tu producto estrella",
+            "accent_line": "Paga al recibir",
+            "font": "display",
+            "size_desktop": 84,
+            "size_mobile": 42,
+            "effect": "none",
+            "tag": "auto"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Recíbelo en casa y paga en efectivo cuando llegue tu pedido. Te confirmamos por WhatsApp antes del envío.</p>",
+            "size_desktop": 19,
+            "size_mobile": 16
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "label_1": "Ver productos",
+            "link_1": "shopify://collections/all",
+            "style_1": "highlight",
+            "label_2": "",
+            "style_2": "outline",
+            "large": true,
+            "arrow": true
+          }
+        },
+        "trust": {
+          "type": "trust",
+          "settings": {
+            "icon": "check",
+            "item_1": "Pago contra entrega",
+            "item_2": "Envío a todo México",
+            "item_3": "Confirmación por WhatsApp",
+            "item_4": ""
+          }
+        }
+      },
+      "block_order": ["tag", "heading", "text", "buttons", "trust"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "inset": true,
+        "radius": 24,
+        "media_placement": "background",
+        "content_align": "center",
+        "content_vertical": "center",
+        "min_height": 520,
+        "min_height_mobile": 420
+      }
+    },
+    "products": {
+      "type": "product-grid",
+      "settings": {
+        "eyebrow": "✦ Más vendidos ✦",
+        "heading": "Nuestros productos",
+        "source": "collection",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "columns_tablet": 3,
+        "columns_mobile": 2,
+        "mobile_layout": "grid"
+      }
+    }
+  },
+  "order": ["hero", "products"]
+}

@@ -1,0 +1,45 @@
+{%- assign s = block.settings -%}
+<div
+  class="icon-text icon-text--{{ s.layout }}"
+  style="--it-icon: {{ s.icon_size }}px; --it-color: var(--color-{{ s.icon_color }}); --it-title: {{ s.title_size }}px;"
+  {{ block.shopify_attributes }}
+>
+  {%- if s.image != blank or s.icon != 'none' -%}
+    <span class="icon-text__icon{% if s.icon_circle %} icon-text__icon--circle{% endif %}">
+      {%- if s.image != blank -%}
+        {{ s.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '', width: s.icon_size, height: s.icon_size }}
+      {%- else -%}
+        {%- render 'icon', icon: s.icon -%}
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+  <div class="icon-text__body">
+    {%- if s.title != blank -%}<b class="icon-text__title">{{ s.title }}</b>{%- endif -%}
+    {%- if s.text != blank -%}<div class="icon-text__text">{{ s.text }}</div>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon with text",
+  "tag": null,
+  "settings": [
+    { "type": "select", "id": "icon", "label": "Icon", "default": "check-circle", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    { "type": "image_picker", "id": "image", "label": "Custom icon image", "info": "Replaces the icon" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Beneficio principal" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe el beneficio en una frase.</p>" },
+    {
+      "type": "select", "id": "layout", "label": "Layout", "default": "row",
+      "options": [ { "value": "row", "label": "Icon left" }, { "value": "stacked", "label": "Icon above" }, { "value": "center", "label": "Icon above, centered" } ]
+    },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 14, "max": 96, "step": 2, "unit": "px", "default": 28 },
+    { "type": "checkbox", "id": "icon_circle", "label": "Circle behind icon", "default": false },
+    {
+      "type": "select", "id": "icon_color", "label": "Icon color", "default": "accent",
+      "options": [ { "value": "accent", "label": "Accent" }, { "value": "icon", "label": "Icon" }, { "value": "text", "label": "Text" }, { "value": "success", "label": "Success" } ]
+    },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 12, "max": 32, "step": 1, "unit": "px", "default": 18 }
+  ],
+  "presets": [{ "name": "Icon with text" }]
+}
+{% endschema %}

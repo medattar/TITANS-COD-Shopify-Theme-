@@ -1,0 +1,143 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+  assign style = s.style
+  if style == 'cards' and p.options.size > 1
+    assign style = 'buttons'
+  endif
+-%}
+{%- unless p == blank or p.has_only_default_variant -%}
+  <variant-picker
+    class="variant-picker variant-picker--{{ style }}"
+    data-variant-update="picker-{{ block.id }}"
+    {{ block.shopify_attributes }}
+  >
+    {%- for option in p.options_with_values -%}
+      {%- assign option_index = forloop.index0 -%}
+      {%- assign input_name = block.id | append: '-' | append: option.position -%}
+      <fieldset class="variant-picker__option" data-option-index="{{ option_index }}">
+        <legend class="variant-picker__legend">
+          {{- option.name | escape -}}
+          {%- if s.show_selected -%}: <span>{{ option.selected_value | escape }}</span>{%- endif -%}
+        </legend>
+
+        {%- if style == 'dropdown' -%}
+          <div class="select">
+            <select class="field__input" name="{{ input_name }}" aria-label="{{ option.name | escape }}">
+              {%- for value in option.values -%}
+                <option value="{{ value | escape }}"{% if value.selected %} selected{% endif %}>
+                  {{- value | escape -}}
+                  {%- unless value.available %} — {{ 'products.product.sold_out' | t }}{% endunless -%}
+                </option>
+              {%- endfor -%}
+            </select>
+            {%- render 'icon', icon: 'chevron-down' -%}
+          </div>
+        {%- else -%}
+          <div class="variant-picker__values">
+            {%- for value in option.values -%}
+              {%- assign input_id = input_name | append: '-' | append: forloop.index -%}
+              <input
+                class="variant-picker__input visually-hidden"
+                type="radio"
+                id="{{ input_id }}"
+                name="{{ input_name }}"
+                value="{{ value | escape }}"
+                {% if value.selected %}
+                  checked
+                {% endif %}
+              >
+              {%- if style == 'cards' -%}
+                {%- liquid
+                  assign vv = value.variant
+                  assign card_saved = 0
+                  if vv.compare_at_price > vv.price
+                    assign card_saved = vv.compare_at_price | minus: vv.price
+                  endif
+                -%}
+                <label for="{{ input_id }}" class="variant-card{% unless value.available %} is-unavailable{% endunless %}">
+                  <span class="variant-card__media">
+                    {%- if vv.featured_media -%}
+                      {{ vv.featured_media | image_url: width: 140, height: 140, crop: 'center' | image_tag: loading: 'lazy', width: 60, height: 60, alt: '' }}
+                    {%- elsif p.featured_media -%}
+                      {{ p.featured_media | image_url: width: 140, height: 140, crop: 'center' | image_tag: loading: 'lazy', width: 60, height: 60, alt: '' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="variant-card__mid">
+                    <b>{{ value | escape }}</b>
+                    {%- if card_saved > 0 and s.show_card_savings -%}
+                      {%- capture card_saved_money -%}{% render 'format-money', amount: card_saved %}{%- endcapture -%}
+                      <em>{{ s.card_savings_label | replace: '[amount]', card_saved_money }}</em>
+                    {%- endif -%}
+                    {%- unless value.available -%}<em>{{ 'products.product.sold_out' | t }}</em>{%- endunless -%}
+                  </span>
+                  {%- if vv -%}
+                    <span class="variant-card__price">
+                      <b>{% render 'format-money', amount: vv.price %}</b>
+                      {%- if card_saved > 0 -%}<s>{% render 'format-money', amount: vv.compare_at_price %}</s>{%- endif -%}
+                    </span>
+                  {%- endif -%}
+                </label>
+              {%- else -%}
+                {%- liquid
+                  assign swatch_style = ''
+                  if s.use_swatches and value.swatch
+                    if value.swatch.image
+                      assign swatch_url = value.swatch.image | image_url: width: 80
+                      assign swatch_style = 'background-image: url(' | append: swatch_url | append: ');'
+                    elsif value.swatch.color
+                      assign swatch_style = 'background-color: ' | append: value.swatch.color | append: ';'
+                    endif
+                  endif
+                -%}
+                <label
+                  for="{{ input_id }}"
+                  class="variant-pill{% unless value.available %} is-unavailable{% endunless %}{% if swatch_style != '' %} variant-pill--swatch{% endif %}"
+                  {% if swatch_style != '' %}
+                    title="{{ value | escape }}"
+                  {% endif %}
+                >
+                  {%- if swatch_style != '' -%}
+                    <span class="variant-pill__swatch" style="{{ swatch_style }}"></span>
+                    <span class="visually-hidden">{{ value | escape }}</span>
+                  {%- else -%}
+                    {{- value | escape -}}
+                  {%- endif -%}
+                  {%- unless value.available -%}<span class="visually-hidden"> — {{ 'products.product.sold_out' | t }}</span>{%- endunless -%}
+                </label>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </fieldset>
+    {%- endfor -%}
+  </variant-picker>
+{%- else -%}
+  <div hidden {{ block.shopify_attributes }}></div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Variant picker",
+  "tag": null,
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "buttons",
+      "info": "Cards suit bundle variants (e.g. 1, 2 or 3 units) on single-option products",
+      "options": [
+        { "value": "buttons", "label": "Buttons" },
+        { "value": "dropdown", "label": "Dropdown" },
+        { "value": "cards", "label": "Cards with image and price" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_selected", "label": "Show selected value in label", "default": true },
+    { "type": "checkbox", "id": "use_swatches", "label": "Use Shopify color swatches", "default": true },
+    { "type": "checkbox", "id": "show_card_savings", "label": "Show savings on cards", "default": true },
+    { "type": "text", "id": "card_savings_label", "label": "Card savings text", "default": "Ahorras [amount]" }
+  ],
+  "presets": [
+    { "name": "Variant picker", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}

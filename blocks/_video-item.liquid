@@ -1,0 +1,28 @@
+{%- assign s = block.settings -%}
+<figure class="video-strip__item" {{ block.shopify_attributes }}>
+  {%- if s.video != blank -%}
+    <inview-video class="media" style="--ratio: 9 / 16;">
+      {{ s.video | video_tag: muted: true, loop: true, playsinline: true, controls: false, preload: 'none', image_size: '480x' }}
+      <button type="button" class="video-sound" data-video-sound aria-pressed="false" aria-label="{{ 'products.product.media.toggle_sound' | t }}">
+        {%- render 'icon', icon: 'volume-off', class: 'video-sound__off' -%}
+        {%- render 'icon', icon: 'volume-on', class: 'video-sound__on' -%}
+      </button>
+    </inview-video>
+  {%- else -%}
+    <div class="media" style="--ratio: 9 / 16;">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+  {%- endif -%}
+  {%- if s.caption != blank -%}
+    <figcaption>{{ s.caption }}</figcaption>
+  {%- endif -%}
+</figure>
+
+{% schema %}
+{
+  "name": "Video",
+  "tag": null,
+  "settings": [
+    { "type": "video", "id": "video", "label": "Video", "info": "Vertical videos work best. Autoplays muted while visible." },
+    { "type": "text", "id": "caption", "label": "Caption" }
+  ]
+}
+{% endschema %}

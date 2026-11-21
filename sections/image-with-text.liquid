@@ -1,0 +1,137 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign p = s.product | default: product
+-%}
+<section
+  class="section lf-section image-text color-{{ s.color_scheme }} gradient image-text--{{ s.layout }}"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width image-text__grid">
+    <div class="image-text__media lf-media">
+      <div class="media" style="--ratio: {{ s.ratio }};">
+        {%- if s.video != blank -%}
+          <inview-video class="image-text__video">
+            {{ s.video | video_tag: muted: true, loop: true, playsinline: true, controls: false, preload: 'none', image_size: '1200x' }}
+          </inview-video>
+        {%- elsif s.image != blank -%}
+          {%- render 'image', image: s.image, sizes: '(min-width: 990px) 50vw, 100vw' -%}
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      {%- if s.overlay_text != blank -%}
+        <div class="image-text__overlay">{{ s.overlay_text | newline_to_br }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="image-text__content">
+      {%- capture card -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'eyebrow' -%}
+              <p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+            {%- when 'heading' -%}
+              <h2 class="h2 image-text__heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+            {%- when 'text' -%}
+              <div class="rte image-text__text" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'spark' -%}
+              <div class="lf-spark" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'note' -%}
+              <small class="image-text__note" {{ block.shopify_attributes }}>{{ block.settings.text }}</small>
+            {%- when 'price' -%}
+              {%- if p != blank -%}
+                {%- assign v = p.selected_or_first_available_variant -%}
+                <p class="image-text__price" {{ block.shopify_attributes }}>
+                  {%- if block.settings.label != blank -%}{{ block.settings.label }} · {% endif -%}
+                  <b>{% render 'format-money', amount: v.price %}</b>
+                  {%- if v.compare_at_price > v.price -%}<s>{% render 'format-money', amount: v.compare_at_price %}</s>{%- endif -%}
+                  {%- if block.settings.subtext != blank -%}<small>{{ block.settings.subtext }}</small>{%- endif -%}
+                </p>
+              {%- endif -%}
+            {%- when 'button' -%}
+              {%- if block.settings.label != blank -%}
+                <div class="image-text__button" {{ block.shopify_attributes }}>
+                  <a class="button button--{{ block.settings.style }}" href="{{ block.settings.link | default: '#buy' }}">{{ block.settings.label }}</a>
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if s.card -%}
+        <div class="lf-card image-text__card">{{ card }}</div>
+      {%- else -%}
+        {{ card }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "class": "section-image-text",
+  "tag": "div",
+  "max_blocks": 14,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "video", "id": "video", "label": "Video (replaces image)", "info": "Plays muted and looped while visible" },
+    {
+      "type": "select", "id": "ratio", "label": "Media ratio", "default": "4 / 5",
+      "options": [ { "value": "1 / 1", "label": "Square" }, { "value": "4 / 5", "label": "Portrait" }, { "value": "4 / 3", "label": "Landscape" }, { "value": "16 / 9", "label": "Wide" } ]
+    },
+    { "type": "textarea", "id": "overlay_text", "label": "Big text on image" },
+    {
+      "type": "select", "id": "layout", "label": "Desktop layout", "default": "media-left",
+      "options": [ { "value": "media-left", "label": "Media left" }, { "value": "media-right", "label": "Media right" } ]
+    },
+    { "type": "checkbox", "id": "card", "label": "Place text in a card", "default": true },
+    { "type": "product", "id": "product", "label": "Product for price block", "info": "Defaults to the current product on product pages" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Eyebrow", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "✦ Destacado ✦" } ] },
+    { "type": "heading", "name": "Heading", "settings": [ { "type": "inline_richtext", "id": "text", "label": "Heading", "default": "va contigo a todas partes" } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "text", "label": "Text", "default": "<p><b>Una idea principal.</b> Explica por qué tu producto es diferente.</p>" } ] },
+    { "type": "spark", "name": "Feature line", "settings": [ { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Característica clave" } ] },
+    { "type": "note", "name": "Small note", "settings": [ { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Nota o aclaración." } ] },
+    {
+      "type": "price",
+      "name": "Live price",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "text", "id": "subtext", "label": "Text below price", "default": "Pago contra entrega · Envío con seguimiento" }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Lo quiero" },
+        { "type": "text", "id": "link", "label": "Link", "default": "#buy" },
+        {
+          "type": "select", "id": "style", "label": "Style", "default": "primary",
+          "options": [ { "value": "primary", "label": "Primary" }, { "value": "highlight", "label": "Highlight" }, { "value": "secondary", "label": "Secondary" } ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [ { "type": "heading" }, { "type": "text" }, { "type": "spark" }, { "type": "spark" }, { "type": "button" } ]
+    }
+  ]
+}
+{% endschema %}

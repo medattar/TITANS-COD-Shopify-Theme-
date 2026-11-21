@@ -29,7 +29,9 @@
             "badge": "#8A2A2B",
             "badge_label": "#FFFFFF",
             "success": "#2FA36B",
-            "icon": "#8A2A2B"
+            "icon": "#8A2A2B",
+            "surface_text": "#1C1517",
+            "highlight_text": "#1C1517"
           }
         },
         "scheme-2": {
@@ -58,7 +60,9 @@
             "badge": "#8A2A2B",
             "badge_label": "#FFFFFF",
             "success": "#2FA36B",
-            "icon": "#B9475E"
+            "icon": "#B9475E",
+            "surface_text": "#1C1517",
+            "highlight_text": "#1C1517"
           }
         },
         "scheme-3": {
@@ -87,7 +91,9 @@
             "badge": "#F7CDD4",
             "badge_label": "#2E0B12",
             "success": "#7FD6A5",
-            "icon": "#FDF6F1"
+            "icon": "#FDF6F1",
+            "surface_text": "#FDF6F1",
+            "highlight_text": "#2E0B12"
           }
         },
         "scheme-4": {
@@ -116,7 +122,9 @@
             "badge": "#F7CDD4",
             "badge_label": "#8A2A2B",
             "success": "#F7CDD4",
-            "icon": "#F7CDD4"
+            "icon": "#F7CDD4",
+            "surface_text": "#8A2A2B",
+            "highlight_text": "#2E0B12"
           }
         },
         "scheme-5": {
@@ -145,7 +153,9 @@
             "badge": "#8A2A2B",
             "badge_label": "#FFFFFF",
             "success": "#2FA36B",
-            "icon": "#8A2A2B"
+            "icon": "#8A2A2B",
+            "surface_text": "#1C1517",
+            "highlight_text": "#1C1517"
           }
         },
         "scheme-6": {
@@ -174,7 +184,9 @@
             "badge": "#F7CDD4",
             "badge_label": "#2E0B12",
             "success": "#7FD6A5",
-            "icon": "#F7CDD4"
+            "icon": "#F7CDD4",
+            "surface_text": "#FDF6F1",
+            "highlight_text": "#2E0B12"
           }
         }
       }

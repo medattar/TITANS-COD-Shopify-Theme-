@@ -1,0 +1,103 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+    <ol class="steps" role="list" style="--steps-cols: {{ s.columns_desktop }};">
+      {%- for block in section.blocks -%}
+        <li class="step lf-card{% unless block.settings.image != blank %} step--no-image{% endunless %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <div class="step__media media" style="--ratio: {{ s.image_ratio }};">
+              {%- render 'image', image: block.settings.image, sizes: '(min-width: 990px) 33vw, 104px' -%}
+            </div>
+          {%- elsif block.settings.icon != 'none' -%}
+            <span class="step__icon">{%- render 'icon', icon: block.settings.icon -%}</span>
+          {%- endif -%}
+          <div class="step__body">
+            <h3 class="step__title">
+              {%- if s.show_numbers -%}<span class="step__number">{{ forloop.index }}</span>{%- endif -%}
+              {{ block.settings.title }}
+            </h3>
+            {%- if block.settings.text != blank -%}<div class="step__text rte">{{ block.settings.text }}</div>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <div class="lf-cta-row"><a class="button" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Steps",
+  "class": "section-steps",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "como-se-usa" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ 04 · Cómo se usa ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "así de fácil" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Steps per row (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+    {
+      "type": "select", "id": "image_ratio", "label": "Image ratio (desktop)", "default": "4 / 5",
+      "options": [ { "value": "1 / 1", "label": "Square" }, { "value": "4 / 5", "label": "Portrait" }, { "value": "4 / 3", "label": "Landscape" } ]
+    },
+    { "type": "checkbox", "id": "show_numbers", "label": "Show step numbers", "default": true },
+    { "type": "richtext", "id": "note", "label": "Note below" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "text", "id": "button_link", "label": "Button link", "default": "#buy" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "select", "id": "icon", "label": "Icon (when no image)", "default": "none", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+        { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Paso" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe este paso en una o dos frases.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Steps",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Elige tu producto" } },
+        { "type": "step", "settings": { "title": "Confirma tu pedido" } },
+        { "type": "step", "settings": { "title": "Recibe y paga" } }
+      ]
+    },
+    {
+      "name": "COD: How it works",
+      "settings": { "eyebrow": "✦ Pago contra entrega ✦", "heading": "¿cómo funciona?", "anchor": "pago-contra-entrega" },
+      "blocks": [
+        { "type": "step", "settings": { "icon": "tag", "title": "Haz tu pedido", "text": "<p>Llena tus datos de envío. No necesitas tarjeta.</p>" } },
+        { "type": "step", "settings": { "icon": "whatsapp", "title": "Confirma por WhatsApp", "text": "<p>Recibirás un mensaje para confirmar tu pedido. Sin tu confirmación no se envía.</p>" } },
+        { "type": "step", "settings": { "icon": "cash", "title": "Paga al recibir", "text": "<p>Pagas en efectivo cuando el repartidor te entrega tu paquete.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

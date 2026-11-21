@@ -1,0 +1,373 @@
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign has_image = false
+  if s.image != blank or s.image_mobile != blank
+    assign has_image = true
+  endif
+  assign has_media = false
+  if has_image or s.video != blank
+    assign has_media = true
+  endif
+  assign placement = s.media_placement
+  unless has_media
+    assign placement = 'none'
+  endunless
+  assign loading = 'lazy'
+  assign priority = 'auto'
+  if section.index <= 3
+    assign loading = 'eager'
+    assign priority = 'high'
+  endif
+-%}
+
+<section
+  class="hero section{% if s.inset %} hero--inset{% endif %} hero--{{ placement }} hero--align-{{ s.content_align }} hero--v-{{ s.content_vertical }}"
+  style="{% render 'section-style' %} --hero-min-h: {{ s.min_height }}px; --hero-min-h-mobile: {{ s.min_height_mobile }}px; --hero-radius: {{ s.radius }}px; --hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px;"
+  aria-label="{{ s.aria_label | default: shop.name | escape }}"
+>
+  <div class="{% if s.inset %}page-width{% endif %}">
+    <div class="hero__card color-{{ s.color_scheme }} gradient{% if s.shadow %} hero__card--shadow{% endif %}">
+      {%- if placement != 'none' -%}
+        <div class="hero__media">
+          {%- if s.video != blank -%}
+            {{
+              s.video
+              | video_tag:
+                autoplay: true,
+                loop: true,
+                muted: true,
+                playsinline: true,
+                controls: false,
+                preload: 'metadata',
+                image_size: '1600x',
+                class: 'hero__video'
+            }}
+          {%- else -%}
+            {%- assign img_desktop = s.image | default: s.image_mobile -%}
+            {%- assign img_mobile = s.image_mobile | default: s.image -%}
+            {%- if placement == 'background' -%}
+              {%- assign img_sizes = '100vw' -%}
+            {%- else -%}
+              {%- assign img_sizes = '(min-width: 990px) 50vw, 100vw' -%}
+            {%- endif -%}
+            <picture>
+              {%- if s.image_mobile != blank and s.image != blank -%}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ img_mobile | image_url: width: 600 }} 600w, {{ img_mobile | image_url: width: 900 }} 900w, {{ img_mobile | image_url: width: 1200 }} 1200w"
+                  sizes="100vw"
+                  width="{{ img_mobile.width }}"
+                  height="{{ img_mobile.height }}"
+                >
+              {%- endif -%}
+              {%- liquid
+                assign focal = img_desktop.presentation.focal_point | default: 'center'
+                assign img_style = 'object-position: ' | append: focal | append: ';'
+              -%}
+              {{
+                img_desktop
+                | image_url: width: 2400
+                | image_tag:
+                  widths: '600, 900, 1200, 1600, 2000, 2400',
+                  sizes: img_sizes,
+                  loading: loading,
+                  fetchpriority: priority,
+                  style: img_style,
+                  alt: img_desktop.alt
+              }}
+            </picture>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="hero__content">
+        <div class="hero__content-inner">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                {% render block %}
+
+              {%- when 'tag' -%}
+                <p class="hero__tag badge badge--{{ block.settings.style }}" {{ block.shopify_attributes }}>
+                  {%- if block.settings.icon != 'none' -%}
+                    {%- render 'icon', icon: block.settings.icon -%}
+                  {%- endif -%}
+                  {{- block.settings.text -}}
+                </p>
+
+              {%- when 'heading' -%}
+                {%- liquid
+                  assign tag = block.settings.tag
+                  if tag == 'auto'
+                    if section.index == 1
+                      assign tag = 'h1'
+                    else
+                      assign tag = 'h2'
+                    endif
+                  endif
+                -%}
+                <{{ tag }}
+                  class="hero__heading font-{{ block.settings.font }}{% if block.settings.effect != 'none' %} fx-{{ block.settings.effect }}{% endif %}"
+                  style="--size-d: {{ block.settings.size_desktop }}px; --size-m: {{ block.settings.size_mobile }}px;"
+                  {{ block.shopify_attributes }}
+                >
+                  {{- block.settings.text -}}
+                  {%- if block.settings.accent_line != blank -%}
+                    <span class="hero__accent-line">{{ block.settings.accent_line }}</span>
+                  {%- endif -%}
+                </{{ tag }}>
+
+              {%- when 'text' -%}
+                <div class="hero__text rte" style="--size-d: {{ block.settings.size_desktop }}px; --size-m: {{ block.settings.size_mobile }}px;" {{ block.shopify_attributes }}>
+                  {{- block.settings.text -}}
+                </div>
+
+              {%- when 'countdown' -%}
+                <div class="hero__countdown" {{ block.shopify_attributes }}>
+                  {%- if block.settings.label != blank and block.settings.date != blank -%}
+                    <p class="hero__countdown-label">{{ block.settings.label }}</p>
+                  {%- endif -%}
+                  {%- render 'countdown',
+                    date: block.settings.date,
+                    time: block.settings.time,
+                    style: block.settings.style,
+                    expired_text: block.settings.expired_text
+                  -%}
+                </div>
+
+              {%- when 'buttons' -%}
+                <div class="buttons hero__buttons" {{ block.shopify_attributes }}>
+                  {%- if block.settings.label_1 != blank -%}
+                    <a
+                      class="button button--{{ block.settings.style_1 }}{% if block.settings.large %} button--large{% endif %}"
+                      {% if block.settings.link_1 != blank %}
+                        href="{{ block.settings.link_1 }}"
+                      {% else %}
+                        role="link" aria-disabled="true"
+                      {% endif %}
+                    >
+                      {{- block.settings.label_1 -}}
+                      {%- if block.settings.arrow -%}{%- render 'icon', icon: 'arrow-right' -%}{%- endif -%}
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.label_2 != blank -%}
+                    <a
+                      class="button button--{{ block.settings.style_2 }}{% if block.settings.large %} button--large{% endif %}"
+                      {% if block.settings.link_2 != blank %}
+                        href="{{ block.settings.link_2 }}"
+                      {% else %}
+                        role="link" aria-disabled="true"
+                      {% endif %}
+                    >
+                      {{- block.settings.label_2 -}}
+                    </a>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'trust' -%}
+                <ul class="hero__trust" role="list" {{ block.shopify_attributes }}>
+                  {%- for i in (1..4) -%}
+                    {%- assign key = 'item_' | append: i -%}
+                    {%- if block.settings[key] != blank -%}
+                      <li>{%- render 'icon', icon: block.settings.icon -%}<span>{{ block.settings[key] }}</span></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+
+              {%- when 'spacer' -%}
+                <div style="height: {{ block.settings.height }}px;" aria-hidden="true" {{ block.shopify_attributes }}></div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "class": "section-hero",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" },
+    { "type": "checkbox", "id": "inset", "label": "Inset card layout", "default": true, "info": "Off = full width" },
+    { "type": "checkbox", "id": "shadow", "label": "Card shadow", "default": false },
+    { "type": "range", "id": "radius", "label": "Card corner radius", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 24 },
+    { "type": "header", "content": "Media" },
+    { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Replaces images. Plays muted and looped." },
+    {
+      "type": "select", "id": "media_placement", "label": "Media placement", "default": "background",
+      "options": [
+        { "value": "background", "label": "Background" },
+        { "value": "split-right", "label": "Split, media right" },
+        { "value": "split-left", "label": "Split, media left" }
+      ]
+    },
+    { "type": "range", "id": "overlay_opacity", "label": "Background overlay", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 30 },
+    { "type": "header", "content": "Content" },
+    {
+      "type": "select", "id": "content_align", "label": "Text alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ]
+    },
+    {
+      "type": "select", "id": "content_vertical", "label": "Vertical position", "default": "center",
+      "options": [ { "value": "start", "label": "Top" }, { "value": "center", "label": "Middle" }, { "value": "end", "label": "Bottom" } ]
+    },
+    { "type": "range", "id": "content_width", "label": "Content max width", "min": 400, "max": 1200, "step": 20, "unit": "px", "default": 820 },
+    { "type": "range", "id": "min_height", "label": "Minimum height (desktop)", "min": 0, "max": 900, "step": 10, "unit": "px", "default": 520 },
+    { "type": "range", "id": "min_height_mobile", "label": "Minimum height (mobile)", "min": 0, "max": 800, "step": 10, "unit": "px", "default": 420 },
+    { "type": "text", "id": "aria_label", "label": "Accessible section name" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 12 }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "tag",
+      "name": "Tag pill",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Nuevo" },
+        {
+          "type": "select", "id": "style", "label": "Style", "default": "highlight",
+          "options": [
+            { "value": "highlight", "label": "Highlight" },
+            { "value": "surface", "label": "Surface" },
+            { "value": "ink", "label": "Dark" },
+            { "value": "outline", "label": "Outline" }
+          ]
+        },
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "none",
+          "options": [
+            { "value": "none", "label": "None" }, { "value": "sparkle", "label": "Sparkle" }, { "value": "star", "label": "Star" },
+            { "value": "truck", "label": "Truck" }, { "value": "cash", "label": "Cash" }, { "value": "clock", "label": "Clock" },
+            { "value": "gift", "label": "Gift" }, { "value": "heart", "label": "Heart" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Heading", "default": "Tu producto estrella" },
+        { "type": "inline_richtext", "id": "accent_line", "label": "Accent second line", "default": "Paga al recibir", "info": "Shown on its own line in the scheme's highlight color" },
+        {
+          "type": "select", "id": "font", "label": "Font", "default": "display",
+          "options": [ { "value": "display", "label": "Display" }, { "value": "heading", "label": "Heading" }, { "value": "body", "label": "Body" } ]
+        },
+        { "type": "range", "id": "size_desktop", "label": "Size (desktop)", "min": 24, "max": 124, "step": 2, "unit": "px", "default": 84 },
+        { "type": "range", "id": "size_mobile", "label": "Size (mobile)", "min": 20, "max": 80, "step": 1, "unit": "px", "default": 42 },
+        {
+          "type": "select", "id": "effect", "label": "Entrance effect", "default": "none",
+          "options": [
+            { "value": "none", "label": "None" }, { "value": "fade", "label": "Fade" },
+            { "value": "slide", "label": "Slide up" }, { "value": "reveal", "label": "Wipe reveal" }, { "value": "typewriter", "label": "Typewriter" }
+          ]
+        },
+        {
+          "type": "select", "id": "tag", "label": "HTML tag", "default": "auto",
+          "info": "Auto uses H1 when this is the first section",
+          "options": [ { "value": "auto", "label": "Auto" }, { "value": "h1", "label": "H1" }, { "value": "h2", "label": "H2" }, { "value": "p", "label": "Paragraph" } ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Recíbelo en casa y paga en efectivo al recibir tu pedido.</p>" },
+        { "type": "range", "id": "size_desktop", "label": "Size (desktop)", "min": 12, "max": 32, "step": 1, "unit": "px", "default": 19 },
+        { "type": "range", "id": "size_mobile", "label": "Size (mobile)", "min": 12, "max": 26, "step": 1, "unit": "px", "default": 16 }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Countdown",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "La promoción termina en" },
+        { "type": "text", "id": "date", "label": "End date", "placeholder": "2026-12-31", "info": "Format YYYY-MM-DD. Hidden when empty or expired. Only use real deadlines." },
+        { "type": "text", "id": "time", "label": "End time", "default": "23:59", "info": "24-hour HH:MM, store visitor's local time" },
+        {
+          "type": "select", "id": "style", "label": "Style", "default": "tiles",
+          "options": [ { "value": "tiles", "label": "Tiles" }, { "value": "inline", "label": "Inline" } ]
+        },
+        { "type": "text", "id": "expired_text", "label": "Text after expiry" }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "label_1", "label": "First button label", "default": "Comprar ahora" },
+        { "type": "url", "id": "link_1", "label": "First button link" },
+        {
+          "type": "select", "id": "style_1", "label": "First button style", "default": "highlight",
+          "options": [
+            { "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" },
+            { "value": "highlight", "label": "Highlight" }, { "value": "outline", "label": "Outline" }, { "value": "link", "label": "Link" }
+          ]
+        },
+        { "type": "text", "id": "label_2", "label": "Second button label" },
+        { "type": "url", "id": "link_2", "label": "Second button link" },
+        {
+          "type": "select", "id": "style_2", "label": "Second button style", "default": "outline",
+          "options": [
+            { "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" },
+            { "value": "highlight", "label": "Highlight" }, { "value": "outline", "label": "Outline" }, { "value": "link", "label": "Link" }
+          ]
+        },
+        { "type": "checkbox", "id": "large", "label": "Large buttons", "default": true },
+        { "type": "checkbox", "id": "arrow", "label": "Show arrow on first button", "default": false }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust list",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "check",
+          "options": [
+            { "value": "check", "label": "Check" }, { "value": "check-circle", "label": "Check circle" },
+            { "value": "sparkle", "label": "Sparkle" }, { "value": "dot", "label": "Dot" }, { "value": "star", "label": "Star" }
+          ]
+        },
+        { "type": "text", "id": "item_1", "label": "Item 1", "default": "Pago contra entrega" },
+        { "type": "text", "id": "item_2", "label": "Item 2", "default": "Envío a todo México" },
+        { "type": "text", "id": "item_3", "label": "Item 3", "default": "Confirmación por WhatsApp" },
+        { "type": "text", "id": "item_4", "label": "Item 4" }
+      ]
+    },
+    {
+      "type": "spacer",
+      "name": "Spacer",
+      "settings": [
+        { "type": "range", "id": "height", "label": "Height", "min": 4, "max": 80, "step": 4, "unit": "px", "default": 16 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner",
+      "blocks": [
+        { "type": "tag" },
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "buttons" },
+        { "type": "trust" }
+      ]
+    }
+  ]
+}
+{% endschema %}

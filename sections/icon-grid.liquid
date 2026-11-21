@@ -1,0 +1,122 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient icon-grid icon-grid--{{ s.style }}"
+  style="{% render 'section-style' %} --ig-icon: {{ s.icon_size }}px;"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+    <ul class="grid icon-grid__list" role="list" style="--cols-mobile: {{ s.columns_mobile }}; --cols-tablet: {{ s.columns_desktop | at_most: 3 }}; --cols-desktop: {{ s.columns_desktop }};">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <li class="icon-grid__item icon-grid__item--{{ s.align }}{% if s.style == 'cards' %} lf-card{% endif %}" {{ block.shopify_attributes }}>
+          {%- if b.image != blank -%}
+            <span class="icon-grid__image{% if s.image_style == 'photo' %} icon-grid__image--photo{% endif %}">
+              {{ b.image | image_url: width: 400 | image_tag: loading: 'lazy', alt: b.image.alt }}
+            </span>
+          {%- elsif b.icon != 'none' -%}
+            <span class="icon-grid__icon">{%- render 'icon', icon: b.icon -%}</span>
+          {%- endif -%}
+          <div class="icon-grid__body">
+            {%- if b.title != blank -%}<h3 class="icon-grid__title">{{ b.title }}</h3>{%- endif -%}
+            {%- if b.text != blank -%}<div class="icon-grid__text rte">{{ b.text }}</div>{%- endif -%}
+          </div>
+          {%- if b.value != blank -%}<span class="icon-grid__value">{{ b.value }}</span>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <div class="lf-cta-row"><a class="button" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Icon grid",
+  "class": "section-icon-grid",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "beneficios" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Beneficios ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "por qué te va a encantar" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "cards",
+      "options": [ { "value": "cards", "label": "Cards" }, { "value": "plain", "label": "Plain" }, { "value": "list", "label": "List rows" }, { "value": "bar", "label": "Compact bar" } ]
+    },
+    {
+      "type": "select", "id": "align", "label": "Item alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "range", "id": "columns_mobile", "label": "Columns (mobile)", "min": 1, "max": 3, "step": 1, "default": 1 },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 96, "step": 4, "unit": "px", "default": 40 },
+    {
+      "type": "select", "id": "image_style", "label": "Image style", "default": "icon",
+      "options": [ { "value": "icon", "label": "Icon size" }, { "value": "photo", "label": "Photo" } ]
+    },
+    { "type": "richtext", "id": "note", "label": "Note below" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "text", "id": "button_link", "label": "Button link", "default": "#buy" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "sparkle", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+        { "type": "image_picker", "id": "image", "label": "Image instead of icon" },
+        { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Beneficio" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Explica el beneficio en una frase.</p>" },
+        { "type": "text", "id": "value", "label": "Value / tag", "info": "Optional, e.g. \"Incluido\"" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "sparkle", "title": "Beneficio uno" } },
+        { "type": "item", "settings": { "icon": "heart", "title": "Beneficio dos" } },
+        { "type": "item", "settings": { "icon": "leaf", "title": "Beneficio tres" } }
+      ]
+    },
+    {
+      "name": "What's included",
+      "settings": { "eyebrow": "✦ En la caja ✦", "heading": "qué incluye", "style": "list", "columns_desktop": 2, "align": "left", "anchor": "incluye" },
+      "blocks": [
+        { "type": "item", "settings": { "icon": "box", "title": "Producto principal", "text": "", "value": "1×" } },
+        { "type": "item", "settings": { "icon": "package-check", "title": "Accesorio", "text": "", "value": "Incluido" } },
+        { "type": "item", "settings": { "icon": "info", "title": "Guía de uso", "text": "", "value": "Incluido" } }
+      ]
+    },
+    {
+      "name": "Trust bar",
+      "settings": { "eyebrow": "", "heading": "", "style": "bar", "columns_desktop": 4, "columns_mobile": 2, "icon_size": 28, "padding_top": 28, "padding_bottom": 28, "padding_top_mobile": 20, "padding_bottom_mobile": 20, "anchor": "" },
+      "blocks": [
+        { "type": "item", "settings": { "icon": "cash", "title": "Pago contra entrega", "text": "" } },
+        { "type": "item", "settings": { "icon": "truck", "title": "Envío a todo México", "text": "" } },
+        { "type": "item", "settings": { "icon": "whatsapp", "title": "Soporte por WhatsApp", "text": "" } },
+        { "type": "item", "settings": { "icon": "shield", "title": "Compra segura", "text": "" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

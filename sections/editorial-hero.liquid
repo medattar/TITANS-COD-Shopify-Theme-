@@ -1,0 +1,107 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="editorial-hero color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="editorial-hero__grid page-width">
+    {%- if s.heading != blank -%}
+      <h2 class="editorial-hero__heading" style="--eh-size-d: {{ s.heading_size }}px; --eh-size-m: {{ s.heading_size_mobile }}px;">{{ s.heading | newline_to_br }}</h2>
+    {%- endif -%}
+
+    <div class="editorial-hero__media">
+      <div class="media" style="--ratio: 600 / 860;">
+        {%- if s.image != blank -%}
+          {%- render 'image', image: s.image, sizes: '(min-width: 990px) 50vw, 100vw' -%}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      {%- assign rows = section.blocks | where: 'type', 'row' -%}
+      {%- if s.card_title != blank or rows.size > 0 -%}
+        <div class="editorial-hero__receipt">
+          {%- if s.card_title != blank -%}<h3>{{ s.card_title }}</h3>{%- endif -%}
+          <div class="editorial-hero__dash"></div>
+          {%- for block in rows -%}
+            <div class="editorial-hero__row" {{ block.shopify_attributes }}>
+              <span>{{ block.settings.text }}</span>
+              <span>{{ block.settings.mark }}</span>
+            </div>
+          {%- endfor -%}
+          {%- if s.card_total != blank or s.card_quote != blank -%}
+            <div class="editorial-hero__dash"></div>
+            {%- if s.card_total != blank -%}<div class="editorial-hero__total">{{ s.card_total }}</div>{%- endif -%}
+            {%- if s.card_quote != blank -%}<div class="editorial-hero__quote">{{ s.card_quote }}</div>{%- endif -%}
+          {%- endif -%}
+          {%- if s.show_barcode -%}<div class="editorial-hero__barcode" aria-hidden="true"></div>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if s.intro != blank or s.button_label != blank -%}
+      <div class="editorial-hero__intro lf-card">
+        {%- if s.intro != blank -%}<div class="rte">{{ s.intro }}</div>{%- endif -%}
+        {%- if s.button_label != blank -%}
+          <a class="button" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial hero",
+  "class": "section-editorial-hero",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Hecho para tu día a día", "info": "Line breaks are kept. Use <br> for manual breaks." },
+    { "type": "range", "id": "heading_size", "label": "Heading size (desktop)", "min": 40, "max": 140, "step": 4, "unit": "px", "default": 112 },
+    { "type": "range", "id": "heading_size_mobile", "label": "Heading size (mobile)", "min": 32, "max": 90, "step": 2, "unit": "px", "default": 56 },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "header", "content": "List card" },
+    { "type": "text", "id": "card_title", "label": "Card title", "default": "TU LISTA DE HOY" },
+    { "type": "text", "id": "card_total", "label": "Card footer label", "default": "PENDIENTE" },
+    { "type": "text", "id": "card_quote", "label": "Card quote", "default": "“Te toca a ti.”" },
+    { "type": "checkbox", "id": "show_barcode", "label": "Show decorative barcode", "default": true },
+    { "type": "header", "content": "Intro card" },
+    { "type": "richtext", "id": "intro", "label": "Text", "default": "<p>Cuéntale a tu cliente en una frase por qué este producto encaja en su rutina.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Lo quiero" },
+    { "type": "text", "id": "button_link", "label": "Button link", "default": "#buy", "info": "URL or #anchor. #buy scrolls to the product purchase area." },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 84 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "List row",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Café de la mañana" },
+        { "type": "text", "id": "mark", "label": "Mark", "default": "✓" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial hero",
+      "blocks": [
+        { "type": "row", "settings": { "text": "Café de la mañana", "mark": "✓" } },
+        { "type": "row", "settings": { "text": "Trabajo", "mark": "✓" } },
+        { "type": "row", "settings": { "text": "Ejercicio", "mark": "✓" } },
+        { "type": "row", "settings": { "text": "10 minutos para ti", "mark": "✕" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

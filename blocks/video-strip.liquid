@@ -1,0 +1,31 @@
+{%- assign s = block.settings -%}
+<div class="video-strip" style="--vs-width: {{ s.card_width }}px;" {{ block.shopify_attributes }}>
+  {%- if s.heading != blank or s.subheading != blank -%}
+    <div class="video-strip__header">
+      {%- if s.heading != blank -%}<b>{{ s.heading }}</b>{%- endif -%}
+      {%- if s.subheading != blank -%}<small>{{ s.subheading }}</small>{%- endif -%}
+    </div>
+  {%- endif -%}
+  <div class="video-strip__track">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video strip",
+  "tag": null,
+  "blocks": [{ "type": "_video-item" }],
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Míralo en acción" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "range", "id": "card_width", "label": "Card width", "min": 120, "max": 280, "step": 10, "unit": "px", "default": 160 }
+  ],
+  "presets": [
+    {
+      "name": "Video strip",
+      "blocks": [{ "type": "_video-item" }, { "type": "_video-item" }, { "type": "_video-item" }]
+    }
+  ]
+}
+{% endschema %}

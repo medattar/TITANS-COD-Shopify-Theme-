@@ -1,0 +1,55 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+  assign v = p.selected_or_first_available_variant
+-%}
+<div
+  class="product-price-block product-price-block--{{ s.size }}"
+  data-variant-update="price-{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if p != blank -%}
+    {%- render 'price',
+      product: p,
+      variant: v,
+      show_compare: s.show_compare,
+      show_savings: s.show_savings,
+      savings_format: s.savings_format
+    -%}
+    {%- if s.show_tax_note -%}
+      <p class="product-price-block__note">
+        {%- if cart.taxes_included -%}
+          {{ 'products.product.taxes_included' | t }}
+        {%- else -%}
+          {{ 'products.product.taxes_excluded' | t }}
+        {%- endif -%}
+        {%- if s.shipping_note != blank %} · {{ s.shipping_note }}{% endif -%}
+      </p>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Product price",
+  "tag": null,
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "select", "id": "size", "label": "Size", "default": "large",
+      "options": [ { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" }, { "value": "xlarge", "label": "Extra large" } ]
+    },
+    { "type": "checkbox", "id": "show_compare", "label": "Show compare-at price", "default": true },
+    { "type": "checkbox", "id": "show_savings", "label": "Show savings badge", "default": true },
+    {
+      "type": "select", "id": "savings_format", "label": "Savings format", "default": "percent",
+      "options": [ { "value": "percent", "label": "Percentage" }, { "value": "amount", "label": "Amount" } ]
+    },
+    { "type": "checkbox", "id": "show_tax_note", "label": "Show tax note", "default": false },
+    { "type": "text", "id": "shipping_note", "label": "Shipping note", "placeholder": "Envío calculado al confirmar" }
+  ],
+  "presets": [
+    { "name": "Product price", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}

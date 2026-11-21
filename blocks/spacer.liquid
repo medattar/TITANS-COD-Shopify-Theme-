@@ -1,0 +1,18 @@
+<div
+  class="spacer-block"
+  style="--sp-d: {{ block.settings.height }}px; --sp-m: {{ block.settings.height_mobile }}px;"
+  aria-hidden="true"
+  {{ block.shopify_attributes }}
+></div>
+
+{% schema %}
+{
+  "name": "Spacer",
+  "tag": null,
+  "settings": [
+    { "type": "range", "id": "height", "label": "Height (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "height_mobile", "label": "Height (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 16 }
+  ],
+  "presets": [{ "name": "Spacer" }]
+}
+{% endschema %}

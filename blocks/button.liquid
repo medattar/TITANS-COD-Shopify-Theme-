@@ -1,0 +1,57 @@
+{%- assign s = block.settings -%}
+{%- if s.label != blank -%}
+  <div class="button-block" style="justify-content: {{ s.align }};" {{ block.shopify_attributes }}>
+    <a
+      class="button button--{{ s.style }}{% if s.size != 'medium' %} button--{{ s.size }}{% endif %}{% if s.full_width %} button--full{% endif %}"
+      {% if s.link != blank %}
+        href="{{ s.link }}"
+      {% else %}
+        role="link" aria-disabled="true"
+      {% endif %}
+      {% if s.new_tab %}
+        target="_blank" rel="noopener"
+      {% endif %}
+    >
+      {%- if s.icon != 'none' and s.icon_position == 'before' -%}{%- render 'icon', icon: s.icon -%}{%- endif -%}
+      <span>{{ s.label }}</span>
+      {%- if s.icon != 'none' and s.icon_position == 'after' -%}{%- render 'icon', icon: s.icon -%}{%- endif -%}
+    </a>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Button",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Comprar ahora" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "checkbox", "id": "new_tab", "label": "Open in a new tab", "default": false },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "primary",
+      "options": [
+        { "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" },
+        { "value": "highlight", "label": "Highlight" }, { "value": "outline", "label": "Outline" }, { "value": "link", "label": "Text link" }
+      ]
+    },
+    {
+      "type": "select", "id": "size", "label": "Size", "default": "medium",
+      "options": [ { "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" } ]
+    },
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "flex-start",
+      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "flex-end", "label": "Right" } ]
+    },
+    {
+      "type": "select", "id": "icon", "label": "Icon", "default": "none",
+      "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}]
+    },
+    {
+      "type": "select", "id": "icon_position", "label": "Icon position", "default": "after",
+      "options": [ { "value": "before", "label": "Before label" }, { "value": "after", "label": "After label" } ]
+    }
+  ],
+  "presets": [{ "name": "Button" }]
+}
+{% endschema %}

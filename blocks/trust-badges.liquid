@@ -1,0 +1,35 @@
+{%- assign s = block.settings -%}
+<ul
+  class="trust-badges trust-badges--{{ s.style }}"
+  role="list"
+  style="--tb-cols: {{ s.columns }}; --tb-cols-m: {{ s.columns_mobile }};"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</ul>
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "tag": null,
+  "blocks": [{ "type": "_trust-badge" }],
+  "settings": [
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "stacked",
+      "options": [ { "value": "stacked", "label": "Icon above text" }, { "value": "row", "label": "Icon beside text" }, { "value": "boxed", "label": "Boxed" } ]
+    },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "range", "id": "columns_mobile", "label": "Columns (mobile)", "min": 1, "max": 4, "step": 1, "default": 3 }
+  ],
+  "presets": [
+    {
+      "name": "Trust badges",
+      "blocks": [
+        { "type": "_trust-badge", "settings": { "icon": "cash", "text": "Pago contra entrega" } },
+        { "type": "_trust-badge", "settings": { "icon": "truck", "text": "Envío con seguimiento" } },
+        { "type": "_trust-badge", "settings": { "icon": "whatsapp", "text": "Soporte por WhatsApp" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

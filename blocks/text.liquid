@@ -1,0 +1,40 @@
+{%- assign s = block.settings -%}
+{%- if s.text != blank -%}
+  <div
+    class="text-block rte text-block--{{ s.size }}"
+    style="text-align: {{ s.align }}; --tb-color: var(--color-{{ s.color }});{% if s.max_width > 0 %} max-width: {{ s.max_width }}px;{% if s.align == 'center' %} margin-inline: auto;{% endif %}{% endif %}"
+    {{ block.shopify_attributes }}
+  >
+    {{- s.text -}}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Text",
+  "tag": null,
+  "settings": [
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Comparte detalles sobre tu producto o tienda.</p>" },
+    {
+      "type": "select", "id": "size", "label": "Size", "default": "body",
+      "options": [
+        { "value": "small", "label": "Small" }, { "value": "body", "label": "Body" },
+        { "value": "large", "label": "Large" }, { "value": "lead", "label": "Lead" }
+      ]
+    },
+    {
+      "type": "select", "id": "color", "label": "Color", "default": "text",
+      "options": [
+        { "value": "text", "label": "Text" }, { "value": "muted", "label": "Muted" },
+        { "value": "accent", "label": "Accent" }, { "value": "heading", "label": "Heading" }
+      ]
+    },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "left",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ]
+    },
+    { "type": "range", "id": "max_width", "label": "Max width (0 = none)", "min": 0, "max": 1200, "step": 20, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Text" }]
+}
+{% endschema %}

@@ -1,0 +1,80 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+    <ol class="timeline" role="list" style="--tl-cols: {{ section.blocks.size | at_most: 4 | at_least: 1 }};">
+      {%- for block in section.blocks -%}
+        <li class="timeline__step{% if s.reveal %} reveal{% endif %}" {{ block.shopify_attributes }}>
+          <span class="timeline__dot" aria-hidden="true">{{ forloop.index }}</span>
+          <div class="timeline__card lf-card">
+            {%- if block.settings.label != blank -%}<span class="timeline__pill">{{ block.settings.label }}</span>{%- endif -%}
+            {%- if block.settings.title != blank -%}<h3 class="timeline__title">{{ block.settings.title }}</h3>{%- endif -%}
+            {%- if block.settings.text != blank -%}<div class="timeline__text rte">{{ block.settings.text }}</div>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <div class="lf-cta-row"><a class="button" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Timeline",
+  "class": "section-timeline",
+  "tag": "div",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ 03 · Qué esperar ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "tus primeras semanas" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "checkbox", "id": "reveal", "label": "Reveal steps on scroll", "default": true },
+    { "type": "richtext", "id": "note", "label": "Note below" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "text", "id": "button_link", "label": "Button link", "default": "#buy" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Milestone",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Pill label", "default": "Semana 1" },
+        { "type": "inline_richtext", "id": "title", "label": "Title", "default": "El primer paso" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe lo que la persona puede esperar en esta etapa.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Timeline",
+      "blocks": [
+        { "type": "step", "settings": { "label": "Día 1", "title": "Haces tu pedido" } },
+        { "type": "step", "settings": { "label": "Día 1–2", "title": "Confirmas por WhatsApp" } },
+        { "type": "step", "settings": { "label": "Día 2–6", "title": "Lo recibes y pagas" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

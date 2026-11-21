@@ -1,0 +1,94 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+    {%- capture cards -%}
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <figure class="testimonial-card testimonial-card--shadow" {{ block.shopify_attributes }}>
+          {%- if b.avatar != blank -%}
+            {{ b.avatar | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', class: 'testimonial-card__avatar', width: 64, height: 64, alt: b.name }}
+          {%- endif -%}
+          <div class="testimonial-card__body">
+            {%- if b.rating > 0 -%}{%- render 'stars', rating: b.rating, scale: 5 -%}{%- endif -%}
+            <blockquote class="testimonial-card__quote">{{ b.quote }}</blockquote>
+            <figcaption>
+              <b class="testimonial-card__name">{{ b.name }}</b>
+              {%- if b.role != blank -%}<span class="testimonial-card__role"> · {{ b.role }}</span>{%- endif -%}
+              {%- if b.verified_label != blank -%}<span class="testimonial-card__verified">{%- render 'icon', icon: 'verified' -%}{{ b.verified_label }}</span>{%- endif -%}
+            </figcaption>
+          </div>
+        </figure>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if s.layout == 'carousel' -%}
+      <slider-component class="slider slider--bleed" style="--slide-width: 86%; --slide-width-desktop: calc((100% - 44px) / 3); --slide-gap: 22px;">
+        <div class="slider__track" data-slider-track>{{ cards }}</div>
+        <div class="slider__nav">
+          <button type="button" class="slider__button" data-slider-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{%- render 'icon', icon: 'chevron-left' -%}</button>
+          <button type="button" class="slider__button" data-slider-next aria-label="{{ 'accessibility.next_slide' | t }}">{%- render 'icon', icon: 'chevron-right' -%}</button>
+        </div>
+      </slider-component>
+    {%- else -%}
+      <div class="grid" style="--cols-mobile: 1; --cols-tablet: 2; --cols-desktop: {{ s.columns_desktop }};">{{ cards }}</div>
+    {%- endif -%}
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "section-testimonials",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "paragraph", "content": "Only publish genuine testimonials from real customers, with permission. For review counts and star averages, use a reviews app." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-5" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "opiniones" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Opiniones ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "lo que dicen nuestros clientes" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    {
+      "type": "select", "id": "layout", "label": "Layout", "default": "carousel",
+      "options": [ { "value": "carousel", "label": "Carousel" }, { "value": "grid", "label": "Grid" } ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (grid, desktop)", "min": 1, "max": 4, "step": 1, "default": 3 },
+    { "type": "richtext", "id": "note", "label": "Note below" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "image_picker", "id": "avatar", "label": "Photo" },
+        { "type": "range", "id": "rating", "label": "Star rating given by the customer (0 = hide)", "min": 0, "max": 5, "step": 1, "default": 0 },
+        { "type": "richtext", "id": "quote", "label": "Quote", "default": "<p>[Reemplaza con una opinión real de un cliente]</p>" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Nombre del cliente" },
+        { "type": "text", "id": "role", "label": "Location or role" },
+        { "type": "text", "id": "verified_label", "label": "Verified label", "info": "Only for verified purchases" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Testimonials", "blocks": [ { "type": "testimonial" }, { "type": "testimonial" }, { "type": "testimonial" } ] }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,46 @@
+{%- assign s = block.settings -%}
+{%- if s.quote != blank -%}
+  <figure
+    class="testimonial-card{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}{% if s.shadow %} testimonial-card--shadow{% endif %}"
+    {{ block.shopify_attributes }}
+  >
+    {%- if s.avatar != blank -%}
+      {{ s.avatar | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', class: 'testimonial-card__avatar', width: 64, height: 64, alt: s.name }}
+    {%- endif -%}
+    <div class="testimonial-card__body">
+      {%- if s.rating > 0 -%}
+        {%- render 'stars', rating: s.rating, scale: 5 -%}
+      {%- endif -%}
+      <blockquote class="testimonial-card__quote">{{ s.quote }}</blockquote>
+      <figcaption>
+        <b class="testimonial-card__name">{{ s.name }}</b>
+        {%- if s.role != blank -%}<span class="testimonial-card__role"> · {{ s.role }}</span>{%- endif -%}
+        {%- if s.verified_label != blank -%}
+          <span class="testimonial-card__verified">{%- render 'icon', icon: 'verified' -%}{{ s.verified_label }}</span>
+        {%- endif -%}
+      </figcaption>
+    </div>
+  </figure>
+{%- else -%}
+  <div {{ block.shopify_attributes }}></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonial card",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Only publish genuine testimonials from real customers, with their permission." },
+    { "type": "image_picker", "id": "avatar", "label": "Photo" },
+    { "type": "range", "id": "rating", "label": "Star rating given by the customer (0 = hide)", "min": 0, "max": 5, "step": 1, "default": 0 },
+    { "type": "richtext", "id": "quote", "label": "Quote" },
+    { "type": "text", "id": "name", "label": "Name", "default": "Nombre del cliente" },
+    { "type": "text", "id": "role", "label": "Location or role" },
+    { "type": "text", "id": "verified_label", "label": "Verified label", "info": "Only use for verified purchases" },
+    { "type": "checkbox", "id": "use_scheme", "label": "Use a color scheme", "default": false },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "shadow", "label": "Shadow", "default": true }
+  ],
+  "presets": [{ "name": "Testimonial card" }]
+}
+{% endschema %}

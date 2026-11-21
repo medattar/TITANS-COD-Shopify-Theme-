@@ -1,0 +1,118 @@
+{%- assign s = section.settings -%}
+<section
+  class="section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width{% if s.narrow %} page-width--narrow{% endif %} rich-text text-{{ s.align }}">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'eyebrow' -%}
+          <p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- when 'heading' -%}
+          <h2 class="{{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+        {%- when 'text' -%}
+          <div class="rte rich-text__text{% if block.settings.small %} rich-text__text--small{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- when 'button' -%}
+          {%- if block.settings.label != blank -%}
+            <div class="buttons" {{ block.shopify_attributes }}>
+              <a class="button button--{{ block.settings.style }}" href="{{ block.settings.link | default: '#buy' }}">{{ block.settings.label }}</a>
+            </div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .rich-text {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rich-text.text-center {
+    align-items: center;
+  }
+
+  .rich-text > * {
+    margin: 0;
+  }
+
+  .rich-text__text--small {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+
+  .rich-text.text-center .buttons {
+    justify-content: center;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Rich text",
+  "class": "section-rich-text",
+  "tag": "div",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "checkbox", "id": "narrow", "label": "Narrow width", "default": true },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 }
+  ],
+  "blocks": [
+    { "type": "eyebrow", "name": "Eyebrow", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "✦ Nuestra historia ✦" } ] },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Heading", "default": "Cuenta tu historia" },
+        {
+          "type": "select", "id": "size", "label": "Size", "default": "h2",
+          "options": [ { "value": "h1", "label": "Large" }, { "value": "h2", "label": "Medium" }, { "value": "h3", "label": "Small" } ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Comparte información sobre tu marca con tus clientes.</p>" },
+        { "type": "checkbox", "id": "small", "label": "Small print (disclaimers)", "default": false }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Ver más" },
+        { "type": "text", "id": "link", "label": "Link", "default": "/collections/all" },
+        {
+          "type": "select", "id": "style", "label": "Style", "default": "primary",
+          "options": [ { "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" }, { "value": "outline", "label": "Outline" } ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Rich text", "blocks": [ { "type": "eyebrow" }, { "type": "heading" }, { "type": "text" } ] },
+    {
+      "name": "Disclaimer",
+      "settings": { "padding_top": 24, "padding_bottom": 24, "padding_top_mobile": 20, "padding_bottom_mobile": 20 },
+      "blocks": [ { "type": "text", "settings": { "small": true, "text": "<p>*Escribe aquí aclaraciones legales o de resultados.</p>" } } ]
+    }
+  ]
+}
+{% endschema %}

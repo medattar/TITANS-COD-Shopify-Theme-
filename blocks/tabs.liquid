@@ -1,0 +1,52 @@
+{%- assign s = block.settings -%}
+<tabs-component
+  class="tabs-block tabs-block--{{ s.style }}{% if s.use_scheme %} color-{{ s.color_scheme }}{% endif %}"
+  data-build-tabs
+  {{ block.shopify_attributes }}
+>
+  <div class="tabs-block__bar" role="tablist" data-tab-bar></div>
+  <div class="tabs-block__panels">
+    {% content_for 'blocks' %}
+  </div>
+</tabs-component>
+
+{% schema %}
+{
+  "name": "Tabs",
+  "tag": null,
+  "blocks": [{ "type": "_tab" }],
+  "settings": [
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "folder",
+      "options": [ { "value": "folder", "label": "Folder tabs" }, { "value": "pills", "label": "Pills" }, { "value": "underline", "label": "Underline" } ]
+    },
+    { "type": "checkbox", "id": "use_scheme", "label": "Use a color scheme for panels", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Panel color scheme", "default": "scheme-6" }
+  ],
+  "presets": [
+    {
+      "name": "Tabs",
+      "blocks": [
+        {
+          "type": "_tab",
+          "settings": { "label": "Preguntas", "heading": "Preguntas frecuentes" },
+          "blocks": [
+            {
+              "type": "accordion",
+              "blocks": [
+                { "type": "_accordion-item", "settings": { "title": "¿Cómo pago?", "content": "<p>Pagas en efectivo al recibir tu pedido.</p>" } },
+                { "type": "_accordion-item", "settings": { "title": "¿Cuánto tarda en llegar?", "content": "<p>Indica tus tiempos reales de entrega.</p>" } }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "_tab",
+          "settings": { "label": "Qué esperar", "heading": "Tus primeras semanas" },
+          "blocks": [{ "type": "text" }]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,37 @@
+{%- assign s = block.settings -%}
+<div
+  class="guarantee-card{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}{% if s.shadow %} guarantee-card--shadow{% endif %}"
+  style="--gc-icon: {{ s.icon_size }}px;"
+  {{ block.shopify_attributes }}
+>
+  <span class="guarantee-card__icon">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}
+    {%- else -%}
+      {%- render 'icon', icon: s.icon -%}
+    {%- endif -%}
+  </span>
+  <div class="guarantee-card__body">
+    {%- if s.title != blank -%}<b class="guarantee-card__title">{{ s.title }}</b>{%- endif -%}
+    {%- if s.text != blank -%}<div class="guarantee-card__text">{{ s.text }}</div>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Guarantee card",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Only describe guarantees and policies your store actually honors." },
+    { "type": "select", "id": "icon", "label": "Icon", "default": "shield", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    { "type": "image_picker", "id": "image", "label": "Image or seal instead of icon" },
+    { "type": "range", "id": "icon_size", "label": "Icon circle size", "min": 48, "max": 120, "step": 4, "unit": "px", "default": 88 },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Compra con confianza" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe aquí tu política real de cambios, devoluciones o garantía.</p>" },
+    { "type": "checkbox", "id": "use_scheme", "label": "Use a color scheme", "default": false },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "shadow", "label": "Shadow", "default": true }
+  ],
+  "presets": [{ "name": "Guarantee card" }]
+}
+{% endschema %}

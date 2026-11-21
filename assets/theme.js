@@ -119,6 +119,21 @@
     });
   });
 
+  /* Accordions set to "one open at a time". The toggle event does not bubble, so listen in capture. */
+  document.addEventListener(
+    'toggle',
+    (event) => {
+      const details = event.target;
+      if (!(details instanceof HTMLDetailsElement) || !details.open) return;
+      const group = details.closest('[data-accordion-exclusive]');
+      if (!group) return;
+      group.querySelectorAll('details[open]').forEach((other) => {
+        if (other !== details && other.closest('[data-accordion-exclusive]') === group) other.open = false;
+      });
+    },
+    true
+  );
+
   /* ---------- Cart ---------- */
 
   const cartSections = () => {
@@ -451,6 +466,65 @@
   }
   if (!customElements.get('inview-video')) customElements.define('inview-video', InviewVideo);
 
+  /* ---------- Anchor navigation ---------- */
+
+  class AnchorNav extends HTMLElement {
+    connectedCallback() {
+      this.links = Array.from(this.querySelectorAll('[data-anchor-link]'));
+      const targets = this.links
+        .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+        .filter(Boolean);
+      if (this.classList.contains('anchor-nav--sticky')) {
+        document.documentElement.style.setProperty('--anchor-nav-height', `${Math.round(this.offsetHeight)}px`);
+      }
+      if (!targets.length || !('IntersectionObserver' in window)) return;
+      this._visible = new Map();
+      this._io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => this._visible.set(entry.target.id, entry.isIntersecting));
+          const current = targets.find((t) => this._visible.get(t.id));
+          if (current) this.setActive(current.id);
+        },
+        { rootMargin: '-35% 0px -55% 0px' }
+      );
+      targets.forEach((t) => this._io.observe(t));
+    }
+
+    setActive(id) {
+      this.links.forEach((link) => {
+        const active = decodeURIComponent(link.hash.slice(1)) === id;
+        link.classList.toggle('is-active', active);
+        if (active) {
+          link.setAttribute('aria-current', 'location');
+          const inner = link.parentElement;
+          if (inner.scrollWidth > inner.clientWidth) {
+            inner.scrollTo({ left: link.offsetLeft - inner.clientWidth / 2 + link.offsetWidth / 2, behavior: 'smooth' });
+          }
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    disconnectedCallback() {
+      this._io?.disconnect();
+    }
+  }
+  if (!customElements.get('anchor-nav')) customElements.define('anchor-nav', AnchorNav);
+
+  /* ---------- Before / after slider ---------- */
+
+  class BeforeAfterSlider extends HTMLElement {
+    connectedCallback() {
+      this.range = this.querySelector('input[type="range"]');
+      if (!this.range) return;
+      const update = () => this.style.setProperty('--pos', `${this.range.value}%`);
+      this.range.addEventListener('input', update);
+      update();
+    }
+  }
+  if (!customElements.get('before-after-slider')) customElements.define('before-after-slider', BeforeAfterSlider);
+
   /* ---------- Announcement bar rotator ---------- */
 
   class AnnouncementBar extends HTMLElement {
@@ -523,15 +597,48 @@
     connectedCallback() {
       if (this._bound) return;
       this._bound = true;
-      this.tabs = Array.from(this.querySelectorAll('[role="tab"]'));
-      this.tabs.forEach((tab) => {
-        tab.addEventListener('click', () => this.select(tab));
-        tab.addEventListener('keydown', (event) => {
-          const i = this.tabs.indexOf(tab);
-          if (event.key === 'ArrowRight') this.select(this.tabs[(i + 1) % this.tabs.length], true);
-          if (event.key === 'ArrowLeft') this.select(this.tabs[(i - 1 + this.tabs.length) % this.tabs.length], true);
-        });
+      this.refresh();
+      this.addEventListener('click', (event) => {
+        const tab = event.target.closest('[role="tab"]');
+        if (tab && this.tabs.includes(tab)) this.select(tab);
       });
+      this.addEventListener('keydown', (event) => {
+        const i = this.tabs.indexOf(event.target);
+        if (i === -1) return;
+        if (event.key === 'ArrowRight') this.select(this.tabs[(i + 1) % this.tabs.length], true);
+        if (event.key === 'ArrowLeft') this.select(this.tabs[(i - 1 + this.tabs.length) % this.tabs.length], true);
+      });
+    }
+
+    ownPanels() {
+      return Array.from(this.querySelectorAll('[data-tab-panel]')).filter((p) => p.closest('tabs-component') === this);
+    }
+
+    /* Tabs built from blocks render only panels; the buttons are created here from data-tab-label. */
+    refresh(selectedPanelId) {
+      if (this.hasAttribute('data-build-tabs')) {
+        const bar = this.querySelector('[data-tab-bar]');
+        const panels = this.ownPanels();
+        bar.replaceChildren(
+          ...panels.map((panel, i) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.id = `${panel.id}-tab`;
+            button.setAttribute('role', 'tab');
+            button.setAttribute('aria-controls', panel.id);
+            button.textContent = panel.dataset.tabLabel || String(i + 1);
+            panel.setAttribute('aria-labelledby', button.id);
+            return button;
+          })
+        );
+        bar.hidden = panels.length < 2;
+      }
+      this.tabs = Array.from(this.querySelectorAll('[role="tab"]')).filter((t) => t.closest('tabs-component') === this);
+      const initial =
+        this.tabs.find((t) => t.getAttribute('aria-controls') === selectedPanelId) ||
+        this.tabs.find((t) => t.getAttribute('aria-selected') === 'true') ||
+        this.tabs[0];
+      if (initial) this.select(initial);
     }
 
     select(tab, focus = false) {
@@ -623,11 +730,7 @@
       const details = block.closest('details');
       if (details) details.open = true;
       const tab = block.closest('[role="tabpanel"]');
-      if (tab) {
-        const tabs = tab.closest('tabs-component');
-        const trigger = tabs?.querySelector(`[aria-controls="${tab.id}"]`);
-        if (trigger) tabs.select(trigger);
-      }
+      if (tab) tab.closest('tabs-component')?.refresh(tab.id);
     });
 
     document.addEventListener('shopify:block:deselect', (event) => {

@@ -1,0 +1,31 @@
+<div
+  class="section color-{{ section.settings.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if section.settings.anchor != blank %}
+    id="{{ section.settings.anchor | handle }}"
+  {% endif %}
+>
+  <div{% unless section.settings.full_width %} class="page-width"{% endunless %}>
+    {{ section.settings.custom_liquid }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Liquid",
+  "class": "section-custom-liquid",
+  "tag": "div",
+  "settings": [
+    { "type": "liquid", "id": "custom_liquid", "label": "Liquid code", "info": "Use for app snippets or embeds that do not provide an app block." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 28 }
+  ],
+  "presets": [{ "name": "Custom Liquid" }]
+}
+{% endschema %}

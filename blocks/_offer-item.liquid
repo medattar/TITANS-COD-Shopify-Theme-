@@ -1,0 +1,32 @@
+{%- assign s = block.settings -%}
+<li class="offer-stack__row" {{ block.shopify_attributes }}>
+  <span class="offer-stack__check">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 88 | image_tag: loading: 'lazy', width: 22, height: 22, alt: '' }}
+    {%- else -%}
+      {%- render 'icon', icon: s.icon -%}
+    {%- endif -%}
+  </span>
+  <span class="offer-stack__text">
+    <b>{{ s.title }}</b>
+    {%- if s.subtitle != blank -%}<small>{{ s.subtitle }}</small>{%- endif -%}
+  </span>
+  {%- if s.value != blank -%}
+    <span class="offer-stack__value{% if s.highlight_value %} offer-stack__value--highlight{% endif %}">{{ s.value }}</span>
+  {%- endif -%}
+</li>
+
+{% schema %}
+{
+  "name": "Offer row",
+  "tag": null,
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Beneficio incluido" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "value", "label": "Value text", "default": "Incluido", "info": "Only list items or services the customer actually receives" },
+    { "type": "checkbox", "id": "highlight_value", "label": "Highlight value", "default": false },
+    { "type": "select", "id": "icon", "label": "Icon", "default": "check", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    { "type": "image_picker", "id": "image", "label": "Image instead of icon" }
+  ]
+}
+{% endschema %}

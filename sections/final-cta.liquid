@@ -1,0 +1,80 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign items = s.list | newline_to_br | split: '<br />'
+-%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    <div class="final-cta lf-card color-{{ s.card_scheme }}{% if s.image == blank %} final-cta--no-image{% endif %}">
+      {%- if s.image != blank -%}
+        <div class="final-cta__media media">
+          {%- render 'image', image: s.image, sizes: '(min-width: 990px) 500px, 100vw' -%}
+        </div>
+      {%- endif -%}
+      <div class="final-cta__content">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h2">{{ s.heading }}</h2>{%- endif -%}
+        {%- if s.text != blank -%}<div class="rte">{{ s.text }}</div>{%- endif -%}
+        {%- if s.list != blank -%}
+          <ul class="final-cta__list" role="list">
+            {%- for item in items -%}
+              {%- assign item_text = item | strip -%}
+              {%- if item_text != blank -%}<li>{%- render 'icon', icon: 'check' -%}<span>{{ item_text }}</span></li>{%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if s.button_label != blank -%}
+          <a class="button button--large" href="{{ s.button_link | default: '#buy' }}">{{ s.button_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- if s.disclaimer != blank -%}<div class="lf-note lf-note--small rte">{{ s.disclaimer }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Final call to action",
+  "class": "section-final-cta",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Section color scheme", "default": "scheme-5" },
+    { "type": "color_scheme", "id": "card_scheme", "label": "Card color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Pago contra entrega ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "pídelo hoy, paga al recibir" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Sin pagos en línea. Confirmas tu pedido por WhatsApp y pagas cuando llegue.</p>" },
+    { "type": "textarea", "id": "list", "label": "Checklist (one item per line)", "default": "Pago contra entrega\nEnvío con seguimiento\nAtención por WhatsApp" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Lo quiero" },
+    { "type": "text", "id": "button_link", "label": "Button link", "default": "#buy" },
+    { "type": "richtext", "id": "disclaimer", "label": "Disclaimer below" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "presets": [
+    { "name": "Final call to action" },
+    {
+      "name": "Guarantee banner",
+      "settings": {
+        "eyebrow": "✦ Compra segura ✦",
+        "heading": "nuestra garantía",
+        "text": "<p>Describe aquí tu política real de cambios y devoluciones.</p>",
+        "list": "Cambios sin complicaciones\nAtención por WhatsApp\nPago al recibir",
+        "button_label": "Ver política",
+        "button_link": "/policies/refund-policy"
+      }
+    }
+  ]
+}
+{% endschema %}

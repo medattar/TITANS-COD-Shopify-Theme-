@@ -1,0 +1,45 @@
+{%- assign s = block.settings -%}
+<div
+  class="accordion accordion--{{ s.style }}{% if s.icon == 'chevron' %} accordion--chevron{% endif %}"
+  style="--accordion-gap: {{ s.gap }}px;"
+  {% if s.exclusive %}
+    data-accordion-exclusive="{{ block.id }}"
+  {% endif %}
+  {{ block.shopify_attributes }}
+>
+  {%- if s.heading != blank -%}
+    <h3 class="accordion__heading">{{ s.heading }}</h3>
+  {%- endif -%}
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Accordion",
+  "tag": null,
+  "blocks": [{ "type": "_accordion-item" }],
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading" },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "cards",
+      "options": [ { "value": "cards", "label": "Cards" }, { "value": "lines", "label": "Lines" } ]
+    },
+    {
+      "type": "select", "id": "icon", "label": "Icon", "default": "plus",
+      "options": [ { "value": "plus", "label": "Plus" }, { "value": "chevron", "label": "Chevron" } ]
+    },
+    { "type": "range", "id": "gap", "label": "Gap between items", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 10 },
+    { "type": "checkbox", "id": "exclusive", "label": "Only one item open at a time", "default": true }
+  ],
+  "presets": [
+    {
+      "name": "Accordion",
+      "blocks": [
+        { "type": "_accordion-item", "settings": { "title": "¿Cómo funciona el pago contra entrega?", "content": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo cuando el repartidor te entregue el paquete.</p>" } },
+        { "type": "_accordion-item", "settings": { "title": "¿Cuánto tarda el envío?", "content": "<p>Indica aquí tus tiempos reales de entrega por zona.</p>" } },
+        { "type": "_accordion-item", "settings": { "title": "¿Cómo confirmo mi pedido?", "content": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

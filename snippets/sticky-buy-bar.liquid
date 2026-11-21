@@ -1,0 +1,44 @@
+{%- comment -%}
+  Sticky purchase bar shown after the buy area scrolls out of view.
+  Native single-variant products add to cart directly; otherwise it scrolls to the
+  purchase area (where COD app buttons live). Params: product, variant, section
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign media = variant.featured_media | default: product.featured_media
+-%}
+<sticky-buy-bar
+  class="sticky-bar color-{{ s.color_scheme }}{% unless s.sticky_bar_desktop %} sticky-bar--mobile-only{% endunless %}"
+  aria-hidden="true"
+  inert
+>
+  <div class="sticky-bar__inner page-width">
+    {%- if s.sticky_bar_image and media -%}
+      {{ media | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy', class: 'sticky-bar__image', width: 48, height: 48, alt: '' }}
+    {%- endif -%}
+    <div class="sticky-bar__info">
+      <span class="sticky-bar__title">{{ product.title | escape }}</span>
+      <span class="sticky-bar__price" data-variant-update="sticky-price-{{ section.id }}">
+        {%- render 'price', product: product, variant: variant, show_compare: true, show_savings: false -%}
+      </span>
+    </div>
+    <span data-variant-update="sticky-button-{{ section.id }}">
+      <button
+        type="button"
+        class="button sticky-bar__button"
+        data-sticky-button
+        {% unless variant.available %}
+          disabled
+        {% endunless %}
+      >
+        {%- if variant.available == false -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- elsif s.sticky_bar_label != blank -%}
+          {{ s.sticky_bar_label }}
+        {%- else -%}
+          {{ 'products.product.buy_now' | t }}
+        {%- endif -%}
+      </button>
+    </span>
+  </div>
+</sticky-buy-bar>

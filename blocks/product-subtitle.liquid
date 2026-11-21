@@ -1,0 +1,53 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+  assign lines = s.lines | newline_to_br | split: '<br />'
+  assign highlight_list = p.metafields.custom.highlights.value
+-%}
+<div class="product-subtitle" style="--ps-size-d: {{ s.size_desktop }}px; --ps-size-m: {{ s.size_mobile }}px;" {{ block.shopify_attributes }}>
+  {%- if s.text != blank -%}
+    <p class="product-subtitle__lead">{{ s.text }}</p>
+  {%- endif -%}
+  {%- if s.source == 'metafield' and highlight_list != blank -%}
+    <ul class="product-subtitle__list" role="list" style="--ps-marker: '{{ s.marker }}';">
+      {%- for item in highlight_list -%}
+        <li>{{ item }}</li>
+      {%- endfor -%}
+    </ul>
+  {%- elsif s.source == 'manual' and s.lines != blank -%}
+    <ul class="product-subtitle__list" role="list" style="--ps-marker: '{{ s.marker }}';">
+      {%- for line in lines -%}
+        {%- assign line_text = line | strip -%}
+        {%- if line_text != blank -%}
+          <li>{{ line_text }}</li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Product subtitle",
+  "tag": null,
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "inline_richtext", "id": "text", "label": "Subtitle", "info": "Connect to the custom.subtitle metafield with the dynamic source button for per-product text." },
+    {
+      "type": "select", "id": "source", "label": "Highlight lines", "default": "metafield",
+      "options": [
+        { "value": "metafield", "label": "From custom.highlights metafield" },
+        { "value": "manual", "label": "Typed below" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    { "type": "textarea", "id": "lines", "label": "Highlight lines (one per line)", "info": "Supports <b>bold</b>. Avoid unverifiable claims." },
+    { "type": "text", "id": "marker", "label": "Line marker", "default": "✦" },
+    { "type": "range", "id": "size_desktop", "label": "Size (desktop)", "min": 12, "max": 28, "step": 1, "unit": "px", "default": 19 },
+    { "type": "range", "id": "size_mobile", "label": "Size (mobile)", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 16 }
+  ],
+  "presets": [
+    { "name": "Product subtitle", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}

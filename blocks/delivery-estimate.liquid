@@ -1,0 +1,41 @@
+{%- liquid
+  assign s = block.settings
+  assign date_locale = request.locale.iso_code | append: '-' | append: localization.country.iso_code
+-%}
+<delivery-estimate
+  class="delivery-estimate"
+  style="justify-content: {{ s.align }};"
+  data-min="{{ s.min_days }}"
+  data-max="{{ s.max_days }}"
+  data-cutoff="{{ s.cutoff_hour }}"
+  data-business-days="{{ s.business_days }}"
+  data-locale="{{ date_locale }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if s.show_dot -%}<span class="status-dot" aria-hidden="true"></span>{%- endif -%}
+  {%- if s.icon != 'none' -%}{%- render 'icon', icon: s.icon -%}{%- endif -%}
+  <span data-delivery-text data-template="{{ s.text | escape }}">{{ s.fallback }}</span>
+</delivery-estimate>
+
+{% schema %}
+{
+  "name": "Delivery estimate",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Calculated in the shopper's browser from the day ranges below. Use your real carrier times." },
+    { "type": "text", "id": "text", "label": "Text", "default": "Llega entre el [start] y el [end]", "info": "[start] and [end] are replaced with dates" },
+    { "type": "text", "id": "fallback", "label": "Fallback text", "default": "Entrega estimada de 2 a 6 días hábiles" },
+    { "type": "range", "id": "min_days", "label": "Minimum days", "min": 0, "max": 30, "step": 1, "default": 2 },
+    { "type": "range", "id": "max_days", "label": "Maximum days", "min": 0, "max": 45, "step": 1, "default": 6 },
+    { "type": "checkbox", "id": "business_days", "label": "Count business days only (Mon–Fri)", "default": true },
+    { "type": "range", "id": "cutoff_hour", "label": "Same-day dispatch cutoff hour", "min": 0, "max": 23, "step": 1, "default": 14, "info": "Orders after this local hour start counting from the next day" },
+    { "type": "checkbox", "id": "show_dot", "label": "Show status dot", "default": true },
+    { "type": "select", "id": "icon", "label": "Icon", "default": "none", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "center",
+      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    }
+  ],
+  "presets": [{ "name": "Delivery estimate" }]
+}
+{% endschema %}

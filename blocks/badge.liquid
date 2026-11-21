@@ -1,0 +1,37 @@
+{%- assign s = block.settings -%}
+{%- if s.text != blank -%}
+  <div class="badge-block" style="justify-content: {{ s.align }};" {{ block.shopify_attributes }}>
+    <span class="{% if s.style == 'eyebrow' %}eyebrow{% else %}badge badge--{{ s.style }}{% if s.size == 'large' %} badge--large{% endif %}{% endif %}">
+      {%- if s.icon != 'none' -%}{%- render 'icon', icon: s.icon -%}{%- endif -%}
+      {{- s.text -}}
+    </span>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Badge / eyebrow",
+  "tag": null,
+  "settings": [
+    { "type": "inline_richtext", "id": "text", "label": "Text", "default": "✦ Pago contra entrega ✦" },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "ink",
+      "options": [
+        { "value": "eyebrow", "label": "Eyebrow text" }, { "value": "ink", "label": "Dark pill" },
+        { "value": "accent", "label": "Accent pill" }, { "value": "highlight", "label": "Highlight pill" },
+        { "value": "surface", "label": "Light pill" }, { "value": "outline", "label": "Outline pill" }
+      ]
+    },
+    {
+      "type": "select", "id": "size", "label": "Size", "default": "small",
+      "options": [ { "value": "small", "label": "Small" }, { "value": "large", "label": "Large" } ]
+    },
+    { "type": "select", "id": "icon", "label": "Icon", "default": "none", "options": [{"value": "none", "label": "None"}, {"value": "check", "label": "Check"}, {"value": "check-circle", "label": "Check circle"}, {"value": "sparkle", "label": "Sparkle"}, {"value": "star", "label": "Star"}, {"value": "heart", "label": "Heart"}, {"value": "shield", "label": "Shield"}, {"value": "verified", "label": "Verified badge"}, {"value": "truck", "label": "Truck"}, {"value": "package-check", "label": "Package"}, {"value": "box", "label": "Box"}, {"value": "cash", "label": "Cash"}, {"value": "credit-card", "label": "Card"}, {"value": "lock", "label": "Lock"}, {"value": "return", "label": "Return"}, {"value": "gift", "label": "Gift"}, {"value": "clock", "label": "Clock"}, {"value": "calendar", "label": "Calendar"}, {"value": "phone", "label": "Phone"}, {"value": "chat", "label": "Chat"}, {"value": "whatsapp", "label": "WhatsApp"}, {"value": "mail", "label": "Mail"}, {"value": "headset", "label": "Support"}, {"value": "location", "label": "Location"}, {"value": "home", "label": "Home"}, {"value": "globe", "label": "Globe"}, {"value": "leaf", "label": "Leaf"}, {"value": "droplet", "label": "Droplet"}, {"value": "moon", "label": "Moon"}, {"value": "sun", "label": "Sun"}, {"value": "bolt", "label": "Bolt"}, {"value": "battery", "label": "Battery"}, {"value": "award", "label": "Award"}, {"value": "percent", "label": "Percent"}, {"value": "tag", "label": "Tag"}, {"value": "thumbs-up", "label": "Thumbs up"}, {"value": "smile", "label": "Smile"}, {"value": "users", "label": "Users"}, {"value": "eye", "label": "Eye"}, {"value": "info", "label": "Info"}] },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "flex-start",
+      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "flex-end", "label": "Right" } ]
+    }
+  ],
+  "presets": [{ "name": "Badge / eyebrow" }]
+}
+{% endschema %}

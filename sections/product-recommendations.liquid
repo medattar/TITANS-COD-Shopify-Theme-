@@ -1,0 +1,98 @@
+{%- liquid
+  assign s = section.settings
+  assign card_vw = 100 | divided_by: s.columns_desktop
+  assign card_sizes = '(min-width: 990px) ' | append: card_vw | append: 'vw, 50vw'
+-%}
+<product-recommendations
+  class="section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ s.products_to_show }}&intent={{ s.intent }}"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="page-width">
+      {%- render 'section-heading' -%}
+      <ul class="grid recommendations__list" role="list" style="--cols-mobile: 2; --cols-tablet: 3; --cols-desktop: {{ s.columns_desktop }};">
+        {%- for rec in recommendations.products -%}
+          <li class="recommendations__item">{%- render 'product-card', product: rec, sizes: card_sizes -%}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</product-recommendations>
+
+{% stylesheet %}
+  product-recommendations:not(:has(.page-width)) {
+    display: block;
+    padding: 0;
+  }
+
+  .recommendations__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .recommendations__item {
+    min-width: 0;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('product-recommendations')) {
+    customElements.define(
+      'product-recommendations',
+      class extends HTMLElement {
+        connectedCallback() {
+          if (this.querySelector('.page-width') || !this.dataset.url) return;
+          const io = new IntersectionObserver(
+            (entries) => {
+              if (!entries[0].isIntersecting) return;
+              io.disconnect();
+              fetch(this.dataset.url)
+                .then((r) => r.text())
+                .then((html) => {
+                  const doc = new DOMParser().parseFromString(html, 'text/html');
+                  const fresh = doc.querySelector('product-recommendations');
+                  if (fresh && fresh.querySelector('.page-width')) this.innerHTML = fresh.innerHTML;
+                })
+                .catch(() => {});
+            },
+            { rootMargin: '400px 0px' }
+          );
+          io.observe(this);
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "class": "section-product-recommendations",
+  "tag": "div",
+  "settings": [
+    { "type": "paragraph", "content": "Recommendations come from Shopify's Search & Discovery data and appear automatically." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ También te puede gustar ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "productos relacionados" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    {
+      "type": "select", "id": "intent", "label": "Type", "default": "related",
+      "options": [ { "value": "related", "label": "Related" }, { "value": "complementary", "label": "Complementary" } ]
+    },
+    { "type": "range", "id": "products_to_show", "label": "Products", "min": 2, "max": 10, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 }
+  ],
+  "presets": [{ "name": "Product recommendations" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

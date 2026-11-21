@@ -1,0 +1,22 @@
+{%- comment -%}
+  Shared section header (eyebrow, heading, lead) driven by section settings:
+  eyebrow, heading, subheading, heading_align, heading_size (optional).
+  Params: tag (optional, default h2), class (optional)
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign heading_tag = tag | default: 'h2'
+-%}
+{%- if s.eyebrow != blank or s.heading != blank or s.subheading != blank -%}
+  <div class="section-header text-{{ s.heading_align | default: 'center' }} {{ class }}">
+    {%- if s.eyebrow != blank -%}
+      <p class="eyebrow">{{ s.eyebrow }}</p>
+    {%- endif -%}
+    {%- if s.heading != blank -%}
+      <{{ heading_tag }} class="section-header__title {{ s.heading_size | default: 'h2' }}">{{ s.heading }}</{{ heading_tag }}>
+    {%- endif -%}
+    {%- if s.subheading != blank -%}
+      <div class="lead rte">{{ s.subheading }}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

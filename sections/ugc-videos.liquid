@@ -1,0 +1,84 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+    <slider-component class="slider slider--bleed ugc" style="--slide-width: {{ s.card_width_mobile }}%; --slide-width-desktop: calc((100% - 18px * {{ s.columns_desktop | minus: 1 }}) / {{ s.columns_desktop }}); --slide-gap: 18px;">
+      <div class="slider__track" data-slider-track>
+        {%- for block in section.blocks -%}
+          <figure class="ugc__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.video != blank -%}
+              <inview-video class="media ugc__media" style="--ratio: 9 / 16;">
+                {{ block.settings.video | video_tag: muted: true, loop: true, playsinline: true, controls: false, preload: 'none', image_size: '600x' }}
+                <button type="button" class="video-sound" data-video-sound aria-pressed="false" aria-label="{{ 'products.product.media.toggle_sound' | t }}">
+                  {%- render 'icon', icon: 'volume-off', class: 'video-sound__off' -%}
+                  {%- render 'icon', icon: 'volume-on', class: 'video-sound__on' -%}
+                </button>
+              </inview-video>
+            {%- elsif block.settings.image != blank -%}
+              <div class="media ugc__media" style="--ratio: 9 / 16;">{%- render 'image', image: block.settings.image, sizes: '(min-width: 990px) 25vw, 60vw' -%}</div>
+            {%- else -%}
+              <div class="media ugc__media" style="--ratio: 9 / 16;">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+            {%- if block.settings.caption != blank -%}<figcaption>{{ block.settings.caption }}</figcaption>{%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+      <div class="slider__nav">
+        <button type="button" class="slider__button" data-slider-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{%- render 'icon', icon: 'chevron-left' -%}</button>
+        <button type="button" class="slider__button" data-slider-next aria-label="{{ 'accessibility.next_slide' | t }}">{%- render 'icon', icon: 'chevron-right' -%}</button>
+      </div>
+    </slider-component>
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Video reels",
+  "class": "section-ugc",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "paragraph", "content": "Use videos you have the rights to. Videos autoplay muted only while visible." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ En acción ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "míralo en uso" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Videos per row (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "card_width_mobile", "label": "Card width (mobile)", "min": 40, "max": 85, "step": 5, "unit": "%", "default": 60 },
+    { "type": "richtext", "id": "note", "label": "Note below" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "image_picker", "id": "image", "label": "Image (when no video)" },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Video reels", "blocks": [ { "type": "video" }, { "type": "video" }, { "type": "video" }, { "type": "video" } ] }
+  ]
+}
+{% endschema %}

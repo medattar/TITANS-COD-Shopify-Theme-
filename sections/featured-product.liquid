@@ -1,0 +1,181 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign s = section.settings
+  assign fp = s.product
+  assign form_id = 'product-form-' | append: section.id
+-%}
+
+{%- if fp == blank -%}
+  <div class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+    <div class="page-width">
+      <div class="featured-product__empty">
+        <div class="media ratio-portrait">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        <div>
+          <h2 class="h2">{{ 'sections.featured_product.placeholder_title' | t }}</h2>
+          <p>{{ 'sections.featured_product.placeholder_text' | t }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  {%- liquid
+    assign current_variant = fp.selected_or_first_available_variant
+    assign has_buy_buttons = false
+    for block in section.blocks
+      if block.type == 'buy-buttons'
+        assign has_buy_buttons = true
+      endif
+    endfor
+  -%}
+  <product-info
+    id="FeaturedProduct-{{ section.id }}"
+    class="section main-product featured-product color-{{ s.color_scheme }} gradient"
+    style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px;"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ fp.id }}"
+    data-product-url="{{ fp.url }}"
+    data-render-url="{{ request.path }}"
+    data-form-id="{{ form_id }}"
+    data-update-url="false"
+  >
+    <div class="page-width"{% if s.anchor != blank %} id="{{ s.anchor | handle }}"{% endif %}>
+      <div class="product featured-product__grid product--thumbs-{{ s.gallery_layout }}{% if s.media_position == 'right' %} product--media-right{% endif %}">
+        <div class="product__gallery">
+          {%- render 'product-media-gallery', product: fp, section: section, priority: false -%}
+        </div>
+        <div class="product__buy">
+          {%- unless has_buy_buttons -%}
+            {%- form 'product', fp, id: form_id, class: 'product-form product-form--fallback', novalidate: 'novalidate' -%}
+              <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-input>
+            {%- endform -%}
+          {%- endunless -%}
+          {% content_for 'blocks' %}
+        </div>
+      </div>
+    </div>
+
+    <script type="application/json" data-product-json>
+      {
+        "id": {{ fp.id }},
+        "url": {{ fp.url | json }},
+        "options": {{ fp.options | json }},
+        "variants": [
+          {%- for variant in fp.variants -%}
+            {
+              "id": {{ variant.id }},
+              "options": {{ variant.options | json }},
+              "available": {{ variant.available | json }},
+              "featured_media_id": {{ variant.featured_media.id | default: 'null' }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  </product-info>
+{%- endif -%}
+
+{% stylesheet %}
+  .featured-product__empty {
+    display: grid;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .featured-product__grid {
+    grid-template-areas: 'gal' 'buy';
+  }
+
+  @media (min-width: 990px) {
+    .featured-product__empty {
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+    }
+
+    .featured-product__grid {
+      grid-template-rows: auto;
+      grid-template-areas: 'gal buy';
+      align-items: start;
+    }
+
+    .featured-product__grid.product--media-right {
+      grid-template-areas: 'buy gal';
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured product",
+  "class": "section-featured-product",
+  "tag": "section",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "info": "Use \"buy\" so long-form buttons scroll here on non-product pages." },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select", "id": "media_position", "label": "Media position (desktop)", "default": "left",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ]
+    },
+    {
+      "type": "select", "id": "columns", "label": "Gallery / info width (desktop)", "default": "1.05fr 1fr",
+      "options": [
+        { "value": "1fr 1fr", "label": "50 / 50" },
+        { "value": "1.05fr 1fr", "label": "Gallery slightly wider" },
+        { "value": "1.25fr 1fr", "label": "Gallery wider" },
+        { "value": "1fr 1.15fr", "label": "Info wider" }
+      ]
+    },
+    { "type": "range", "id": "column_gap", "label": "Column gap (desktop)", "min": 16, "max": 96, "step": 4, "unit": "px", "default": 56 },
+    { "type": "header", "content": "Media" },
+    {
+      "type": "select", "id": "gallery_layout", "label": "Thumbnails (desktop)", "default": "bottom",
+      "options": [
+        { "value": "left", "label": "Vertical rail, left" },
+        { "value": "bottom", "label": "Row, below" },
+        { "value": "stacked", "label": "No thumbnails (arrows)" }
+      ]
+    },
+    { "type": "range", "id": "thumb_rail_width", "label": "Thumbnail rail width", "min": 12, "max": 26, "step": 1, "unit": "%", "default": 19 },
+    { "type": "checkbox", "id": "thumbs_mobile", "label": "Show thumbnails on mobile", "default": true },
+    {
+      "type": "select", "id": "media_ratio", "label": "Media aspect ratio", "default": "portrait",
+      "options": [
+        { "value": "adapt", "label": "Adapt to first media" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (4:3)" }
+      ]
+    },
+    {
+      "type": "select", "id": "media_fit", "label": "Media fit", "default": "cover",
+      "options": [ { "value": "cover", "label": "Fill" }, { "value": "contain", "label": "Fit" } ]
+    },
+    { "type": "range", "id": "media_radius", "label": "Media corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "checkbox", "id": "media_border", "label": "Media border", "default": true },
+    { "type": "checkbox", "id": "media_shadow", "label": "Media shadow", "default": false },
+    { "type": "checkbox", "id": "video_autoplay", "label": "Autoplay videos when visible", "default": false },
+    { "type": "checkbox", "id": "video_loop", "label": "Loop videos", "default": true },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 44 }
+  ],
+  "presets": [
+    {
+      "name": "Featured product",
+      "blocks": [
+        { "type": "product-title", "settings": { "product": "{{ closest.product }}" } },
+        { "type": "product-price", "settings": { "product": "{{ closest.product }}" } },
+        { "type": "variant-picker", "settings": { "product": "{{ closest.product }}" } },
+        { "type": "buy-buttons", "settings": { "product": "{{ closest.product }}" } },
+        { "type": "cod-notice" }
+      ]
+    }
+  ]
+}
+{% endschema %}

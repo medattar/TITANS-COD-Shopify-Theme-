@@ -1,0 +1,189 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign s = section.settings
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'product-form-' | append: section.id
+
+  assign has_buy_buttons = false
+  for block in section.blocks
+    if block.type == 'buy-buttons'
+      assign has_buy_buttons = true
+    endif
+  endfor
+-%}
+
+<product-info
+  id="MainProduct-{{ section.id }}"
+  class="section main-product color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px;"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-product-url="{{ product.url }}"
+  data-form-id="{{ form_id }}"
+  data-update-url="{{ s.update_url }}"
+>
+  <div class="page-width">
+    <div class="product{% if s.sticky_gallery %} product--sticky-gallery{% endif %} product--mobile-{{ s.mobile_order }} product--thumbs-{{ s.gallery_layout }}">
+      <div class="product__head">
+        {% content_for 'block', type: '_product-header', id: 'product-header' %}
+      </div>
+
+      <div class="product__gallery">
+        {%- render 'product-media-gallery', product: product, section: section, priority: true -%}
+      </div>
+
+      <div class="product__buy" id="buy">
+        {%- unless has_buy_buttons -%}
+          {%- form 'product', product, id: form_id, class: 'product-form product-form--fallback', novalidate: 'novalidate' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-input>
+          {%- endform -%}
+        {%- endunless -%}
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+  </div>
+
+  {%- if settings.sticky_bar_enable and s.sticky_bar -%}
+    {%- render 'sticky-buy-bar', product: product, variant: current_variant, form_id: form_id, section: section -%}
+  {%- endif -%}
+
+  <script type="application/json" data-product-json>
+    {
+      "id": {{ product.id }},
+      "url": {{ product.url | json }},
+      "options": {{ product.options | json }},
+      "variants": [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "options": {{ variant.options | json }},
+            "available": {{ variant.available | json }},
+            "featured_media_id": {{ variant.featured_media.id | default: 'null' }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</product-info>
+
+{%- liquid
+  assign seo_media = current_variant.featured_media | default: product.featured_media
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {%- if seo_media -%}
+      "image": [{{ seo_media | image_url: width: 1200 | prepend: 'https:' | json }}],
+    {%- endif -%}
+    "description": {{ product.description | strip_html | strip_newlines | truncate: 500 | json }},
+    {%- if current_variant.sku != blank -%}
+      "sku": {{ current_variant.sku | json }},
+    {%- endif -%}
+    {%- if product.vendor != blank -%}
+      "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+    {%- endif -%}
+    {%- assign rating = product.metafields.reviews.rating.value -%}
+    {%- assign rating_count = product.metafields.reviews.rating_count.value -%}
+    {%- if rating != blank and rating_count > 0 -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ rating.rating | json }},
+        "bestRating": {{ rating.scale_max | json }},
+        "worstRating": {{ rating.scale_min | json }},
+        "reviewCount": {{ rating_count | json }}
+      },
+    {%- endif -%}
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type": "Offer",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          "availability": "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": {{ variant.price | divided_by: 100.0 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "url": {{ request.origin | append: variant.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product information",
+  "class": "section-main-product",
+  "tag": "section",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select", "id": "columns", "label": "Gallery / info width (desktop)", "default": "1.05fr 1fr",
+      "options": [
+        { "value": "1fr 1fr", "label": "50 / 50" },
+        { "value": "1.05fr 1fr", "label": "Gallery slightly wider" },
+        { "value": "1.25fr 1fr", "label": "Gallery wider" },
+        { "value": "1.5fr 1fr", "label": "Gallery much wider" },
+        { "value": "1fr 1.15fr", "label": "Info wider" }
+      ]
+    },
+    { "type": "range", "id": "column_gap", "label": "Column gap (desktop)", "min": 16, "max": 96, "step": 4, "unit": "px", "default": 56 },
+    { "type": "checkbox", "id": "sticky_gallery", "label": "Sticky gallery on desktop", "default": true },
+    {
+      "type": "select", "id": "mobile_order", "label": "Mobile order", "default": "head-first",
+      "options": [
+        { "value": "head-first", "label": "Title, gallery, buy area" },
+        { "value": "gallery-first", "label": "Gallery, title, buy area" }
+      ]
+    },
+    { "type": "header", "content": "Media" },
+    {
+      "type": "select", "id": "gallery_layout", "label": "Thumbnails (desktop)", "default": "left",
+      "options": [
+        { "value": "left", "label": "Vertical rail, left" },
+        { "value": "bottom", "label": "Row, below" },
+        { "value": "stacked", "label": "No thumbnails (arrows)" }
+      ]
+    },
+    { "type": "range", "id": "thumb_rail_width", "label": "Thumbnail rail width", "min": 12, "max": 26, "step": 1, "unit": "%", "default": 19 },
+    { "type": "checkbox", "id": "thumbs_mobile", "label": "Show thumbnails on mobile", "default": true },
+    {
+      "type": "select", "id": "media_ratio", "label": "Media aspect ratio", "default": "portrait",
+      "options": [
+        { "value": "adapt", "label": "Adapt to first media" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (4:3)" }
+      ]
+    },
+    {
+      "type": "select", "id": "media_fit", "label": "Media fit", "default": "cover",
+      "options": [ { "value": "cover", "label": "Fill" }, { "value": "contain", "label": "Fit" } ]
+    },
+    { "type": "range", "id": "media_radius", "label": "Media corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "checkbox", "id": "media_border", "label": "Media border", "default": true },
+    { "type": "checkbox", "id": "media_shadow", "label": "Media shadow", "default": false },
+    { "type": "checkbox", "id": "video_autoplay", "label": "Autoplay videos when visible", "default": false },
+    { "type": "checkbox", "id": "video_loop", "label": "Loop videos", "default": true },
+    { "type": "header", "content": "Sticky buy bar" },
+    { "type": "checkbox", "id": "sticky_bar", "label": "Show sticky buy bar", "default": true, "info": "Also requires Theme settings > Purchase and COD > Sticky buy bar" },
+    { "type": "checkbox", "id": "sticky_bar_desktop", "label": "Show on desktop", "default": false },
+    { "type": "checkbox", "id": "sticky_bar_image", "label": "Show product image", "default": true },
+    { "type": "text", "id": "sticky_bar_label", "label": "Button label override" },
+    { "type": "header", "content": "Variant behavior" },
+    { "type": "checkbox", "id": "update_url", "label": "Update page URL on variant change", "default": true },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 20 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ]
+}
+{% endschema %}

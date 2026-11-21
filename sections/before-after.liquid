@@ -1,0 +1,108 @@
+{{ 'section-longform.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section
+  class="section lf-section color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.anchor != blank %}
+    id="{{ s.anchor | handle }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- render 'section-heading' -%}
+    <div class="before-after before-after--{{ s.style }}" style="--ba-cols: {{ s.columns_desktop }};">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <div class="before-after__item lf-card" {{ block.shopify_attributes }}>
+          {%- if s.style == 'slider' -%}
+            <before-after-slider class="before-after__slider media" style="--ratio: {{ s.ratio }}; --pos: 50%;">
+              <div class="before-after__layer before-after__layer--after">
+                {%- if b.after != blank -%}{%- render 'image', image: b.after, sizes: '(min-width: 990px) 50vw, 100vw' -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+                <span class="before-after__label before-after__label--after">{{ b.after_label }}</span>
+              </div>
+              <div class="before-after__layer before-after__layer--before">
+                {%- if b.before != blank -%}{%- render 'image', image: b.before, sizes: '(min-width: 990px) 50vw, 100vw' -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+                <span class="before-after__label">{{ b.before_label }}</span>
+              </div>
+              <span class="before-after__handle" aria-hidden="true">{%- render 'icon', icon: 'chevron-left' -%}{%- render 'icon', icon: 'chevron-right' -%}</span>
+              <input class="before-after__range" type="range" min="0" max="100" value="50" aria-label="{{ 'sections.before_after.slider_label' | t }}">
+            </before-after-slider>
+          {%- else -%}
+            <div class="before-after__pair">
+              <figure class="media" style="--ratio: {{ s.ratio }};">
+                {%- if b.before != blank -%}{%- render 'image', image: b.before, sizes: '(min-width: 990px) 25vw, 50vw' -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+                <figcaption class="before-after__label">{{ b.before_label }}</figcaption>
+              </figure>
+              <figure class="media" style="--ratio: {{ s.ratio }};">
+                {%- if b.after != blank -%}{%- render 'image', image: b.after, sizes: '(min-width: 990px) 25vw, 50vw' -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+                <figcaption class="before-after__label before-after__label--after">{{ b.after_label }}</figcaption>
+              </figure>
+            </div>
+          {%- endif -%}
+          {%- if b.title != blank or b.text != blank or b.disclaimer != blank -%}
+            <div class="before-after__body">
+              {%- if b.title != blank -%}<h3>{{ b.title }}</h3>{%- endif -%}
+              {%- if b.text != blank -%}<div class="rte">{{ b.text }}</div>{%- endif -%}
+              {%- if b.disclaimer != blank -%}<small>{{ b.disclaimer }}</small>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if s.note != blank -%}<div class="lf-note rte">{{ s.note }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Before / after",
+  "class": "section-before-after",
+  "tag": "div",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "paragraph", "content": "Use genuine, unedited results with permission, or clearly label illustrations as such." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Resultados ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "antes y después" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "pair",
+      "options": [ { "value": "pair", "label": "Side by side" }, { "value": "slider", "label": "Drag slider" } ]
+    },
+    {
+      "type": "select", "id": "ratio", "label": "Image ratio", "default": "4 / 5",
+      "options": [ { "value": "1 / 1", "label": "Square" }, { "value": "4 / 5", "label": "Portrait" }, { "value": "4 / 3", "label": "Landscape" } ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Items per row (desktop)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "richtext", "id": "note", "label": "Note below" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "pair",
+      "name": "Before / after",
+      "settings": [
+        { "type": "image_picker", "id": "before", "label": "Before image" },
+        { "type": "text", "id": "before_label", "label": "Before label", "default": "Antes" },
+        { "type": "image_picker", "id": "after", "label": "After image" },
+        { "type": "text", "id": "after_label", "label": "After label", "default": "Después" },
+        { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Título del resultado" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "Ilustración, no es un resultado de cliente. Los resultados varían." }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Before / after", "blocks": [ { "type": "pair" }, { "type": "pair" } ] }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,34 @@
+{%- assign s = block.settings -%}
+{%- if s.date != blank -%}
+  <div class="countdown-block" style="--cd-align: {{ s.align }};" {{ block.shopify_attributes }}>
+    {%- if s.label != blank -%}
+      <p class="countdown-block__label">{{ s.label }}</p>
+    {%- endif -%}
+    {%- render 'countdown', date: s.date, time: s.time, style: s.style, expired_text: s.expired_text -%}
+  </div>
+{%- else -%}
+  <div {{ block.shopify_attributes }}></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Countdown",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Only use real deadlines. The timer hides itself (or shows the text below) once the date passes." },
+    { "type": "text", "id": "label", "label": "Label", "default": "La promoción termina en" },
+    { "type": "text", "id": "date", "label": "End date", "placeholder": "2026-12-31", "info": "YYYY-MM-DD" },
+    { "type": "text", "id": "time", "label": "End time", "default": "23:59", "info": "24-hour HH:MM" },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "tiles",
+      "options": [ { "value": "tiles", "label": "Tiles" }, { "value": "inline", "label": "Inline" } ]
+    },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "flex-start",
+      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "flex-end", "label": "Right" } ]
+    },
+    { "type": "text", "id": "expired_text", "label": "Text after expiry" }
+  ],
+  "presets": [{ "name": "Countdown" }]
+}
+{% endschema %}

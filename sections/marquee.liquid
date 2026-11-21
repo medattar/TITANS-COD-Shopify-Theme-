@@ -1,0 +1,100 @@
+{%- liquid
+  assign s = section.settings
+  capture items
+    for block in section.blocks
+      echo '<span class="marquee-section__item">' | append: block.settings.text | append: '</span>'
+      echo '<b class="marquee-section__sep" aria-hidden="true">' | append: s.separator | append: '</b>'
+    endfor
+  endcapture
+-%}
+<div
+  class="marquee-section color-{{ s.color_scheme }} gradient{% if s.border %} marquee-section--border{% endif %}"
+  style="--marquee-speed: {{ s.speed }}s; --mq-size-d: {{ s.size }}px; --mq-size-m: {{ s.size_mobile }}px;"
+>
+  <div class="marquee{% if s.reverse %} marquee--reverse{% endif %}">
+    <div class="marquee__track">
+      <div class="marquee__group">{{ items }}</div>
+      <div class="marquee__group" aria-hidden="true">{{ items }}</div>
+    </div>
+  </div>
+  {%- if request.design_mode -%}
+    <div class="visually-hidden">{% for block in section.blocks %}<span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>{% endfor %}</div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .marquee-section {
+    padding: 12px 0 9px;
+  }
+
+  .marquee-section--border {
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .marquee__group {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .marquee-section__item {
+    margin-right: 22px;
+    font-family: var(--font-body-family);
+    font-size: var(--mq-size-m);
+    font-weight: var(--font-body-weight-black);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .marquee-section__sep {
+    margin-right: 22px;
+    font-size: calc(var(--mq-size-m) * 0.9);
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+
+  .marquee--reverse .marquee__track {
+    animation-direction: reverse;
+  }
+
+  @media (min-width: 990px) {
+    .marquee-section__item {
+      font-size: var(--mq-size-d);
+    }
+
+    .marquee-section__sep {
+      font-size: calc(var(--mq-size-d) * 0.9);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Scrolling text",
+  "class": "section-marquee",
+  "tag": "div",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-5" },
+    { "type": "text", "id": "separator", "label": "Separator", "default": "✦" },
+    { "type": "range", "id": "speed", "label": "Loop duration", "min": 10, "max": 80, "step": 2, "unit": "s", "default": 28 },
+    { "type": "range", "id": "size", "label": "Text size (desktop)", "min": 14, "max": 64, "step": 2, "unit": "px", "default": 38 },
+    { "type": "range", "id": "size_mobile", "label": "Text size (mobile)", "min": 12, "max": 44, "step": 1, "unit": "px", "default": 26 },
+    { "type": "checkbox", "id": "border", "label": "Top and bottom border", "default": true },
+    { "type": "checkbox", "id": "reverse", "label": "Scroll in reverse", "default": false }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Text", "settings": [ { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Pago contra entrega" } ] }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling text",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Pago contra entrega" } },
+        { "type": "item", "settings": { "text": "Envío a todo México" } },
+        { "type": "item", "settings": { "text": "Confirmación por WhatsApp" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

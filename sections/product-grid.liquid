@@ -1,0 +1,212 @@
+{%- liquid
+  assign s = section.settings
+  assign limit = s.products_to_show
+  if s.source == 'manual' and s.product_list != blank
+    assign products = s.product_list
+  elsif s.collection != blank
+    assign products = s.collection.products
+  elsif s.source == 'collection'
+    assign products = collections.all.products
+  else
+    assign products = nil
+  endif
+
+  capture card_sizes
+    echo '(min-width: 990px) calc((min(100vw, ' | append: settings.page_width | append: 'px) - 64px) / ' | append: s.columns_desktop | append: '), '
+    echo '(min-width: 750px) calc((100vw - 64px) / ' | append: s.columns_tablet | append: '), '
+    echo 'calc((100vw - 32px) / ' | append: s.columns_mobile | append: ')'
+  endcapture
+
+  assign action = s.card_action
+  if action == 'global'
+    assign action = blank
+  endif
+  assign use_slider = false
+  if s.mobile_layout == 'slider'
+    assign use_slider = true
+  endif
+-%}
+
+<section
+  class="section product-grid color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}"
+  {% if s.heading != blank %}
+    aria-labelledby="ProductGridHeading-{{ section.id }}"
+  {% endif %}
+>
+  <div class="page-width">
+    {%- if s.eyebrow != blank or s.heading != blank or s.subheading != blank -%}
+      <div class="section-header text-{{ s.heading_align }}{% if s.reveal %} reveal{% endif %}">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}
+          <h2 class="{{ s.heading_size }}" id="ProductGridHeading-{{ section.id }}">{{ s.heading }}</h2>
+        {%- endif -%}
+        {%- if s.subheading != blank -%}<div class="lead rte">{{ s.subheading }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- capture cards -%}
+      {%- if products != nil and products.size > 0 -%}
+        {%- for product in products limit: limit -%}
+          {%- assign eager = false -%}
+          {%- if section.index <= 2 and forloop.index <= s.columns_desktop -%}
+            {%- assign eager = true -%}
+          {%- endif -%}
+          <li class="product-grid__item{% if s.reveal %} reveal{% endif %}">
+            {%- render 'product-card',
+              product: product,
+              sizes: card_sizes,
+              eager: eager,
+              action: action,
+              button_label: s.button_label,
+              index: forloop.index
+            -%}
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+          <li class="product-grid__item">
+            {%- render 'product-card', product: blank, index: i -%}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- if use_slider -%}
+      <slider-component class="slider slider--bleed product-grid__slider">
+        <ul
+          class="slider__track grid product-grid__list"
+          role="list"
+          data-slider-track
+          style="--cols-mobile: {{ s.columns_mobile }}; --cols-tablet: {{ s.columns_tablet }}; --cols-desktop: {{ s.columns_desktop }}; --slide-width: {{ s.slide_width }}%;"
+        >
+          {{ cards }}
+        </ul>
+      </slider-component>
+    {%- else -%}
+      <ul
+        class="grid product-grid__list"
+        role="list"
+        style="--cols-mobile: {{ s.columns_mobile }}; --cols-tablet: {{ s.columns_tablet }}; --cols-desktop: {{ s.columns_desktop }};"
+      >
+        {{ cards }}
+      </ul>
+    {%- endif -%}
+
+    {%- if s.view_all_label != blank -%}
+      {%- liquid
+        assign view_all_url = s.view_all_link
+        if view_all_url == blank and s.collection != blank
+          assign view_all_url = s.collection.url
+        endif
+      -%}
+      {%- if view_all_url != blank -%}
+        <div class="buttons product-grid__footer text-center">
+          <a class="button button--{{ s.view_all_style }}" href="{{ view_all_url }}">{{ s.view_all_label }}</a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .product-grid__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product-grid__item {
+    min-width: 0;
+  }
+
+  .product-grid__footer {
+    justify-content: center;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 749px) {
+    .product-grid__slider .slider__track.grid {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 750px) {
+    .product-grid__slider .slider__track {
+      display: grid;
+      overflow: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .product-grid__slider .slider__track > * {
+      flex: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product listing",
+  "class": "section-product-grid",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Más vendidos ✦" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Nuestros productos" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select", "id": "heading_size", "label": "Heading size", "default": "h2",
+      "options": [ { "value": "h1", "label": "Large" }, { "value": "h2", "label": "Medium" }, { "value": "h3", "label": "Small" } ]
+    },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "header", "content": "Products" },
+    {
+      "type": "select", "id": "source", "label": "Source", "default": "collection",
+      "options": [ { "value": "collection", "label": "Collection" }, { "value": "manual", "label": "Selected products" } ]
+    },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Empty = all products" },
+    { "type": "product_list", "id": "product_list", "label": "Products", "limit": 24 },
+    { "type": "range", "id": "products_to_show", "label": "Maximum products", "min": 1, "max": 24, "step": 1, "default": 8 },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 1, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_tablet", "label": "Columns (tablet)", "min": 1, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "columns_mobile", "label": "Columns (mobile)", "min": 1, "max": 2, "step": 1, "default": 2 },
+    {
+      "type": "select", "id": "mobile_layout", "label": "Mobile layout", "default": "grid",
+      "options": [ { "value": "grid", "label": "Grid" }, { "value": "slider", "label": "Swipe carousel" } ]
+    },
+    { "type": "range", "id": "slide_width", "label": "Carousel card width (mobile)", "min": 40, "max": 90, "step": 5, "unit": "%", "default": 70 },
+    { "type": "checkbox", "id": "reveal", "label": "Reveal on scroll", "default": false, "info": "Requires Theme settings > Text effects > Reveal animations" },
+    { "type": "header", "content": "Cards" },
+    {
+      "type": "select", "id": "card_action", "label": "Card button", "default": "global",
+      "info": "Global style options live in Theme settings > Product cards",
+      "options": [
+        { "value": "global", "label": "Use theme setting" },
+        { "value": "details", "label": "Link to product" },
+        { "value": "quick_add", "label": "Quick add (single-variant products)" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    { "type": "text", "id": "button_label", "label": "Card button label override" },
+    { "type": "header", "content": "View all button" },
+    { "type": "text", "id": "view_all_label", "label": "Label" },
+    { "type": "url", "id": "view_all_link", "label": "Link", "info": "Defaults to the collection" },
+    {
+      "type": "select", "id": "view_all_style", "label": "Style", "default": "outline",
+      "options": [ { "value": "primary", "label": "Primary" }, { "value": "secondary", "label": "Secondary" }, { "value": "outline", "label": "Outline" } ]
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "presets": [ { "name": "Product listing" } ]
+}
+{% endschema %}

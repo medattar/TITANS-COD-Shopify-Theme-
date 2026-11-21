@@ -1,0 +1,32 @@
+{%- assign s = block.settings -%}
+<div class="payment-block" style="--pay-align: {{ s.align }}; --pay-h: {{ s.height }}px;" {{ block.shopify_attributes }}>
+  {%- if s.label != blank -%}
+    <p class="payment-block__label">{{ s.label }}</p>
+  {%- endif -%}
+  {%- if s.image != blank -%}
+    {{ s.image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'payment-block__image', alt: s.image.alt }}
+  {%- elsif shop.enabled_payment_types.size > 0 -%}
+    <ul class="payment-icons" role="list" aria-label="{{ 'sections.footer.payment_methods' | t }}">
+      {%- for type in shop.enabled_payment_types -%}
+        <li>{{ type | payment_type_svg_tag }}</li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Payment methods",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Paga en efectivo al recibir o con tarjeta" },
+    { "type": "image_picker", "id": "image", "label": "Custom payment image", "info": "Optional. Defaults to the store's enabled payment methods." },
+    { "type": "range", "id": "height", "label": "Icon height", "min": 16, "max": 48, "step": 2, "unit": "px", "default": 24 },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "center",
+      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "flex-end", "label": "Right" } ]
+    }
+  ],
+  "presets": [{ "name": "Payment methods" }]
+}
+{% endschema %}

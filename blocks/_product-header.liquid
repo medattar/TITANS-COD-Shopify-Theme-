@@ -1,0 +1,23 @@
+<div
+  class="product-header"
+  style="--ph-gap: {{ block.settings.gap }}px; text-align: {{ block.settings.align }};"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Product header",
+  "tag": null,
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    { "type": "paragraph", "content": "Shown above the gallery on mobile and above the buy area on desktop." },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 10 },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "left",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    }
+  ]
+}
+{% endschema %}

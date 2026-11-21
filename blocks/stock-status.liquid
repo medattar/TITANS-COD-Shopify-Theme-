@@ -1,0 +1,50 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+  assign v = p.selected_or_first_available_variant
+  assign state = 'in'
+  if v.available == false
+    assign state = 'out'
+  elsif v.inventory_management == 'shopify' and v.inventory_policy == 'deny' and v.inventory_quantity > 0 and v.inventory_quantity <= s.low_threshold
+    assign state = 'low'
+  endif
+-%}
+<div
+  class="stock-status stock-status--{{ s.style }} stock-status--{{ state }}"
+  data-variant-update="stock-{{ block.id }}"
+  role="status"
+  {{ block.shopify_attributes }}
+>
+  <span class="status-dot" aria-hidden="true"></span>
+  <span>
+    {%- case state -%}
+      {%- when 'out' -%}
+        {{ s.out_text }}
+      {%- when 'low' -%}
+        {{ s.low_text | replace: '[count]', v.inventory_quantity }}
+      {%- else -%}
+        {{ s.in_text }}
+    {%- endcase -%}
+  </span>
+</div>
+
+{% schema %}
+{
+  "name": "Stock status",
+  "tag": null,
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "select", "id": "style", "label": "Style", "default": "card",
+      "options": [ { "value": "card", "label": "Card" }, { "value": "inline", "label": "Inline" } ]
+    },
+    { "type": "text", "id": "in_text", "label": "In stock text", "default": "Disponible · envío con seguimiento" },
+    { "type": "text", "id": "low_text", "label": "Low stock text", "default": "Quedan [count] piezas", "info": "Uses real tracked inventory. [count] is replaced with the quantity." },
+    { "type": "range", "id": "low_threshold", "label": "Low stock threshold", "min": 0, "max": 50, "step": 1, "default": 0, "info": "0 disables the low stock message" },
+    { "type": "text", "id": "out_text", "label": "Sold out text", "default": "Agotado" }
+  ],
+  "presets": [
+    { "name": "Stock status", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}

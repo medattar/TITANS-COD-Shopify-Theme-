@@ -1,0 +1,109 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+  assign v = p.selected_or_first_available_variant
+  assign form_id = 'product-form-' | append: section.id
+
+  assign mode = s.purchase_mode
+  if mode == 'inherit'
+    assign mode = settings.purchase_mode
+  endif
+
+  assign show_dynamic = false
+  if mode == 'native' and settings.show_dynamic_checkout and s.show_dynamic_checkout
+    assign show_dynamic = true
+  endif
+
+  assign on_sale = false
+  if v.compare_at_price > v.price
+    assign on_sale = true
+    assign saved = v.compare_at_price | minus: v.price
+  endif
+-%}
+<div class="buy-buttons buy-buttons--{{ mode }}" data-purchase-mode="{{ mode }}" {{ block.shopify_attributes }}>
+  {%- form 'product', p, id: form_id, class: 'product-form', novalidate: 'novalidate', data-product-form: '' -%}
+    <input type="hidden" name="id" value="{{ v.id }}" data-variant-input{% if v == blank %} disabled{% endif %}>
+    <div class="form-message form-message--error product-form__error" role="alert" data-form-error hidden></div>
+
+    {%- if mode == 'native' -%}
+      <div class="buy-buttons__atc" data-variant-update="atc-{{ block.id }}">
+        <button
+          type="submit"
+          name="add"
+          class="button button--full button--large atc{% if s.button_style != 'primary' %} button--{{ s.button_style }}{% endif %}"
+          data-add-button
+          {% unless v.available %}
+            disabled
+          {% endunless %}
+        >
+          <span class="atc__l1">
+            {%- if v.available and s.label != blank -%}
+              {{- s.label -}}
+            {%- elsif v.available -%}
+              {{- 'products.product.add_to_cart' | t -}}
+            {%- elsif v == blank -%}
+              {{- 'products.product.unavailable' | t -}}
+            {%- else -%}
+              {{- 'products.product.sold_out' | t -}}
+            {%- endif -%}
+            {%- if s.show_price and v.available -%}
+              <span class="atc__price"> – {% render 'format-money', amount: v.price %}</span>
+              {%- if on_sale -%}<s>{% render 'format-money', amount: v.compare_at_price %}</s>{%- endif -%}
+            {%- endif -%}
+          </span>
+          {%- if s.show_savings and on_sale and v.available and s.savings_label != blank -%}
+            {%- capture saved_money -%}{% render 'format-money', amount: saved %}{%- endcapture -%}
+            <span class="atc__l3">{{ s.savings_label | replace: '[amount]', saved_money }}</span>
+          {%- endif -%}
+          {%- if s.subline != blank -%}
+            <span class="atc__l2">{{ s.subline }}</span>
+          {%- endif -%}
+        </button>
+      </div>
+      {%- if show_dynamic -%}
+        <div class="buy-buttons__dynamic">{{ form | payment_button }}</div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endform -%}
+
+  {%- if mode == 'app' and request.design_mode -%}
+    <p class="buy-buttons__hint">{{ 'products.product.app_mode_hint' | t }}</p>
+  {%- endif -%}
+
+  {%- if s.terms != blank -%}
+    <p class="buy-buttons__terms">{{ s.terms }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Buy buttons",
+  "tag": null,
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "select", "id": "purchase_mode", "label": "Purchase mode", "default": "inherit",
+      "info": "COD app mode hides the native button but keeps the product form so EasySell, Releasit and similar apps can read the selected variant and quantity. Add the app's block where its button should appear.",
+      "options": [
+        { "value": "inherit", "label": "Use theme setting" },
+        { "value": "native", "label": "Native Shopify cart" },
+        { "value": "app", "label": "COD app manages the purchase" }
+      ]
+    },
+    { "type": "text", "id": "label", "label": "Button label", "info": "Defaults to \"Add to cart\" in the store language" },
+    {
+      "type": "select", "id": "button_style", "label": "Button style", "default": "primary",
+      "options": [ { "value": "primary", "label": "Primary" }, { "value": "highlight", "label": "Highlight" }, { "value": "secondary", "label": "Secondary" } ]
+    },
+    { "type": "checkbox", "id": "show_price", "label": "Show price in button", "default": true },
+    { "type": "checkbox", "id": "show_savings", "label": "Show savings line", "default": true },
+    { "type": "text", "id": "savings_label", "label": "Savings text", "default": "Ahorras [amount]" },
+    { "type": "text", "id": "subline", "label": "Second line", "placeholder": "Paga cuando recibas tu pedido" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "default": true, "info": "Also requires Theme settings > Purchase and COD" },
+    { "type": "inline_richtext", "id": "terms", "label": "Text below button", "default": "Pago contra entrega · Envío con seguimiento" }
+  ],
+  "presets": [
+    { "name": "Buy buttons", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}

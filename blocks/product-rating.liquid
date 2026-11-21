@@ -1,0 +1,44 @@
+{%- liquid
+  assign p = block.settings.product | default: closest.product
+  assign s = block.settings
+  assign rating = p.metafields.reviews.rating.value
+  assign rating_count = p.metafields.reviews.rating_count.value | default: 0
+-%}
+{%- if rating != blank -%}
+  <div class="product-rating" style="justify-content: {{ s.align }};" {{ block.shopify_attributes }}>
+    {%- if s.link != blank -%}<a href="{{ s.link }}" class="product-rating__link">{%- endif -%}
+    {%- render 'stars', rating: rating.rating, scale: rating.scale_max, count: rating_count -%}
+    {%- if s.show_value -%}
+      <span class="product-rating__value">{{ rating.rating | round: 1 }}/{{ rating.scale_max | round }}</span>
+    {%- endif -%}
+    {%- if s.show_count and rating_count > 0 -%}
+      <span class="product-rating__count">({{ 'products.product.reviews_count' | t: count: rating_count }})</span>
+    {%- endif -%}
+    {%- if s.link != blank -%}</a>{%- endif -%}
+  </div>
+{%- elsif request.design_mode -%}
+  <p class="product-rating product-rating--empty" {{ block.shopify_attributes }}>
+    {{- 'products.product.rating_editor_hint' | t -}}
+  </p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product rating",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Shows real ratings saved by a reviews app in the reviews.rating and reviews.rating_count metafields. Nothing is shown when the product has no ratings." },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "checkbox", "id": "show_value", "label": "Show rating value", "default": false },
+    { "type": "checkbox", "id": "show_count", "label": "Show review count", "default": true },
+    { "type": "text", "id": "link", "label": "Link target", "default": "#reviews", "info": "Anchor of your reviews section, e.g. #reviews" },
+    {
+      "type": "select", "id": "align", "label": "Alignment", "default": "flex-start",
+      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    }
+  ],
+  "presets": [
+    { "name": "Product rating", "settings": { "product": "{{ closest.product }}" } }
+  ]
+}
+{% endschema %}
