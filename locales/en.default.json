@@ -1,1 +1,215 @@
-{}
+{
+  "accessibility": {
+    "close": "Close",
+    "next_slide": "Next slide",
+    "previous_slide": "Previous slide",
+    "skip_to_content": "Skip to content",
+    "star_rating": "Rated {{ rating }} out of {{ max }}"
+  },
+  "blogs": {
+    "article": {
+      "read_more": "Read more",
+      "share": "Share"
+    },
+    "comments": {
+      "email": "Email",
+      "message": "Comment",
+      "moderated": "Comments are reviewed before they are published.",
+      "name": "Name",
+      "post": "Post comment",
+      "success": "Your comment was posted.",
+      "success_moderated": "Thanks! Your comment will appear once it is approved.",
+      "title": "Comments"
+    },
+    "general": {
+      "all": "All",
+      "empty": "There are no posts yet."
+    }
+  },
+  "cart": {
+    "general": {
+      "checkout": "Check out",
+      "continue_shopping": "Continue shopping",
+      "decrease": "Decrease quantity for {{ product }}",
+      "empty": "Your cart is empty",
+      "error": "Something went wrong. Please try again.",
+      "increase": "Increase quantity for {{ product }}",
+      "item_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      },
+      "note": "Order note",
+      "quantity_error": "You can't add more of this item.",
+      "quantity_for": "Quantity for {{ product }}",
+      "remove": "Remove",
+      "subtotal": "Subtotal",
+      "summary": "Order summary",
+      "taxes_shipping_at_checkout": "Taxes and shipping calculated at checkout.",
+      "title": "Your cart",
+      "view_cart": "View cart"
+    }
+  },
+  "collections": {
+    "general": {
+      "empty": "No products found"
+    }
+  },
+  "general": {
+    "breadcrumbs": {
+      "home": "Home",
+      "label": "Breadcrumbs"
+    },
+    "countdown": {
+      "days_short": "Days",
+      "hours_short": "Hrs",
+      "minutes_short": "Min",
+      "seconds_short": "Sec"
+    },
+    "newsletter": {
+      "email": "Email",
+      "subscribe": "Subscribe",
+      "success": "Thanks for subscribing."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "next": "Next page",
+      "page": "Page {{ number }}",
+      "previous": "Previous page"
+    },
+    "password_page": {
+      "admin_link_html": "Are you the store owner? <a href=\"/admin\" class=\"link\">Log in here</a>",
+      "enter": "Enter",
+      "login": "Enter using password",
+      "password": "Password"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "code_label": "Gift card code",
+      "disabled": "Disabled",
+      "expired": "Expired on {{ expiry }}",
+      "expires_on": "Expires on {{ expires_on }}",
+      "print": "Print",
+      "shop_link": "Visit the store",
+      "subtext": "Your gift card",
+      "title": "Here's your {{ value }} gift card"
+    }
+  },
+  "products": {
+    "facets": {
+      "apply": "Apply",
+      "clear_all": "Clear all",
+      "filter_button": "Filter",
+      "from": "From",
+      "no_results": "No products match these filters.",
+      "product_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "remove_filter": "Remove filter",
+      "sort_by_label": "Sort by",
+      "to": "To"
+    },
+    "product": {
+      "add_named_to_cart": "Add {{ title }} to cart",
+      "add_to_cart": "Add to cart",
+      "added": "Added to your cart",
+      "adding": "Adding…",
+      "app_mode_hint": "Purchase mode is set to “COD app”. Add your COD app block (EasySell, Releasit…) to this product section, or enable its app embed. The native button is hidden.",
+      "buy_now": "Order now",
+      "choose_options": "Choose options",
+      "from": "From",
+      "media": {
+        "gallery_viewer": "Gallery viewer",
+        "load_media": "Load media {{ index }} in gallery view",
+        "play_video": "Play video",
+        "slide": "Slide",
+        "toggle_sound": "Turn sound on or off"
+      },
+      "on_sale": "Sale",
+      "percent_off": "-{{ percent }}%",
+      "placeholder_title": "Example product",
+      "quantity": {
+        "decrease": "Decrease quantity for {{ product }}",
+        "increase": "Increase quantity for {{ product }}"
+      },
+      "rating_editor_hint": "No rating yet. Ratings appear when the product has real review data (reviews.rating metafield from a reviews app).",
+      "read_more": "Read more",
+      "reviews_count": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      },
+      "save_amount": "Save {{ amount }}",
+      "save_percent": "Save {{ percent }}%",
+      "see_details": "See details",
+      "shop_now": "Shop now",
+      "sku": "SKU",
+      "sold_out": "Sold out",
+      "taxes_excluded": "Taxes excluded.",
+      "taxes_included": "Taxes included.",
+      "title_placeholder": "Product title",
+      "unavailable": "Unavailable"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "label": "Announcements"
+    },
+    "before_after": {
+      "slider_label": "Drag to compare before and after"
+    },
+    "comparison": {
+      "feature": "Feature",
+      "no": "No",
+      "yes": "Yes"
+    },
+    "featured_product": {
+      "placeholder_text": "Choose a product in the section settings.",
+      "placeholder_title": "Featured product"
+    },
+    "footer": {
+      "payment_methods": "Payment methods"
+    },
+    "header": {
+      "account": "Account",
+      "cart": "Cart",
+      "menu": "Menu",
+      "primary_nav": "Main navigation",
+      "search": "Search",
+      "search_placeholder": "Search products",
+      "secondary_nav": "Secondary navigation",
+      "shortcuts": "Shortcuts",
+      "view_all": "View all"
+    },
+    "newsletter": {
+      "button": "Subscribe",
+      "email": "Email",
+      "success": "Thanks for subscribing."
+    }
+  },
+  "templates": {
+    "404": {
+      "subtext": "The page you were looking for does not exist.",
+      "title": "Page not found"
+    },
+    "contact": {
+      "email": "Email",
+      "message": "Message",
+      "name": "Name",
+      "order": "Order number (optional)",
+      "phone": "Phone",
+      "send": "Send",
+      "success": "Thanks for writing. We'll reply as soon as possible.",
+      "whatsapp": "Message us on WhatsApp"
+    },
+    "search": {
+      "article": "Article",
+      "no_results": "No results for “{{ terms }}”.",
+      "page": "Page",
+      "placeholder": "Search",
+      "submit": "Search",
+      "title": "Search"
+    }
+  }
+}

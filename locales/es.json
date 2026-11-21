@@ -1,0 +1,215 @@
+{
+  "accessibility": {
+    "close": "Cerrar",
+    "next_slide": "Siguiente",
+    "previous_slide": "Anterior",
+    "skip_to_content": "Ir al contenido",
+    "star_rating": "Calificación: {{ rating }} de {{ max }}"
+  },
+  "blogs": {
+    "article": {
+      "read_more": "Leer más",
+      "share": "Compartir"
+    },
+    "comments": {
+      "email": "Correo electrónico",
+      "message": "Comentario",
+      "moderated": "Los comentarios se revisan antes de publicarse.",
+      "name": "Nombre",
+      "post": "Publicar comentario",
+      "success": "Tu comentario fue publicado.",
+      "success_moderated": "¡Gracias! Tu comentario aparecerá cuando sea aprobado.",
+      "title": "Comentarios"
+    },
+    "general": {
+      "all": "Todo",
+      "empty": "Aún no hay publicaciones."
+    }
+  },
+  "cart": {
+    "general": {
+      "checkout": "Finalizar pedido",
+      "continue_shopping": "Seguir comprando",
+      "decrease": "Disminuir cantidad de {{ product }}",
+      "empty": "Tu carrito está vacío",
+      "error": "Algo salió mal. Inténtalo de nuevo.",
+      "increase": "Aumentar cantidad de {{ product }}",
+      "item_count": {
+        "one": "{{ count }} artículo",
+        "other": "{{ count }} artículos"
+      },
+      "note": "Nota del pedido",
+      "quantity_error": "No puedes agregar más unidades de este producto.",
+      "quantity_for": "Cantidad de {{ product }}",
+      "remove": "Eliminar",
+      "subtotal": "Subtotal",
+      "summary": "Resumen del pedido",
+      "taxes_shipping_at_checkout": "Impuestos y envío se calculan al finalizar el pedido.",
+      "title": "Tu carrito",
+      "view_cart": "Ver carrito"
+    }
+  },
+  "collections": {
+    "general": {
+      "empty": "No hay productos"
+    }
+  },
+  "general": {
+    "breadcrumbs": {
+      "home": "Inicio",
+      "label": "Ruta de navegación"
+    },
+    "countdown": {
+      "days_short": "Días",
+      "hours_short": "Hrs",
+      "minutes_short": "Min",
+      "seconds_short": "Seg"
+    },
+    "newsletter": {
+      "email": "Correo electrónico",
+      "subscribe": "Suscribirme",
+      "success": "Gracias por suscribirte."
+    },
+    "pagination": {
+      "label": "Paginación",
+      "next": "Página siguiente",
+      "page": "Página {{ number }}",
+      "previous": "Página anterior"
+    },
+    "password_page": {
+      "admin_link_html": "¿Eres el dueño de la tienda? <a href=\"/admin\" class=\"link\">Inicia sesión aquí</a>",
+      "enter": "Entrar",
+      "login": "Entrar con contraseña",
+      "password": "Contraseña"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "add_to_apple_wallet": "Agregar a Apple Wallet",
+      "code_label": "Código de la tarjeta de regalo",
+      "disabled": "Desactivada",
+      "expired": "Venció el {{ expiry }}",
+      "expires_on": "Vence el {{ expires_on }}",
+      "print": "Imprimir",
+      "shop_link": "Visitar la tienda",
+      "subtext": "Tu tarjeta de regalo",
+      "title": "Tu tarjeta de regalo de {{ value }}"
+    }
+  },
+  "products": {
+    "facets": {
+      "apply": "Aplicar",
+      "clear_all": "Borrar todo",
+      "filter_button": "Filtrar",
+      "from": "Desde",
+      "no_results": "Ningún producto coincide con estos filtros.",
+      "product_count": {
+        "one": "{{ count }} producto",
+        "other": "{{ count }} productos"
+      },
+      "remove_filter": "Quitar filtro",
+      "sort_by_label": "Ordenar por",
+      "to": "Hasta"
+    },
+    "product": {
+      "add_named_to_cart": "Agregar {{ title }} al carrito",
+      "add_to_cart": "Agregar al carrito",
+      "added": "Agregado a tu carrito",
+      "adding": "Agregando…",
+      "app_mode_hint": "El modo de compra es “App COD”. Agrega el bloque de tu app COD (EasySell, Releasit…) a esta sección o activa su app embed. El botón nativo está oculto.",
+      "buy_now": "Pedir ahora",
+      "choose_options": "Elegir opciones",
+      "from": "Desde",
+      "media": {
+        "gallery_viewer": "Galería",
+        "load_media": "Ver elemento {{ index }} en la galería",
+        "play_video": "Reproducir video",
+        "slide": "Elemento",
+        "toggle_sound": "Activar o desactivar sonido"
+      },
+      "on_sale": "Oferta",
+      "percent_off": "-{{ percent }}%",
+      "placeholder_title": "Producto de ejemplo",
+      "quantity": {
+        "decrease": "Disminuir cantidad de {{ product }}",
+        "increase": "Aumentar cantidad de {{ product }}"
+      },
+      "rating_editor_hint": "Aún no hay calificación. Aparece cuando el producto tiene reseñas reales (metacampo reviews.rating de una app de reseñas).",
+      "read_more": "Leer más",
+      "reviews_count": {
+        "one": "{{ count }} reseña",
+        "other": "{{ count }} reseñas"
+      },
+      "save_amount": "Ahorras {{ amount }}",
+      "save_percent": "Ahorras {{ percent }}%",
+      "see_details": "Ver detalles",
+      "shop_now": "Comprar",
+      "sku": "SKU",
+      "sold_out": "Agotado",
+      "taxes_excluded": "Impuestos no incluidos.",
+      "taxes_included": "Impuestos incluidos.",
+      "title_placeholder": "Nombre del producto",
+      "unavailable": "No disponible"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "label": "Anuncios"
+    },
+    "before_after": {
+      "slider_label": "Desliza para comparar antes y después"
+    },
+    "comparison": {
+      "feature": "Característica",
+      "no": "No",
+      "yes": "Sí"
+    },
+    "featured_product": {
+      "placeholder_text": "Elige un producto en la configuración de la sección.",
+      "placeholder_title": "Producto destacado"
+    },
+    "footer": {
+      "payment_methods": "Métodos de pago"
+    },
+    "header": {
+      "account": "Cuenta",
+      "cart": "Carrito",
+      "menu": "Menú",
+      "primary_nav": "Navegación principal",
+      "search": "Buscar",
+      "search_placeholder": "Buscar productos",
+      "secondary_nav": "Navegación secundaria",
+      "shortcuts": "Accesos rápidos",
+      "view_all": "Ver todo"
+    },
+    "newsletter": {
+      "button": "Suscribirme",
+      "email": "Correo electrónico",
+      "success": "Gracias por suscribirte."
+    }
+  },
+  "templates": {
+    "404": {
+      "subtext": "La página que buscas no existe.",
+      "title": "Página no encontrada"
+    },
+    "contact": {
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "name": "Nombre",
+      "order": "Número de pedido (opcional)",
+      "phone": "Teléfono",
+      "send": "Enviar",
+      "success": "Gracias por escribirnos. Te responderemos lo antes posible.",
+      "whatsapp": "Escríbenos por WhatsApp"
+    },
+    "search": {
+      "article": "Artículo",
+      "no_results": "No hay resultados para “{{ terms }}”.",
+      "page": "Página",
+      "placeholder": "Buscar",
+      "submit": "Buscar",
+      "title": "Buscar"
+    }
+  }
+}
