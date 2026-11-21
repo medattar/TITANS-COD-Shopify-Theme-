@@ -1,0 +1,73 @@
+{{ 'section-pages.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section class="section cart-page color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="page-width">
+    <h1 class="h1 cart-page__title">{{ 'cart.general.title' | t }}</h1>
+    <cart-items class="cart-page__items" data-section-id="{{ section.id }}">
+      <div class="cart-errors form-message--error" data-cart-errors role="alert"></div>
+      {%- if cart.item_count > 0 -%}
+        <div class="cart-page__grid">
+          <div class="cart-page__lines lf-card">
+            {%- render 'cart-line-items' -%}
+          </div>
+          <aside class="cart-page__summary lf-card" aria-label="{{ 'cart.general.summary' | t }}">
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              <ul class="cart-item__discounts" role="list">
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <li>{{ discount.title }} (−{% render 'format-money', amount: discount.total_allocated_amount %})</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+            <div class="cart-totals">
+              <span>{{ 'cart.general.subtotal' | t }}</span>
+              <span class="cart-totals__value">{% render 'format-money', amount: cart.total_price %}</span>
+            </div>
+            <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
+            <form action="{{ routes.cart_url }}" method="post" id="CartPage-Form">
+              {%- if settings.cart_note -%}
+                <div class="field cart-note">
+                  <label class="field__label" for="CartPage-Note">{{ 'cart.general.note' | t }}</label>
+                  <textarea id="CartPage-Note" class="field__input" name="note" rows="3">{{ cart.note }}</textarea>
+                </div>
+              {%- endif -%}
+              <button type="submit" name="checkout" class="button button--full button--large">{{ 'cart.general.checkout' | t }}</button>
+            </form>
+            {%- if additional_checkout_buttons and s.show_dynamic_checkout -%}
+              <div class="cart-page__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+            {%- endif -%}
+            {%- if settings.cart_trust_text != blank -%}
+              <p class="cart-trust">{{ settings.cart_trust_text }}</p>
+            {%- endif -%}
+            {%- if s.cod_note != blank -%}
+              <div class="cart-page__cod rte">{{ s.cod_note }}</div>
+            {%- endif -%}
+          </aside>
+        </div>
+      {%- else -%}
+        <div class="collection__empty">
+          <h2 class="h3">{{ 'cart.general.empty' | t }}</h2>
+          <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.general.continue_shopping' | t }}</a>
+        </div>
+      {%- endif -%}
+    </cart-items>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "class": "section-main-cart",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show accelerated checkout buttons", "default": false },
+    { "type": "richtext", "id": "cod_note", "label": "Note below checkout", "default": "<p>Si eliges pago contra entrega, recibirás un mensaje por WhatsApp para confirmar tu pedido.</p>" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}

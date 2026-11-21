@@ -1,0 +1,131 @@
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "padding_top": 72,
+        "padding_bottom": 40
+      },
+      "blocks": {
+        "e": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "✦ Nuestra historia ✦"
+          }
+        },
+        "h": {
+          "type": "heading",
+          "settings": {
+            "text": "Cuenta quiénes son y por qué existen",
+            "size": "h1"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Escribe aquí la historia real de tu marca: cómo empezó, qué te importa y a quién quieres ayudar.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "e",
+        "h",
+        "t"
+      ]
+    },
+    "story": {
+      "type": "image-with-text",
+      "settings": {
+        "layout": "media-left",
+        "color_scheme": "scheme-2"
+      },
+      "blocks": {
+        "e": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "✦ Cómo trabajamos ✦"
+          }
+        },
+        "h": {
+          "type": "heading",
+          "settings": {
+            "text": "lo que nos hace diferentes"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Describe tu proceso, tu equipo o tus valores con hechos verificables.</p>"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "label": "Ver productos",
+            "link": "/collections/all",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "e",
+        "h",
+        "t",
+        "b"
+      ]
+    },
+    "values": {
+      "type": "icon-grid",
+      "settings": {
+        "anchor": "",
+        "eyebrow": "✦ Valores ✦",
+        "heading": "lo que nos importa"
+      },
+      "blocks": {
+        "v1": {
+          "type": "item",
+          "settings": {
+            "icon": "heart",
+            "title": "Valor uno",
+            "text": "<p>Explica este valor en una frase.</p>"
+          }
+        },
+        "v2": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Valor dos",
+            "text": "<p>Explica este valor en una frase.</p>"
+          }
+        },
+        "v3": {
+          "type": "item",
+          "settings": {
+            "icon": "users",
+            "title": "Valor tres",
+            "text": "<p>Explica este valor en una frase.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3"
+      ]
+    },
+    "cta": {
+      "type": "final-cta",
+      "settings": {
+        "heading": "pide hoy, paga al recibir",
+        "button_link": "/collections/all",
+        "button_label": "Ver productos"
+      }
+    }
+  },
+  "order": [
+    "intro",
+    "story",
+    "values",
+    "cta"
+  ]
+}

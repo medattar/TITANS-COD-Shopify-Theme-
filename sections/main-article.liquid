@@ -1,0 +1,114 @@
+{{ 'section-pages.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<article class="section article color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="page-width page-width--narrow">
+    <header class="article__header">
+      <a class="link article__back" href="{{ blog.url }}">{%- render 'icon', icon: 'arrow-left' -%} {{ blog.title | escape }}</a>
+      <h1 class="h1 article__title">{{ article.title | escape }}</h1>
+      <p class="article__meta">
+        {%- if s.show_date -%}{{ article.published_at | time_tag: format: 'date' }}{%- endif -%}
+        {%- if s.show_author and article.author != blank -%}<span> · {{ article.author }}</span>{%- endif -%}
+      </p>
+    </header>
+    {%- if article.image and s.show_image -%}
+      <div class="article__image media" style="--ratio: {{ article.image.aspect_ratio | default: 1.5 }};">
+        {%- render 'image', image: article.image, sizes: '(min-width: 990px) 860px, 100vw', loading: 'eager', priority: true -%}
+      </div>
+    {%- endif -%}
+    <div class="rte article__content">{{ article.content }}</div>
+
+    {%- if article.tags.size > 0 -%}
+      <ul class="blog__tags" role="list">
+        {%- for tag in article.tags -%}
+          <li><a class="facets__pill" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if s.show_share -%}
+      {%- assign share_url = request.origin | append: article.url | url_encode -%}
+      <div class="article__share">
+        <span>{{ 'blogs.article.share' | t }}</span>
+        <a class="facets__pill" href="https://wa.me/?text={{ share_url }}" target="_blank" rel="noopener">{%- render 'icon', icon: 'whatsapp' -%} WhatsApp</a>
+        <a class="facets__pill" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}" target="_blank" rel="noopener">{%- render 'icon', icon: 'facebook' -%} Facebook</a>
+      </div>
+    {%- endif -%}
+
+    {%- if blog.comments_enabled? -%}
+      <section class="article__comments" aria-labelledby="Comments-{{ article.id }}">
+        <h2 class="h3" id="Comments-{{ article.id }}">{{ 'blogs.comments.title' | t }} ({{ article.comments_count }})</h2>
+        {%- paginate article.comments by 20 -%}
+          {%- for comment in article.comments -%}
+            <div class="article__comment lf-card">
+              <div class="rte">{{ comment.content }}</div>
+              <small>{{ comment.author }} · {{ comment.created_at | time_tag: format: 'date' }}</small>
+            </div>
+          {%- endfor -%}
+          {%- render 'pagination', paginate: paginate -%}
+        {%- endpaginate -%}
+        {%- form 'new_comment', article, class: 'article__comment-form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success" role="status">
+              {%- if blog.moderated? -%}{{ 'blogs.comments.success_moderated' | t }}{%- else -%}{{ 'blogs.comments.success' | t }}{%- endif -%}
+            </p>
+          {%- elsif form.errors -%}
+            <div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+          <div class="contact-form__row">
+            <div class="field">
+              <label class="field__label" for="CommentForm-author">{{ 'blogs.comments.name' | t }}</label>
+              <input class="field__input" id="CommentForm-author" type="text" name="comment[author]" value="{{ form.author }}" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label class="field__label" for="CommentForm-email">{{ 'blogs.comments.email' | t }}</label>
+              <input class="field__input" id="CommentForm-email" type="email" name="comment[email]" value="{{ form.email }}" required autocomplete="email">
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="CommentForm-body">{{ 'blogs.comments.message' | t }}</label>
+            <textarea class="field__input" id="CommentForm-body" name="comment[body]" rows="4" required>{{ form.body }}</textarea>
+          </div>
+          {%- if blog.moderated? -%}<p class="muted">{{ 'blogs.comments.moderated' | t }}</p>{%- endif -%}
+          <button type="submit" class="button">{{ 'blogs.comments.post' | t }}</button>
+        {%- endform -%}
+      </section>
+    {%- endif -%}
+  </div>
+</article>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ article.title | json }},
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    {%- if article.image -%}
+      "image": [{{ article.image | image_url: width: 1200 | prepend: 'https:' | json }}],
+    {%- endif -%}
+    "author": { "@type": "Person", "name": {{ article.author | json }} },
+    "publisher": { "@type": "Organization", "name": {{ shop.name | json }} },
+    "mainEntityOfPage": {{ request.origin | append: article.url | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Blog post",
+  "class": "section-main-article",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "show_image", "label": "Show featured image", "default": true },
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "checkbox", "id": "show_share", "label": "Show share links", "default": true },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}

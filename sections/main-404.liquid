@@ -1,0 +1,46 @@
+{%- assign s = section.settings -%}
+<section class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="page-width page-width--narrow text-center not-found">
+    <p class="eyebrow">404</p>
+    <h1 class="h1">{{ 'templates.404.title' | t }}</h1>
+    <p class="lead">{{ 'templates.404.subtext' | t }}</p>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label class="visually-hidden" for="NotFoundSearch">{{ 'templates.search.placeholder' | t }}</label>
+      <input id="NotFoundSearch" class="field__input" type="search" name="q" placeholder="{{ 'templates.search.placeholder' | t }}">
+      <button type="submit" class="button" aria-label="{{ 'templates.search.submit' | t }}">{%- render 'icon', icon: 'search' -%}</button>
+    </form>
+    <a class="button button--outline" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+  </div>
+</section>
+
+{% stylesheet %}
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .not-found .h1 {
+    margin: 0;
+  }
+
+  .not-found .search-page__form {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "404 page",
+  "class": "section-main-404",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 120 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 120 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ]
+}
+{% endschema %}

@@ -989,6 +989,15 @@ textarea.field__input {
 
 /* ---------- Card surfaces ---------- */
 
+.lf-card {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-surface-text);
+  box-shadow: var(--shadow-card);
+}
+
+
 .card {
   background: var(--color-surface);
   color: var(--color-surface-text);

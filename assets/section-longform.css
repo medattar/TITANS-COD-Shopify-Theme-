@@ -17,14 +17,6 @@
   }
 }
 
-.lf-card {
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  color: var(--color-surface-text);
-  box-shadow: var(--shadow-card);
-}
-
 .lf-media .media {
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-media);

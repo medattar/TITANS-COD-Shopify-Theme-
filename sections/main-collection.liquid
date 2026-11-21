@@ -1,0 +1,100 @@
+{{ 'section-pages.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign s = section.settings
+  assign card_vw = 100 | divided_by: s.columns_desktop
+  assign card_sizes = '(min-width: 990px) ' | append: card_vw | append: 'vw, (min-width: 750px) 33vw, 50vw'
+-%}
+
+{%- paginate collection.products by s.products_per_page -%}
+  <facet-filters class="section collection color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
+    <div class="page-width">
+      <header class="collection__header text-{{ s.header_align }}">
+        {%- if s.show_breadcrumbs -%}
+          <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
+            <ol>
+              <li><a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a></li>
+              <li aria-current="page">{{ collection.title | escape }}</li>
+            </ol>
+          </nav>
+        {%- endif -%}
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        <h1 class="h1 collection__title">{{ collection.title | escape }}</h1>
+        {%- if s.show_description and collection.description != blank -%}
+          <div class="rte lead collection__description">{{ collection.description }}</div>
+        {%- endif -%}
+      </header>
+
+      {%- if s.enable_filtering or s.enable_sorting -%}
+        {%- render 'facets',
+          results: collection,
+          sort_by: collection.sort_by,
+          default_sort_by: collection.default_sort_by,
+          enable_filtering: s.enable_filtering,
+          enable_sorting: s.enable_sorting,
+          count: collection.products_count
+        -%}
+      {%- endif -%}
+
+      <div class="collection__results" id="CollectionResults-{{ section.id }}" data-facet-update="results">
+        {%- if collection.products.size > 0 -%}
+          <ul class="grid collection__grid" role="list" style="--cols-mobile: {{ s.columns_mobile }}; --cols-tablet: {{ s.columns_desktop | at_most: 3 }}; --cols-desktop: {{ s.columns_desktop }};">
+            {%- for product in collection.products -%}
+              <li class="collection__item">
+                {%- liquid
+                  assign eager = false
+                  if forloop.index <= s.columns_mobile
+                    assign eager = true
+                  endif
+                  render 'product-card', product: product, sizes: card_sizes, eager: eager
+                -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+          {%- render 'pagination', paginate: paginate -%}
+        {%- else -%}
+          <div class="collection__empty">
+            {%- if collection.filters.size > 0 and collection.products_count == 0 and collection.all_products_count > 0 -%}
+              <h2 class="h3">{{ 'products.facets.no_results' | t }}</h2>
+              <a class="button button--outline" href="{{ collection.url }}" data-facet-link>{{ 'products.facets.clear_all' | t }}</a>
+            {%- else -%}
+              <h2 class="h3">{{ 'collections.general.empty' | t }}</h2>
+              <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </facet-filters>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection products",
+  "class": "section-main-collection",
+  "tag": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Pago contra entrega ✦" },
+    {
+      "type": "select", "id": "header_align", "label": "Header alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": false },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "header", "content": "Products" },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_mobile", "label": "Columns (mobile)", "min": 1, "max": 2, "step": 1, "default": 2 },
+    { "type": "header", "content": "Filtering and sorting" },
+    { "type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true, "info": "Configure filters with the Shopify Search & Discovery app." },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}

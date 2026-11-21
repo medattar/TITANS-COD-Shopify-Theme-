@@ -1,0 +1,54 @@
+{{ 'section-pages.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+<section class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="page-width">
+    <header class="collection__header text-center">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      <h1 class="h1 collection__title">{{ blog.title | escape }}</h1>
+      {%- if blog.all_tags.size > 0 and s.show_tags -%}
+        <ul class="blog__tags" role="list">
+          <li><a class="facets__pill{% unless current_tags %} is-active{% endunless %}" href="{{ blog.url }}">{{ 'blogs.general.all' | t }}</a></li>
+          {%- for tag in blog.all_tags -%}
+            <li>
+              <a class="facets__pill{% if current_tags contains tag %} is-active{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag | escape }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </header>
+
+    {%- paginate blog.articles by s.articles_per_page -%}
+      <ul class="grid blog__grid" role="list" style="--cols-mobile: 1; --cols-tablet: 2; --cols-desktop: {{ s.columns_desktop }};">
+        {%- for article in blog.articles -%}
+          <li>{%- render 'article-card', article: article, show_excerpt: s.show_excerpt, show_date: s.show_date, eager: forloop.first -%}</li>
+        {%- else -%}
+          <li class="collection__empty"><h2 class="h3">{{ 'blogs.general.empty' | t }}</h2></li>
+        {%- endfor -%}
+      </ul>
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "section-main-blog",
+  "tag": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "✦ Blog ✦" },
+    { "type": "range", "id": "articles_per_page", "label": "Articles per page", "min": 3, "max": 24, "step": 3, "default": 9 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tag filter", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true },
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}

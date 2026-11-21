@@ -1,0 +1,51 @@
+{%- assign s = section.settings -%}
+<section class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="page-width page-width--narrow main-page">
+    {%- if s.show_title -%}
+      <h1 class="main-page__title text-{{ s.title_align }}">{{ page.title | escape }}</h1>
+    {%- endif -%}
+    <div class="rte main-page__content">{{ page.content }}</div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .main-page__title {
+    margin: 0 0 24px;
+    font-family: var(--policy-title-family);
+    font-weight: var(--policy-title-weight);
+    font-size: var(--policy-title-size-mobile);
+    line-height: 1.05;
+  }
+
+  .main-page__content {
+    font-size: var(--policy-body-size);
+    line-height: var(--policy-line-height);
+  }
+
+  @media (min-width: 990px) {
+    .main-page__title {
+      font-size: var(--policy-title-size-desktop);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Page content",
+  "class": "section-main-page",
+  "tag": "div",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "show_title", "label": "Show page title", "default": true },
+    {
+      "type": "select", "id": "title_align", "label": "Title alignment", "default": "left",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Top padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Bottom padding (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}
