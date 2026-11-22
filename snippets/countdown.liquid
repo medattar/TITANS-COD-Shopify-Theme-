@@ -4,35 +4,52 @@
   number_color, label_color, background, border_color, effect_speed, urgent_minutes
 {%- endcomment -%}
 {%- liquid
-  assign cd_date = date
+  assign cd_date = date | strip | replace: '/', '-'
   assign cd_is_preview = false
-  if cd_date == blank and request.design_mode or cd_date == blank and request.visual_preview_mode
-    assign cd_date = 'now' | date: '%s' | plus: 2592000 | date: '%Y-%m-%d'
-    assign cd_is_preview = true
+  if cd_date == blank
+    if request.design_mode or request.visual_preview_mode
+      assign cd_date = 'now' | date: '%s' | plus: 2592000 | date: '%Y-%m-%d'
+      assign cd_is_preview = true
+    endif
   endif
 -%}
 {%- if cd_date != blank -%}
   {%- liquid
-    assign end_time = time | default: '23:59'
+    assign end_time = time | default: '23:59' | strip
+    if end_time contains 'T'
+      assign end_time = end_time | split: 'T' | last
+    endif
+    assign end_clock = end_time | split: ':'
+    assign end_hh = end_clock[0] | default: '23' | strip
+    assign end_mm = end_clock[1] | default: '59' | strip
+    if end_hh.size == 1
+      assign end_hh = '0' | append: end_hh
+    endif
+    if end_mm.size == 1
+      assign end_mm = '0' | append: end_mm
+    endif
     assign tz = 'now' | date: '%z'
-    assign tz_hours = tz | slice: 0, 3
-    assign tz_minutes = tz | slice: 3, 2
-    assign tz_offset = tz_hours | append: ':' | append: tz_minutes
+    assign tz_offset = ''
+    if tz.size == 5
+      assign tz_hours = tz | slice: 0, 3
+      assign tz_minutes = tz | slice: 3, 2
+      assign tz_offset = tz_hours | append: ':' | append: tz_minutes
+    endif
     assign cd_style = style | default: 'tiles'
     assign cd_effect = effect | default: 'none'
   -%}
+  {%- if cd_is_preview -%}
+    <p class="countdown__preview-note">Set an end date to publish this timer.</p>
+  {%- endif -%}
   <countdown-timer
-    class="countdown countdown--{{ cd_style }}{% if cd_effect != 'none' %} fx-motion{% endif %}"
-    style="{% if number_size > 0 %}--cd-size: {{ number_size }}px;{% endif %}{% if label_size > 0 %}--cd-label: {{ label_size }}px;{% endif %}{% if gap > 0 %}--cd-gap: {{ gap }}px;{% endif %}{% if radius > 0 %}--cd-radius: {{ radius }}px;{% endif %}{% if number_color != blank %}--cd-color: {{ number_color }};{% endif %}{% if label_color != blank %}--cd-muted: {{ label_color }};{% endif %}{% if background != blank %}--cd-bg: {{ background }};{% endif %}{% if border_color != blank %}--cd-border: {{ border_color }};{% endif %}{% if cd_effect != 'none' %}--fx-name: fx-{{ cd_effect }}; --fx-speed: {{ effect_speed | default: 1.2 }}s; --fx-distance: 8;{% endif %}"
-    data-end="{{ cd_date | strip }}T{{ end_time | strip }}:00{{ tz_offset }}"
+    class="countdown countdown--{{ cd_style }}{% if cd_effect != 'none' and cd_effect != blank %} fx-motion{% endif %}"
+    style="{% if number_size > 0 %}--cd-size: {{ number_size }}px;{% endif %}{% if label_size > 0 %}--cd-label: {{ label_size }}px;{% endif %}{% if gap > 0 %}--cd-gap: {{ gap }}px;{% endif %}{% if radius > 0 %}--cd-radius: {{ radius }}px;{% endif %}{% if number_color != blank %}--cd-color: {{ number_color }};{% endif %}{% if label_color != blank %}--cd-muted: {{ label_color }};{% endif %}{% if background != blank %}--cd-bg: {{ background }};{% endif %}{% if border_color != blank %}--cd-border: {{ border_color }};{% endif %}{% if cd_effect != 'none' and cd_effect != blank %}--fx-name: fx-{{ cd_effect }}; --fx-speed: {{ effect_speed | default: 1.2 }}s; --fx-distance: 8;{% endif %}"
+    data-end="{{ cd_date }}T{{ end_hh }}:{{ end_mm }}:00{{ tz_offset }}"
     data-expired-text="{{ expired_text | escape }}"
     {% if urgent_minutes > 0 %}data-urgent="{{ urgent_minutes }}"{% endif %}
     role="timer"
     aria-live="off"
   >
-    {%- if cd_is_preview -%}
-      <p class="countdown__preview-note">Set an end date to publish this timer.</p>
-    {%- endif -%}
     <span class="countdown__unit"><span class="countdown__value" data-days>00</span><small>{{ 'general.countdown.days_short' | t }}</small></span>
     <span class="countdown__sep" aria-hidden="true">:</span>
     <span class="countdown__unit"><span class="countdown__value" data-hours>00</span><small>{{ 'general.countdown.hours_short' | t }}</small></span>

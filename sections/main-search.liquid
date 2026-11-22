@@ -16,17 +16,19 @@
         <h1 class="h1 collection__title">{{ 'templates.search.title' | t }}</h1>
         <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
           <label class="visually-hidden" for="SearchPage-{{ section.id }}">{{ 'templates.search.placeholder' | t }}</label>
-          <input
-            id="SearchPage-{{ section.id }}"
-            class="field__input"
-            type="search"
-            name="q"
-            value="{{ search.terms | escape }}"
-            placeholder="{{ 'templates.search.placeholder' | t }}"
-            autocomplete="off"
-          >
+          <div class="search-field">
+            <input
+              id="SearchPage-{{ section.id }}"
+              class="field__input"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="{{ 'templates.search.placeholder' | t }}"
+              autocomplete="off"
+            >
+            <button type="submit" class="search-field__submit" aria-label="{{ 'templates.search.submit' | t }}">{%- render 'icon', icon: 'search' -%}</button>
+          </div>
           <input type="hidden" name="options[prefix]" value="last">
-          <button type="submit" class="button" aria-label="{{ 'templates.search.submit' | t }}">{%- render 'icon', icon: 'search' -%}</button>
         </form>
       </header>
 

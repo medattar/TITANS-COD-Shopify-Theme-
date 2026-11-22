@@ -71,8 +71,8 @@
     "countdown": {
       "days_short": "Días",
       "hours_short": "Hrs",
-      "minutes_short": "Min",
-      "seconds_short": "Seg"
+      "minutes_short": "Mins",
+      "seconds_short": "Segs"
     },
     "newsletter": {
       "email": "Correo electrónico",

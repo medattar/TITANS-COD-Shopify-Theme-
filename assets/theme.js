@@ -334,10 +334,25 @@
 
   /* ---------- Countdown ---------- */
 
+  const parseCountdownEnd = (raw) => {
+    if (!raw) return NaN;
+    const value = String(raw).trim().replace(/(\d{2}:\d{2}:\d{2}):\d{2}/, '$1');
+    const direct = Date.parse(value);
+    if (!Number.isNaN(direct)) return direct;
+    const match = value.match(/^(\d{1,4})[-/](\d{1,2})[-/](\d{1,4})(?:[T\s](\d{1,2}):(\d{2}))?/);
+    if (!match) return NaN;
+    const yearFirst = match[1].length === 4;
+    const year = yearFirst ? match[1] : match[3];
+    const month = match[2];
+    const day = yearFirst ? match[3] : match[1];
+    const hh = (match[4] || '23').padStart(2, '0');
+    const mm = (match[5] || '59').padStart(2, '0');
+    return Date.parse(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hh}:${mm}:00`);
+  };
+
   class CountdownTimer extends HTMLElement {
     connectedCallback() {
-      const raw = this.dataset.end;
-      this.end = raw ? new Date(raw).getTime() : NaN;
+      this.end = parseCountdownEnd(this.dataset.end);
       if (Number.isNaN(this.end)) {
         if (!(window.Shopify && Shopify.designMode)) this.hidden = true;
         return;
@@ -363,11 +378,12 @@
         const text = this.dataset.expiredText;
         if (text) {
           this.textContent = text;
-        } else {
-          const wrapper = this.closest('[data-countdown-wrapper]');
-          if (wrapper) wrapper.hidden = true;
-          else this.hidden = true;
+          return;
         }
+        if (window.Shopify && Shopify.designMode) return;
+        const wrapper = this.closest('[data-countdown-wrapper]');
+        if (wrapper) wrapper.hidden = true;
+        else this.hidden = true;
         return;
       }
       const s = Math.floor(diff / 1000);
@@ -834,23 +850,6 @@
 
   /* ---------- Theme editor integration ---------- */
 
-  const showIconPalette = (block) => {
-    const template = document.getElementById('IconPaletteTemplate');
-    if (!template || !block.querySelector('.icon, .icon-grid__icon')) return;
-    document.querySelector('[data-icon-palette]')?.remove();
-    const host = block.closest('[id^="shopify-section-"]') || block;
-    host.appendChild(template.content.cloneNode(true));
-    const used = new Set(
-      Array.from(block.querySelectorAll('.icon')).map((icon) => {
-        const named = Array.from(icon.classList).find((name) => name.startsWith('icon-') && name !== 'icon');
-        return named ? named.slice(5) : '';
-      })
-    );
-    host.querySelectorAll('[data-icon-value]').forEach((item) => {
-      item.classList.toggle('is-active', used.has(item.dataset.iconValue));
-    });
-  };
-
   if (window.Shopify?.designMode) {
     document.addEventListener('shopify:section:load', (event) => initReveal(event.target));
 
@@ -878,12 +877,10 @@
       if (details) details.open = true;
       const tab = block.closest('[role="tabpanel"]');
       if (tab) tab.closest('tabs-component')?.refresh(tab.id);
-      showIconPalette(block);
     });
 
     document.addEventListener('shopify:block:deselect', (event) => {
       event.target.closest('announcement-bar')?.start();
-      document.querySelector('[data-icon-palette]')?.remove();
     });
   }
 })();

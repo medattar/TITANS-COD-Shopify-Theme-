@@ -8,9 +8,15 @@
   assign s = section.settings
   assign card_vw = 100 | divided_by: s.columns_desktop
   assign card_sizes = '(min-width: 990px) ' | append: card_vw | append: 'vw, (min-width: 750px) 33vw, 50vw'
+  assign catalog = collection
+  if catalog == blank
+    assign catalog = collections.all
+  endif
+  assign per_page = s.products_per_page | default: 24
 -%}
 
-{%- paginate collection.products by s.products_per_page -%}
+{%- if catalog != blank -%}
+{%- paginate catalog.products by per_page -%}
   <facet-filters class="section collection color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
     <div class="page-width">
       <header class="collection__header text-{{ s.header_align }}">
@@ -18,32 +24,32 @@
           <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}">
             <ol>
               <li><a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a></li>
-              <li aria-current="page">{{ collection.title | escape }}</li>
+              <li aria-current="page">{{ catalog.title | escape }}</li>
             </ol>
           </nav>
         {%- endif -%}
         {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
-        <h1 class="h1 collection__title">{{ collection.title | escape }}</h1>
-        {%- if s.show_description and collection.description != blank -%}
-          <div class="rte lead collection__description">{{ collection.description }}</div>
+        <h1 class="h1 collection__title">{{ catalog.title | escape }}</h1>
+        {%- if s.show_description and catalog.description != blank -%}
+          <div class="rte lead collection__description">{{ catalog.description }}</div>
         {%- endif -%}
       </header>
 
       {%- if s.enable_filtering or s.enable_sorting -%}
         {%- render 'facets',
-          results: collection,
-          sort_by: collection.sort_by,
-          default_sort_by: collection.default_sort_by,
+          results: catalog,
+          sort_by: catalog.sort_by,
+          default_sort_by: catalog.default_sort_by,
           enable_filtering: s.enable_filtering,
           enable_sorting: s.enable_sorting,
-          count: collection.products_count
+          count: catalog.products_count
         -%}
       {%- endif -%}
 
       <div class="collection__results" id="CollectionResults-{{ section.id }}" data-facet-update="results">
-        {%- if collection.products.size > 0 -%}
+        {%- if catalog.products.size > 0 -%}
           <ul class="grid collection__grid" role="list" style="--cols-mobile: {{ s.columns_mobile }}; --cols-tablet: {{ s.columns_desktop | at_most: 3 }}; --cols-desktop: {{ s.columns_desktop }};">
-            {%- for product in collection.products -%}
+            {%- for product in catalog.products -%}
               <li class="collection__item">
                 {%- liquid
                   assign eager = false
@@ -58,9 +64,9 @@
           {%- render 'pagination', paginate: paginate -%}
         {%- else -%}
           <div class="collection__empty">
-            {%- if collection.filters.size > 0 and collection.products_count == 0 and collection.all_products_count > 0 -%}
+            {%- if catalog.filters.size > 0 and catalog.products_count == 0 and catalog.all_products_count > 0 -%}
               <h2 class="h3">{{ 'products.facets.no_results' | t }}</h2>
-              <a class="button button--outline" href="{{ collection.url }}" data-facet-link>{{ 'products.facets.clear_all' | t }}</a>
+              <a class="button button--outline" href="{{ catalog.url }}" data-facet-link>{{ 'products.facets.clear_all' | t }}</a>
             {%- else -%}
               <h2 class="h3">{{ 'collections.general.empty' | t }}</h2>
               <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
@@ -71,6 +77,7 @@
     </div>
   </facet-filters>
 {%- endpaginate -%}
+{%- endif -%}
 
 {% schema %}
 {

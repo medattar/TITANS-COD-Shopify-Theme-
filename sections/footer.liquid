@@ -133,7 +133,11 @@
 
     <div class="footer__bottom">
       <span>
-        &copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright | default: shop.name }}
+        {%- if section.settings.copyright != blank -%}
+          {{ section.settings.copyright | escape }}
+        {%- else -%}
+          &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+        {%- endif -%}
         {%- if section.settings.show_policies -%}
           {%- for policy in shop.policies -%}
             &nbsp;·&nbsp;<a href="{{ policy.url }}">{{ policy.title | escape }}</a>
@@ -272,8 +276,9 @@
     {
       "type": "text",
       "id": "copyright",
-      "label": "Copyright name",
-      "info": "Defaults to the store name"
+      "label": "Copyright line",
+      "placeholder": "© 2026 MexiMall",
+      "info": "Replaces the whole line, including the © and the year. Clear it to restore the automatic © year and store name."
     },
     {
       "type": "text",

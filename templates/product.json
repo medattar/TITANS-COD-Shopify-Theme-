@@ -262,7 +262,7 @@
             "label": "La promoción termina en",
             "date": "",
             "time": "23:59",
-            "style": "circles",
+            "style": "tiles",
             "align": "flex-start",
             "effect": "none",
             "effect_speed": 1.2,
