@@ -34,7 +34,19 @@
         {%- if bs.box_inset > 0 %}
           margin-inline: {{ bs.box_inset | at_most: 16 }}px;
         {%- endif %}
-        border-radius: {{ bs.box_radius }}px;
+        {%- liquid
+          assign radius_tl = bs.box_radius
+          assign radius_tr = bs.box_radius
+          assign radius_br = bs.box_radius
+          assign radius_bl = bs.box_radius
+          if bs.box_radius_split
+            assign radius_tl = bs.box_radius_tl
+            assign radius_tr = bs.box_radius_tr
+            assign radius_br = bs.box_radius_br
+            assign radius_bl = bs.box_radius_bl
+          endif
+        -%}
+        border-radius: {{ radius_tl }}px {{ radius_tr }}px {{ radius_br }}px {{ radius_bl }}px;
         {%- if bs.box_border_width > 0 %}
           border: {{ bs.box_border_width }}px {{ bs.box_border_style }} {{ bs.box_border_color | default: 'currentColor' }};
         {%- endif %}

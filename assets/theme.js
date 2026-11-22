@@ -339,7 +339,7 @@
       const raw = this.dataset.end;
       this.end = raw ? new Date(raw).getTime() : NaN;
       if (Number.isNaN(this.end)) {
-        this.hidden = true;
+        if (!(window.Shopify && Shopify.designMode)) this.hidden = true;
         return;
       }
       this.parts = {
@@ -834,6 +834,23 @@
 
   /* ---------- Theme editor integration ---------- */
 
+  const showIconPalette = (block) => {
+    const template = document.getElementById('IconPaletteTemplate');
+    if (!template || !block.querySelector('.icon, .icon-grid__icon')) return;
+    document.querySelector('[data-icon-palette]')?.remove();
+    const host = block.closest('[id^="shopify-section-"]') || block;
+    host.appendChild(template.content.cloneNode(true));
+    const used = new Set(
+      Array.from(block.querySelectorAll('.icon')).map((icon) => {
+        const named = Array.from(icon.classList).find((name) => name.startsWith('icon-') && name !== 'icon');
+        return named ? named.slice(5) : '';
+      })
+    );
+    host.querySelectorAll('[data-icon-value]').forEach((item) => {
+      item.classList.toggle('is-active', used.has(item.dataset.iconValue));
+    });
+  };
+
   if (window.Shopify?.designMode) {
     document.addEventListener('shopify:section:load', (event) => initReveal(event.target));
 
@@ -861,10 +878,12 @@
       if (details) details.open = true;
       const tab = block.closest('[role="tabpanel"]');
       if (tab) tab.closest('tabs-component')?.refresh(tab.id);
+      showIconPalette(block);
     });
 
     document.addEventListener('shopify:block:deselect', (event) => {
       event.target.closest('announcement-bar')?.start();
+      document.querySelector('[data-icon-palette]')?.remove();
     });
   }
 })();

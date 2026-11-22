@@ -1,0 +1,12 @@
+{%- comment -%}
+  Visible stand-in while a block has nothing to show yet.
+  Only in the theme editor and the block-picker preview. The storefront stays empty.
+  Params: message
+{%- endcomment -%}
+{%- if request.design_mode or request.visual_preview_mode -%}
+  <div class="theme-placeholder" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
+    {{ message }}
+  </div>
+{%- else -%}
+  <div hidden data-box="{{ block.id }}" {{ block.shopify_attributes }}></div>
+{%- endif -%}

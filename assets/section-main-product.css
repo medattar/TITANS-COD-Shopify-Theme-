@@ -1265,6 +1265,12 @@ product-info[aria-busy='true'] [data-variant-update] {
   font-size: 20px;
 }
 
+.product-description .rte img {
+  border-radius: var(--img-tl, var(--radius-media)) var(--img-tr, var(--radius-media)) var(--img-br, var(--radius-media)) var(--img-bl, var(--radius-media));
+  border: var(--img-border, 0) solid var(--img-border-color, transparent);
+  box-shadow: var(--img-shadow, none);
+}
+
 .product-description__more summary {
   list-style: none;
   cursor: pointer;

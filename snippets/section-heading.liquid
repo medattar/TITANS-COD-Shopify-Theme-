@@ -8,12 +8,20 @@
   assign heading_tag = tag | default: 'h2'
 -%}
 {%- if s.eyebrow != blank or s.heading != blank or s.subheading != blank -%}
-  <div class="section-header text-{{ s.heading_align | default: 'center' }} {{ class }}">
+  <div
+    class="section-header text-{{ s.heading_align | default: 'center' }} {{ class }}"
+    style="{% if s.eyebrow_size > 0 %}--sh-eyebrow-size: {{ s.eyebrow_size }}px;{% endif %}{% if s.eyebrow_color != blank and s.eyebrow_color.alpha != 0 %}--sh-eyebrow-color: {{ s.eyebrow_color }};{% endif %}{% if s.eyebrow_letter != blank and s.eyebrow_letter != 0 %}--sh-eyebrow-letter: {{ s.eyebrow_letter | divided_by: 100.0 }}em;{% endif %}{% if s.heading_size_px > 0 %}--sh-heading-size: {{ s.heading_size_px }}px;{% endif %}{% if s.heading_size_mobile > 0 %}--sh-heading-size-m: {{ s.heading_size_mobile }}px;{% endif %}{% if s.heading_color != blank and s.heading_color.alpha != 0 %}--sh-heading-color: {{ s.heading_color }};{% endif %}{% if s.heading_weight != blank and s.heading_weight != 'inherit' %}--sh-heading-weight: {{ s.heading_weight }};{% endif %}{% if s.heading_letter != blank and s.heading_letter != 0 %}--sh-heading-letter: {{ s.heading_letter | divided_by: 100.0 }}em;{% endif %}{% if s.heading_line > 0 %}--sh-heading-line: {{ s.heading_line | divided_by: 100.0 }};{% endif %}{% if s.subheading_size > 0 %}--sh-lead-size: {{ s.subheading_size }}px;{% endif %}{% if s.subheading_color != blank and s.subheading_color.alpha != 0 %}--sh-lead-color: {{ s.subheading_color }};{% endif %}"
+  >
     {%- if s.eyebrow != blank -%}
-      <p class="eyebrow">{{ s.eyebrow }}</p>
+      <p class="eyebrow">
+        {%- if s.eyebrow_icon != blank and s.eyebrow_icon != 'none' -%}
+          {%- render 'icon-or-image', icon: s.eyebrow_icon, size: s.eyebrow_icon_size, color: s.eyebrow_icon_color -%}
+        {%- endif -%}
+        {{ s.eyebrow }}
+      </p>
     {%- endif -%}
     {%- if s.heading != blank -%}
-      <{{ heading_tag }} class="section-header__title {{ s.heading_size | default: 'h2' }}">{{ s.heading }}</{{ heading_tag }}>
+      <{{ heading_tag }} class="section-header__title {{ s.heading_size | default: 'h2' }}"{% if heading_id != blank %} id="{{ heading_id }}"{% endif %}>{{ s.heading }}</{{ heading_tag }}>
     {%- endif -%}
     {%- if s.subheading != blank -%}
       <div class="lead rte">{{ s.subheading }}</div>

@@ -22,11 +22,16 @@
     assign loading = 'eager'
     assign priority = 'high'
   endif
+  assign hero_panel = ''
+  if s.content_bg != blank and s.content_bg.alpha != 0
+    assign hero_alpha = s.content_bg_opacity | default: 100 | divided_by: 100.0
+    assign hero_panel = s.content_bg | color_modify: 'alpha', hero_alpha
+  endif
 -%}
 
 <section
   class="hero section{% if s.inset %} hero--inset{% endif %} hero--{{ placement }} hero--align-{{ s.content_align }} hero--v-{{ s.content_vertical }}"
-  style="{% render 'section-style' %} --hero-min-h: {{ s.min_height }}px; --hero-min-h-mobile: {{ s.min_height_mobile }}px; --hero-radius: {{ s.radius }}px; --hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px; --hero-gap: {{ s.content_gap | default: 16 }}px;{% if s.section_bg_gradient != blank %} --hero-canvas: {{ s.section_bg_gradient }};{% elsif s.section_bg != blank %} --hero-canvas: {{ s.section_bg }};{% endif %}"
+  style="{% render 'section-style' %} --hero-min-h: {{ s.min_height }}px; --hero-min-h-mobile: {{ s.min_height_mobile }}px; --hero-radius: {{ s.radius }}px; --hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px; --hero-gap: {{ s.content_gap | default: 16 }}px; --hero-content-col: {{ s.content_col | default: 50 }}%;{% if s.content_opacity != blank and s.content_opacity < 100 %} --hero-content-opacity: {{ s.content_opacity | divided_by: 100.0 }};{% endif %}{% if s.pad_top > 0 %} --hero-pad-t: {{ s.pad_top }}px; --hero-pad-td: {{ s.pad_top }}px;{% endif %}{% if s.pad_right > 0 %} --hero-pad-r: {{ s.pad_right }}px; --hero-pad-rd: {{ s.pad_right }}px;{% endif %}{% if s.pad_bottom > 0 %} --hero-pad-b: {{ s.pad_bottom }}px; --hero-pad-bd: {{ s.pad_bottom }}px;{% endif %}{% if s.pad_left > 0 %} --hero-pad-l: {{ s.pad_left }}px; --hero-pad-ld: {{ s.pad_left }}px;{% endif %}{% if s.pad_top_mobile > 0 %} --hero-pad-t: {{ s.pad_top_mobile }}px;{% endif %}{% if s.pad_right_mobile > 0 %} --hero-pad-r: {{ s.pad_right_mobile }}px;{% endif %}{% if s.pad_bottom_mobile > 0 %} --hero-pad-b: {{ s.pad_bottom_mobile }}px;{% endif %}{% if s.pad_left_mobile > 0 %} --hero-pad-l: {{ s.pad_left_mobile }}px;{% endif %}{% if hero_panel != blank %} --hero-panel: {{ hero_panel }};{% endif %}{% if s.section_bg_gradient != blank %} --hero-canvas: {{ s.section_bg_gradient }};{% elsif s.section_bg != blank %} --hero-canvas: {{ s.section_bg }};{% endif %}"
   aria-label="{{ s.aria_label | default: shop.name | escape }}"
 >
   <div class="{% if s.inset %}page-width{% endif %}">
@@ -204,7 +209,7 @@
                       assign item_color = block.settings[color_key] | default: block.settings.icon_color
                     -%}
                     {%- if block.settings[key] != blank -%}
-                      <li>
+                      <li{% if item_color != blank and item_color.alpha != 0 %} style="--item-icon: {{ item_color }};"{% endif %}>
                         {%- render 'icon-or-image', icon: item_icon, size: block.settings.icon_size, color: item_color -%}
                         <span>{{ block.settings[key] }}</span>
                       </li>
@@ -386,6 +391,130 @@
     },
     {
       "type": "range",
+      "id": "content_col",
+      "label": "Content column width",
+      "min": 30,
+      "max": 70,
+      "step": 1,
+      "unit": "%",
+      "default": 50,
+      "info": "Width of the text side on split heroes. The image takes the rest."
+    },
+    {
+      "type": "range",
+      "id": "content_opacity",
+      "label": "Content opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "content_bg",
+      "label": "Content panel background"
+    },
+    {
+      "type": "range",
+      "id": "content_bg_opacity",
+      "label": "Content panel background opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Content spacing"
+    },
+    {
+      "type": "paragraph",
+      "content": "0 keeps the current spacing. Desktop values also apply on mobile until a mobile value is set."
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Space above, desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_right",
+      "label": "Space on the right, desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Space below, desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_left",
+      "label": "Space on the left, desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "label": "Space above, mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_right_mobile",
+      "label": "Space on the right, mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "label": "Space below, mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_left_mobile",
+      "label": "Space on the left, mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
       "id": "min_height",
       "label": "Minimum height (desktop)",
       "min": 0,
@@ -528,6 +657,57 @@
       "default": 0,
       "visible_if": "{{ section.settings.box_enable }}",
       "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "box_radius_split",
+      "label": "Different radius on each corner",
+      "default": false,
+      "visible_if": "{{ section.settings.box_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tl",
+      "label": "Top left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tr",
+      "label": "Top right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_br",
+      "label": "Bottom right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_bl",
+      "label": "Bottom left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
     },
     {
       "type": "range",
@@ -915,207 +1095,207 @@
           "options": [
             {
               "value": "none",
-              "label": "— None"
+              "label": "None"
             },
             {
               "value": "check",
-              "label": "✓ Check"
+              "label": "Check"
             },
             {
               "value": "check-circle",
-              "label": "✅ Check circle"
+              "label": "Check circle"
             },
             {
               "value": "sparkle",
-              "label": "✦ Sparkle"
+              "label": "Sparkle"
             },
             {
               "value": "star",
-              "label": "★ Star"
+              "label": "Star"
             },
             {
               "value": "heart",
-              "label": "♥ Heart"
+              "label": "Heart"
             },
             {
               "value": "fire",
-              "label": "🔥 Fire"
+              "label": "Fire"
             },
             {
               "value": "flame",
-              "label": "🔥 Flame"
+              "label": "Flame"
             },
             {
               "value": "blaze",
-              "label": "💥 Blaze"
+              "label": "Blaze"
             },
             {
               "value": "shield",
-              "label": "🛡 Shield"
+              "label": "Shield"
             },
             {
               "value": "verified",
-              "label": "✔ Verified"
+              "label": "Verified"
             },
             {
               "value": "truck",
-              "label": "🚚 Truck"
+              "label": "Truck"
             },
             {
               "value": "package-check",
-              "label": "📦 Package"
+              "label": "Package"
             },
             {
               "value": "box",
-              "label": "📦 Box"
+              "label": "Box"
             },
             {
               "value": "cash",
-              "label": "💵 Cash"
+              "label": "Cash"
             },
             {
               "value": "credit-card",
-              "label": "💳 Card"
+              "label": "Card"
             },
             {
               "value": "lock",
-              "label": "🔒 Lock"
+              "label": "Lock"
             },
             {
               "value": "return",
-              "label": "↩ Return"
+              "label": "Return"
             },
             {
               "value": "gift",
-              "label": "🎁 Gift"
+              "label": "Gift"
             },
             {
               "value": "clock",
-              "label": "🕒 Clock"
+              "label": "Clock"
             },
             {
               "value": "calendar",
-              "label": "📅 Calendar"
+              "label": "Calendar"
             },
             {
               "value": "phone",
-              "label": "📞 Phone"
+              "label": "Phone"
             },
             {
               "value": "chat",
-              "label": "💬 Chat"
+              "label": "Chat"
             },
             {
               "value": "whatsapp",
-              "label": "🟢 WhatsApp"
+              "label": "WhatsApp"
             },
             {
               "value": "mail",
-              "label": "✉ Mail"
+              "label": "Mail"
             },
             {
               "value": "headset",
-              "label": "🎧 Support"
+              "label": "Support"
             },
             {
               "value": "location",
-              "label": "📍 Location"
+              "label": "Location"
             },
             {
               "value": "store",
-              "label": "🏪 Store"
+              "label": "Store"
             },
             {
               "value": "home",
-              "label": "🏠 Home"
+              "label": "Home"
             },
             {
               "value": "globe",
-              "label": "🌐 Globe"
+              "label": "Globe"
             },
             {
               "value": "leaf",
-              "label": "🍃 Leaf"
+              "label": "Leaf"
             },
             {
               "value": "droplet",
-              "label": "💧 Droplet"
+              "label": "Droplet"
             },
             {
               "value": "moon",
-              "label": "🌙 Moon"
+              "label": "Moon"
             },
             {
               "value": "sun",
-              "label": "☀ Sun"
+              "label": "Sun"
             },
             {
               "value": "bolt",
-              "label": "⚡ Bolt"
+              "label": "Bolt"
             },
             {
               "value": "battery",
-              "label": "🔋 Battery"
+              "label": "Battery"
             },
             {
               "value": "award",
-              "label": "🏅 Award"
+              "label": "Award"
             },
             {
               "value": "trophy",
-              "label": "🏆 Trophy"
+              "label": "Trophy"
             },
             {
               "value": "medal",
-              "label": "🥇 Medal"
+              "label": "Medal"
             },
             {
               "value": "crown",
-              "label": "👑 Crown"
+              "label": "Crown"
             },
             {
               "value": "diamond",
-              "label": "💎 Diamond"
+              "label": "Diamond"
             },
             {
               "value": "rocket",
-              "label": "🚀 Rocket"
+              "label": "Rocket"
             },
             {
               "value": "bell",
-              "label": "🔔 Bell"
+              "label": "Bell"
             },
             {
               "value": "megaphone",
-              "label": "📣 Megaphone"
+              "label": "Megaphone"
             },
             {
               "value": "target",
-              "label": "🎯 Target"
+              "label": "Target"
             },
             {
               "value": "percent",
-              "label": "% Percent"
+              "label": "Percent"
             },
             {
               "value": "tag",
-              "label": "🏷 Tag"
+              "label": "Tag"
             },
             {
               "value": "thumbs-up",
-              "label": "👍 Thumbs up"
+              "label": "Thumbs up"
             },
             {
               "value": "smile",
-              "label": "☺ Smile"
+              "label": "Smile"
             },
             {
               "value": "users",
-              "label": "👥 Users"
+              "label": "Users"
             },
             {
               "value": "eye",
-              "label": "👁 Eye"
+              "label": "Eye"
             },
             {
               "value": "info",
@@ -1123,7 +1303,7 @@
             },
             {
               "value": "dot",
-              "label": "● Dot"
+              "label": "Dot"
             }
           ]
         },
@@ -1848,207 +2028,207 @@
           "options": [
             {
               "value": "none",
-              "label": "— None"
+              "label": "None"
             },
             {
               "value": "check",
-              "label": "✓ Check"
+              "label": "Check"
             },
             {
               "value": "check-circle",
-              "label": "✅ Check circle"
+              "label": "Check circle"
             },
             {
               "value": "sparkle",
-              "label": "✦ Sparkle"
+              "label": "Sparkle"
             },
             {
               "value": "star",
-              "label": "★ Star"
+              "label": "Star"
             },
             {
               "value": "heart",
-              "label": "♥ Heart"
+              "label": "Heart"
             },
             {
               "value": "fire",
-              "label": "🔥 Fire"
+              "label": "Fire"
             },
             {
               "value": "flame",
-              "label": "🔥 Flame"
+              "label": "Flame"
             },
             {
               "value": "blaze",
-              "label": "💥 Blaze"
+              "label": "Blaze"
             },
             {
               "value": "shield",
-              "label": "🛡 Shield"
+              "label": "Shield"
             },
             {
               "value": "verified",
-              "label": "✔ Verified"
+              "label": "Verified"
             },
             {
               "value": "truck",
-              "label": "🚚 Truck"
+              "label": "Truck"
             },
             {
               "value": "package-check",
-              "label": "📦 Package"
+              "label": "Package"
             },
             {
               "value": "box",
-              "label": "📦 Box"
+              "label": "Box"
             },
             {
               "value": "cash",
-              "label": "💵 Cash"
+              "label": "Cash"
             },
             {
               "value": "credit-card",
-              "label": "💳 Card"
+              "label": "Card"
             },
             {
               "value": "lock",
-              "label": "🔒 Lock"
+              "label": "Lock"
             },
             {
               "value": "return",
-              "label": "↩ Return"
+              "label": "Return"
             },
             {
               "value": "gift",
-              "label": "🎁 Gift"
+              "label": "Gift"
             },
             {
               "value": "clock",
-              "label": "🕒 Clock"
+              "label": "Clock"
             },
             {
               "value": "calendar",
-              "label": "📅 Calendar"
+              "label": "Calendar"
             },
             {
               "value": "phone",
-              "label": "📞 Phone"
+              "label": "Phone"
             },
             {
               "value": "chat",
-              "label": "💬 Chat"
+              "label": "Chat"
             },
             {
               "value": "whatsapp",
-              "label": "🟢 WhatsApp"
+              "label": "WhatsApp"
             },
             {
               "value": "mail",
-              "label": "✉ Mail"
+              "label": "Mail"
             },
             {
               "value": "headset",
-              "label": "🎧 Support"
+              "label": "Support"
             },
             {
               "value": "location",
-              "label": "📍 Location"
+              "label": "Location"
             },
             {
               "value": "store",
-              "label": "🏪 Store"
+              "label": "Store"
             },
             {
               "value": "home",
-              "label": "🏠 Home"
+              "label": "Home"
             },
             {
               "value": "globe",
-              "label": "🌐 Globe"
+              "label": "Globe"
             },
             {
               "value": "leaf",
-              "label": "🍃 Leaf"
+              "label": "Leaf"
             },
             {
               "value": "droplet",
-              "label": "💧 Droplet"
+              "label": "Droplet"
             },
             {
               "value": "moon",
-              "label": "🌙 Moon"
+              "label": "Moon"
             },
             {
               "value": "sun",
-              "label": "☀ Sun"
+              "label": "Sun"
             },
             {
               "value": "bolt",
-              "label": "⚡ Bolt"
+              "label": "Bolt"
             },
             {
               "value": "battery",
-              "label": "🔋 Battery"
+              "label": "Battery"
             },
             {
               "value": "award",
-              "label": "🏅 Award"
+              "label": "Award"
             },
             {
               "value": "trophy",
-              "label": "🏆 Trophy"
+              "label": "Trophy"
             },
             {
               "value": "medal",
-              "label": "🥇 Medal"
+              "label": "Medal"
             },
             {
               "value": "crown",
-              "label": "👑 Crown"
+              "label": "Crown"
             },
             {
               "value": "diamond",
-              "label": "💎 Diamond"
+              "label": "Diamond"
             },
             {
               "value": "rocket",
-              "label": "🚀 Rocket"
+              "label": "Rocket"
             },
             {
               "value": "bell",
-              "label": "🔔 Bell"
+              "label": "Bell"
             },
             {
               "value": "megaphone",
-              "label": "📣 Megaphone"
+              "label": "Megaphone"
             },
             {
               "value": "target",
-              "label": "🎯 Target"
+              "label": "Target"
             },
             {
               "value": "percent",
-              "label": "% Percent"
+              "label": "Percent"
             },
             {
               "value": "tag",
-              "label": "🏷 Tag"
+              "label": "Tag"
             },
             {
               "value": "thumbs-up",
-              "label": "👍 Thumbs up"
+              "label": "Thumbs up"
             },
             {
               "value": "smile",
-              "label": "☺ Smile"
+              "label": "Smile"
             },
             {
               "value": "users",
-              "label": "👥 Users"
+              "label": "Users"
             },
             {
               "value": "eye",
-              "label": "👁 Eye"
+              "label": "Eye"
             },
             {
               "value": "info",
@@ -2056,7 +2236,7 @@
             },
             {
               "value": "dot",
-              "label": "● Dot"
+              "label": "Dot"
             }
           ]
         },
@@ -2119,211 +2299,211 @@
           "options": [
             {
               "value": "inherit",
-              "label": "↪ Same icon"
+              "label": "Same icon"
             },
             {
               "value": "none",
-              "label": "— None"
+              "label": "None"
             },
             {
               "value": "check",
-              "label": "✓ Check"
+              "label": "Check"
             },
             {
               "value": "check-circle",
-              "label": "✅ Check circle"
+              "label": "Check circle"
             },
             {
               "value": "sparkle",
-              "label": "✦ Sparkle"
+              "label": "Sparkle"
             },
             {
               "value": "star",
-              "label": "★ Star"
+              "label": "Star"
             },
             {
               "value": "heart",
-              "label": "♥ Heart"
+              "label": "Heart"
             },
             {
               "value": "fire",
-              "label": "🔥 Fire"
+              "label": "Fire"
             },
             {
               "value": "flame",
-              "label": "🔥 Flame"
+              "label": "Flame"
             },
             {
               "value": "blaze",
-              "label": "💥 Blaze"
+              "label": "Blaze"
             },
             {
               "value": "shield",
-              "label": "🛡 Shield"
+              "label": "Shield"
             },
             {
               "value": "verified",
-              "label": "✔ Verified"
+              "label": "Verified"
             },
             {
               "value": "truck",
-              "label": "🚚 Truck"
+              "label": "Truck"
             },
             {
               "value": "package-check",
-              "label": "📦 Package"
+              "label": "Package"
             },
             {
               "value": "box",
-              "label": "📦 Box"
+              "label": "Box"
             },
             {
               "value": "cash",
-              "label": "💵 Cash"
+              "label": "Cash"
             },
             {
               "value": "credit-card",
-              "label": "💳 Card"
+              "label": "Card"
             },
             {
               "value": "lock",
-              "label": "🔒 Lock"
+              "label": "Lock"
             },
             {
               "value": "return",
-              "label": "↩ Return"
+              "label": "Return"
             },
             {
               "value": "gift",
-              "label": "🎁 Gift"
+              "label": "Gift"
             },
             {
               "value": "clock",
-              "label": "🕒 Clock"
+              "label": "Clock"
             },
             {
               "value": "calendar",
-              "label": "📅 Calendar"
+              "label": "Calendar"
             },
             {
               "value": "phone",
-              "label": "📞 Phone"
+              "label": "Phone"
             },
             {
               "value": "chat",
-              "label": "💬 Chat"
+              "label": "Chat"
             },
             {
               "value": "whatsapp",
-              "label": "🟢 WhatsApp"
+              "label": "WhatsApp"
             },
             {
               "value": "mail",
-              "label": "✉ Mail"
+              "label": "Mail"
             },
             {
               "value": "headset",
-              "label": "🎧 Support"
+              "label": "Support"
             },
             {
               "value": "location",
-              "label": "📍 Location"
+              "label": "Location"
             },
             {
               "value": "store",
-              "label": "🏪 Store"
+              "label": "Store"
             },
             {
               "value": "home",
-              "label": "🏠 Home"
+              "label": "Home"
             },
             {
               "value": "globe",
-              "label": "🌐 Globe"
+              "label": "Globe"
             },
             {
               "value": "leaf",
-              "label": "🍃 Leaf"
+              "label": "Leaf"
             },
             {
               "value": "droplet",
-              "label": "💧 Droplet"
+              "label": "Droplet"
             },
             {
               "value": "moon",
-              "label": "🌙 Moon"
+              "label": "Moon"
             },
             {
               "value": "sun",
-              "label": "☀ Sun"
+              "label": "Sun"
             },
             {
               "value": "bolt",
-              "label": "⚡ Bolt"
+              "label": "Bolt"
             },
             {
               "value": "battery",
-              "label": "🔋 Battery"
+              "label": "Battery"
             },
             {
               "value": "award",
-              "label": "🏅 Award"
+              "label": "Award"
             },
             {
               "value": "trophy",
-              "label": "🏆 Trophy"
+              "label": "Trophy"
             },
             {
               "value": "medal",
-              "label": "🥇 Medal"
+              "label": "Medal"
             },
             {
               "value": "crown",
-              "label": "👑 Crown"
+              "label": "Crown"
             },
             {
               "value": "diamond",
-              "label": "💎 Diamond"
+              "label": "Diamond"
             },
             {
               "value": "rocket",
-              "label": "🚀 Rocket"
+              "label": "Rocket"
             },
             {
               "value": "bell",
-              "label": "🔔 Bell"
+              "label": "Bell"
             },
             {
               "value": "megaphone",
-              "label": "📣 Megaphone"
+              "label": "Megaphone"
             },
             {
               "value": "target",
-              "label": "🎯 Target"
+              "label": "Target"
             },
             {
               "value": "percent",
-              "label": "% Percent"
+              "label": "Percent"
             },
             {
               "value": "tag",
-              "label": "🏷 Tag"
+              "label": "Tag"
             },
             {
               "value": "thumbs-up",
-              "label": "👍 Thumbs up"
+              "label": "Thumbs up"
             },
             {
               "value": "smile",
-              "label": "☺ Smile"
+              "label": "Smile"
             },
             {
               "value": "users",
-              "label": "👥 Users"
+              "label": "Users"
             },
             {
               "value": "eye",
-              "label": "👁 Eye"
+              "label": "Eye"
             },
             {
               "value": "info",
@@ -2331,7 +2511,7 @@
             },
             {
               "value": "dot",
-              "label": "● Dot"
+              "label": "Dot"
             }
           ]
         },
@@ -2354,211 +2534,211 @@
           "options": [
             {
               "value": "inherit",
-              "label": "↪ Same icon"
+              "label": "Same icon"
             },
             {
               "value": "none",
-              "label": "— None"
+              "label": "None"
             },
             {
               "value": "check",
-              "label": "✓ Check"
+              "label": "Check"
             },
             {
               "value": "check-circle",
-              "label": "✅ Check circle"
+              "label": "Check circle"
             },
             {
               "value": "sparkle",
-              "label": "✦ Sparkle"
+              "label": "Sparkle"
             },
             {
               "value": "star",
-              "label": "★ Star"
+              "label": "Star"
             },
             {
               "value": "heart",
-              "label": "♥ Heart"
+              "label": "Heart"
             },
             {
               "value": "fire",
-              "label": "🔥 Fire"
+              "label": "Fire"
             },
             {
               "value": "flame",
-              "label": "🔥 Flame"
+              "label": "Flame"
             },
             {
               "value": "blaze",
-              "label": "💥 Blaze"
+              "label": "Blaze"
             },
             {
               "value": "shield",
-              "label": "🛡 Shield"
+              "label": "Shield"
             },
             {
               "value": "verified",
-              "label": "✔ Verified"
+              "label": "Verified"
             },
             {
               "value": "truck",
-              "label": "🚚 Truck"
+              "label": "Truck"
             },
             {
               "value": "package-check",
-              "label": "📦 Package"
+              "label": "Package"
             },
             {
               "value": "box",
-              "label": "📦 Box"
+              "label": "Box"
             },
             {
               "value": "cash",
-              "label": "💵 Cash"
+              "label": "Cash"
             },
             {
               "value": "credit-card",
-              "label": "💳 Card"
+              "label": "Card"
             },
             {
               "value": "lock",
-              "label": "🔒 Lock"
+              "label": "Lock"
             },
             {
               "value": "return",
-              "label": "↩ Return"
+              "label": "Return"
             },
             {
               "value": "gift",
-              "label": "🎁 Gift"
+              "label": "Gift"
             },
             {
               "value": "clock",
-              "label": "🕒 Clock"
+              "label": "Clock"
             },
             {
               "value": "calendar",
-              "label": "📅 Calendar"
+              "label": "Calendar"
             },
             {
               "value": "phone",
-              "label": "📞 Phone"
+              "label": "Phone"
             },
             {
               "value": "chat",
-              "label": "💬 Chat"
+              "label": "Chat"
             },
             {
               "value": "whatsapp",
-              "label": "🟢 WhatsApp"
+              "label": "WhatsApp"
             },
             {
               "value": "mail",
-              "label": "✉ Mail"
+              "label": "Mail"
             },
             {
               "value": "headset",
-              "label": "🎧 Support"
+              "label": "Support"
             },
             {
               "value": "location",
-              "label": "📍 Location"
+              "label": "Location"
             },
             {
               "value": "store",
-              "label": "🏪 Store"
+              "label": "Store"
             },
             {
               "value": "home",
-              "label": "🏠 Home"
+              "label": "Home"
             },
             {
               "value": "globe",
-              "label": "🌐 Globe"
+              "label": "Globe"
             },
             {
               "value": "leaf",
-              "label": "🍃 Leaf"
+              "label": "Leaf"
             },
             {
               "value": "droplet",
-              "label": "💧 Droplet"
+              "label": "Droplet"
             },
             {
               "value": "moon",
-              "label": "🌙 Moon"
+              "label": "Moon"
             },
             {
               "value": "sun",
-              "label": "☀ Sun"
+              "label": "Sun"
             },
             {
               "value": "bolt",
-              "label": "⚡ Bolt"
+              "label": "Bolt"
             },
             {
               "value": "battery",
-              "label": "🔋 Battery"
+              "label": "Battery"
             },
             {
               "value": "award",
-              "label": "🏅 Award"
+              "label": "Award"
             },
             {
               "value": "trophy",
-              "label": "🏆 Trophy"
+              "label": "Trophy"
             },
             {
               "value": "medal",
-              "label": "🥇 Medal"
+              "label": "Medal"
             },
             {
               "value": "crown",
-              "label": "👑 Crown"
+              "label": "Crown"
             },
             {
               "value": "diamond",
-              "label": "💎 Diamond"
+              "label": "Diamond"
             },
             {
               "value": "rocket",
-              "label": "🚀 Rocket"
+              "label": "Rocket"
             },
             {
               "value": "bell",
-              "label": "🔔 Bell"
+              "label": "Bell"
             },
             {
               "value": "megaphone",
-              "label": "📣 Megaphone"
+              "label": "Megaphone"
             },
             {
               "value": "target",
-              "label": "🎯 Target"
+              "label": "Target"
             },
             {
               "value": "percent",
-              "label": "% Percent"
+              "label": "Percent"
             },
             {
               "value": "tag",
-              "label": "🏷 Tag"
+              "label": "Tag"
             },
             {
               "value": "thumbs-up",
-              "label": "👍 Thumbs up"
+              "label": "Thumbs up"
             },
             {
               "value": "smile",
-              "label": "☺ Smile"
+              "label": "Smile"
             },
             {
               "value": "users",
-              "label": "👥 Users"
+              "label": "Users"
             },
             {
               "value": "eye",
-              "label": "👁 Eye"
+              "label": "Eye"
             },
             {
               "value": "info",
@@ -2566,7 +2746,7 @@
             },
             {
               "value": "dot",
-              "label": "● Dot"
+              "label": "Dot"
             }
           ]
         },
@@ -2589,211 +2769,211 @@
           "options": [
             {
               "value": "inherit",
-              "label": "↪ Same icon"
+              "label": "Same icon"
             },
             {
               "value": "none",
-              "label": "— None"
+              "label": "None"
             },
             {
               "value": "check",
-              "label": "✓ Check"
+              "label": "Check"
             },
             {
               "value": "check-circle",
-              "label": "✅ Check circle"
+              "label": "Check circle"
             },
             {
               "value": "sparkle",
-              "label": "✦ Sparkle"
+              "label": "Sparkle"
             },
             {
               "value": "star",
-              "label": "★ Star"
+              "label": "Star"
             },
             {
               "value": "heart",
-              "label": "♥ Heart"
+              "label": "Heart"
             },
             {
               "value": "fire",
-              "label": "🔥 Fire"
+              "label": "Fire"
             },
             {
               "value": "flame",
-              "label": "🔥 Flame"
+              "label": "Flame"
             },
             {
               "value": "blaze",
-              "label": "💥 Blaze"
+              "label": "Blaze"
             },
             {
               "value": "shield",
-              "label": "🛡 Shield"
+              "label": "Shield"
             },
             {
               "value": "verified",
-              "label": "✔ Verified"
+              "label": "Verified"
             },
             {
               "value": "truck",
-              "label": "🚚 Truck"
+              "label": "Truck"
             },
             {
               "value": "package-check",
-              "label": "📦 Package"
+              "label": "Package"
             },
             {
               "value": "box",
-              "label": "📦 Box"
+              "label": "Box"
             },
             {
               "value": "cash",
-              "label": "💵 Cash"
+              "label": "Cash"
             },
             {
               "value": "credit-card",
-              "label": "💳 Card"
+              "label": "Card"
             },
             {
               "value": "lock",
-              "label": "🔒 Lock"
+              "label": "Lock"
             },
             {
               "value": "return",
-              "label": "↩ Return"
+              "label": "Return"
             },
             {
               "value": "gift",
-              "label": "🎁 Gift"
+              "label": "Gift"
             },
             {
               "value": "clock",
-              "label": "🕒 Clock"
+              "label": "Clock"
             },
             {
               "value": "calendar",
-              "label": "📅 Calendar"
+              "label": "Calendar"
             },
             {
               "value": "phone",
-              "label": "📞 Phone"
+              "label": "Phone"
             },
             {
               "value": "chat",
-              "label": "💬 Chat"
+              "label": "Chat"
             },
             {
               "value": "whatsapp",
-              "label": "🟢 WhatsApp"
+              "label": "WhatsApp"
             },
             {
               "value": "mail",
-              "label": "✉ Mail"
+              "label": "Mail"
             },
             {
               "value": "headset",
-              "label": "🎧 Support"
+              "label": "Support"
             },
             {
               "value": "location",
-              "label": "📍 Location"
+              "label": "Location"
             },
             {
               "value": "store",
-              "label": "🏪 Store"
+              "label": "Store"
             },
             {
               "value": "home",
-              "label": "🏠 Home"
+              "label": "Home"
             },
             {
               "value": "globe",
-              "label": "🌐 Globe"
+              "label": "Globe"
             },
             {
               "value": "leaf",
-              "label": "🍃 Leaf"
+              "label": "Leaf"
             },
             {
               "value": "droplet",
-              "label": "💧 Droplet"
+              "label": "Droplet"
             },
             {
               "value": "moon",
-              "label": "🌙 Moon"
+              "label": "Moon"
             },
             {
               "value": "sun",
-              "label": "☀ Sun"
+              "label": "Sun"
             },
             {
               "value": "bolt",
-              "label": "⚡ Bolt"
+              "label": "Bolt"
             },
             {
               "value": "battery",
-              "label": "🔋 Battery"
+              "label": "Battery"
             },
             {
               "value": "award",
-              "label": "🏅 Award"
+              "label": "Award"
             },
             {
               "value": "trophy",
-              "label": "🏆 Trophy"
+              "label": "Trophy"
             },
             {
               "value": "medal",
-              "label": "🥇 Medal"
+              "label": "Medal"
             },
             {
               "value": "crown",
-              "label": "👑 Crown"
+              "label": "Crown"
             },
             {
               "value": "diamond",
-              "label": "💎 Diamond"
+              "label": "Diamond"
             },
             {
               "value": "rocket",
-              "label": "🚀 Rocket"
+              "label": "Rocket"
             },
             {
               "value": "bell",
-              "label": "🔔 Bell"
+              "label": "Bell"
             },
             {
               "value": "megaphone",
-              "label": "📣 Megaphone"
+              "label": "Megaphone"
             },
             {
               "value": "target",
-              "label": "🎯 Target"
+              "label": "Target"
             },
             {
               "value": "percent",
-              "label": "% Percent"
+              "label": "Percent"
             },
             {
               "value": "tag",
-              "label": "🏷 Tag"
+              "label": "Tag"
             },
             {
               "value": "thumbs-up",
-              "label": "👍 Thumbs up"
+              "label": "Thumbs up"
             },
             {
               "value": "smile",
-              "label": "☺ Smile"
+              "label": "Smile"
             },
             {
               "value": "users",
-              "label": "👥 Users"
+              "label": "Users"
             },
             {
               "value": "eye",
-              "label": "👁 Eye"
+              "label": "Eye"
             },
             {
               "value": "info",
@@ -2801,7 +2981,7 @@
             },
             {
               "value": "dot",
-              "label": "● Dot"
+              "label": "Dot"
             }
           ]
         },
@@ -2823,211 +3003,211 @@
           "options": [
             {
               "value": "inherit",
-              "label": "↪ Same icon"
+              "label": "Same icon"
             },
             {
               "value": "none",
-              "label": "— None"
+              "label": "None"
             },
             {
               "value": "check",
-              "label": "✓ Check"
+              "label": "Check"
             },
             {
               "value": "check-circle",
-              "label": "✅ Check circle"
+              "label": "Check circle"
             },
             {
               "value": "sparkle",
-              "label": "✦ Sparkle"
+              "label": "Sparkle"
             },
             {
               "value": "star",
-              "label": "★ Star"
+              "label": "Star"
             },
             {
               "value": "heart",
-              "label": "♥ Heart"
+              "label": "Heart"
             },
             {
               "value": "fire",
-              "label": "🔥 Fire"
+              "label": "Fire"
             },
             {
               "value": "flame",
-              "label": "🔥 Flame"
+              "label": "Flame"
             },
             {
               "value": "blaze",
-              "label": "💥 Blaze"
+              "label": "Blaze"
             },
             {
               "value": "shield",
-              "label": "🛡 Shield"
+              "label": "Shield"
             },
             {
               "value": "verified",
-              "label": "✔ Verified"
+              "label": "Verified"
             },
             {
               "value": "truck",
-              "label": "🚚 Truck"
+              "label": "Truck"
             },
             {
               "value": "package-check",
-              "label": "📦 Package"
+              "label": "Package"
             },
             {
               "value": "box",
-              "label": "📦 Box"
+              "label": "Box"
             },
             {
               "value": "cash",
-              "label": "💵 Cash"
+              "label": "Cash"
             },
             {
               "value": "credit-card",
-              "label": "💳 Card"
+              "label": "Card"
             },
             {
               "value": "lock",
-              "label": "🔒 Lock"
+              "label": "Lock"
             },
             {
               "value": "return",
-              "label": "↩ Return"
+              "label": "Return"
             },
             {
               "value": "gift",
-              "label": "🎁 Gift"
+              "label": "Gift"
             },
             {
               "value": "clock",
-              "label": "🕒 Clock"
+              "label": "Clock"
             },
             {
               "value": "calendar",
-              "label": "📅 Calendar"
+              "label": "Calendar"
             },
             {
               "value": "phone",
-              "label": "📞 Phone"
+              "label": "Phone"
             },
             {
               "value": "chat",
-              "label": "💬 Chat"
+              "label": "Chat"
             },
             {
               "value": "whatsapp",
-              "label": "🟢 WhatsApp"
+              "label": "WhatsApp"
             },
             {
               "value": "mail",
-              "label": "✉ Mail"
+              "label": "Mail"
             },
             {
               "value": "headset",
-              "label": "🎧 Support"
+              "label": "Support"
             },
             {
               "value": "location",
-              "label": "📍 Location"
+              "label": "Location"
             },
             {
               "value": "store",
-              "label": "🏪 Store"
+              "label": "Store"
             },
             {
               "value": "home",
-              "label": "🏠 Home"
+              "label": "Home"
             },
             {
               "value": "globe",
-              "label": "🌐 Globe"
+              "label": "Globe"
             },
             {
               "value": "leaf",
-              "label": "🍃 Leaf"
+              "label": "Leaf"
             },
             {
               "value": "droplet",
-              "label": "💧 Droplet"
+              "label": "Droplet"
             },
             {
               "value": "moon",
-              "label": "🌙 Moon"
+              "label": "Moon"
             },
             {
               "value": "sun",
-              "label": "☀ Sun"
+              "label": "Sun"
             },
             {
               "value": "bolt",
-              "label": "⚡ Bolt"
+              "label": "Bolt"
             },
             {
               "value": "battery",
-              "label": "🔋 Battery"
+              "label": "Battery"
             },
             {
               "value": "award",
-              "label": "🏅 Award"
+              "label": "Award"
             },
             {
               "value": "trophy",
-              "label": "🏆 Trophy"
+              "label": "Trophy"
             },
             {
               "value": "medal",
-              "label": "🥇 Medal"
+              "label": "Medal"
             },
             {
               "value": "crown",
-              "label": "👑 Crown"
+              "label": "Crown"
             },
             {
               "value": "diamond",
-              "label": "💎 Diamond"
+              "label": "Diamond"
             },
             {
               "value": "rocket",
-              "label": "🚀 Rocket"
+              "label": "Rocket"
             },
             {
               "value": "bell",
-              "label": "🔔 Bell"
+              "label": "Bell"
             },
             {
               "value": "megaphone",
-              "label": "📣 Megaphone"
+              "label": "Megaphone"
             },
             {
               "value": "target",
-              "label": "🎯 Target"
+              "label": "Target"
             },
             {
               "value": "percent",
-              "label": "% Percent"
+              "label": "Percent"
             },
             {
               "value": "tag",
-              "label": "🏷 Tag"
+              "label": "Tag"
             },
             {
               "value": "thumbs-up",
-              "label": "👍 Thumbs up"
+              "label": "Thumbs up"
             },
             {
               "value": "smile",
-              "label": "☺ Smile"
+              "label": "Smile"
             },
             {
               "value": "users",
-              "label": "👥 Users"
+              "label": "Users"
             },
             {
               "value": "eye",
-              "label": "👁 Eye"
+              "label": "Eye"
             },
             {
               "value": "info",
@@ -3035,7 +3215,7 @@
             },
             {
               "value": "dot",
-              "label": "● Dot"
+              "label": "Dot"
             }
           ]
         }

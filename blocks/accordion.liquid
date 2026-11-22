@@ -188,6 +188,57 @@
       "unit": "px"
     },
     {
+      "type": "checkbox",
+      "id": "box_radius_split",
+      "label": "Different radius on each corner",
+      "default": false,
+      "visible_if": "{{ block.settings.box_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tl",
+      "label": "Top left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tr",
+      "label": "Top right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_br",
+      "label": "Bottom right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_bl",
+      "label": "Bottom left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
       "type": "range",
       "id": "box_border_width",
       "label": "Border width",

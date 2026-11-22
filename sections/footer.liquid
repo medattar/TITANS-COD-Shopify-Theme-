@@ -8,14 +8,17 @@
 -%}
 
 <footer
-  class="footer color-{{ section.settings.color_scheme }} gradient"
-  style="{% render 'section-style' %} --footer-columns: {{ section.settings.columns }}; --footer-border: {% if section.settings.border %}var(--border-width){% else %}0px{% endif %}; --footer-logo-width: {{ section.settings.logo_width }}px;"
+  class="footer color-{{ section.settings.color_scheme }} gradient{% if section.settings.block_layout == 'row' %} footer--row{% endif %}{% if section.settings.row_on_mobile %} footer--row-mobile{% endif %}"
+  style="{% render 'section-style' %} --footer-columns: {{ section.settings.columns }}; --footer-justify: {{ section.settings.row_align | default: 'space-between' }}; --footer-border: {% if section.settings.border %}var(--border-width){% else %}0px{% endif %}; --footer-logo-width: {{ section.settings.logo_width }}px;"
 >
   <div class="page-width footer__inner">
     {%- if section.blocks.size > 0 -%}
       <div class="footer__grid">
         {%- for block in section.blocks -%}
-          <div class="footer__block{% if block.type == 'brand' %} footer__block--full{% endif %}" {{ block.shopify_attributes }}>
+          {%- liquid
+            assign block_align = block.settings.block_align | default: block.settings.align | default: 'left'
+          -%}
+          <div class="footer__block footer__block--align-{{ block_align }}{% if block.type == 'brand' and section.settings.block_layout != 'row' %} footer__block--full{% endif %}"{% if block.settings.block_width > 0 %} style="--block-basis: {{ block.settings.block_width }}px;"{% endif %} {{ block.shopify_attributes }}>
             {%- case block.type -%}
               {%- when 'brand' -%}
                 {%- if block.settings.show_logo -%}
@@ -60,7 +63,7 @@
                   <h2 class="footer__heading">{{ block.settings.heading }}</h2>
                 {%- endif -%}
                 <ul
-                  class="footer-contact"
+                  class="footer-contact{% if block.settings.items_layout == 'row' %} footer-contact--row{% endif %}"
                   role="list"
                   style="--fc-gap: {{ block.settings.gap | default: 12 }}px; --fc-size: {{ block.settings.text_size | default: 15 }}px; --fc-icon: {{ block.settings.icon_color | default: 'var(--color-accent)' }}; --fc-align: {% if block.settings.align == 'center' %}center{% elsif block.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %}; --fc-text: {{ block.settings.align | default: 'left' }};"
                 >
@@ -213,6 +216,54 @@
       ]
     },
     {
+      "type": "select",
+      "id": "block_layout",
+      "label": "Block arrangement",
+      "default": "columns",
+      "options": [
+        {
+          "value": "columns",
+          "label": "Columns"
+        },
+        {
+          "value": "row",
+          "label": "One horizontal row"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "row_align",
+      "label": "Row alignment",
+      "default": "space-between",
+      "visible_if": "{{ section.settings.block_layout == 'row' }}",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "row_on_mobile",
+      "label": "Keep blocks in a row on mobile",
+      "default": false,
+      "info": "Off stacks each block on small screens. On lets them wrap beside each other."
+    },
+    {
       "type": "checkbox",
       "id": "border",
       "label": "Top border",
@@ -360,6 +411,57 @@
       "default": 0,
       "visible_if": "{{ section.settings.box_enable }}",
       "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "box_radius_split",
+      "label": "Different radius on each corner",
+      "default": false,
+      "visible_if": "{{ section.settings.box_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tl",
+      "label": "Top left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tr",
+      "label": "Top right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_br",
+      "label": "Bottom right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_bl",
+      "label": "Bottom left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
     },
     {
       "type": "range",
@@ -708,6 +810,36 @@
       "limit": 1,
       "settings": [
         {
+          "type": "select",
+          "id": "block_align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "block_width",
+          "label": "Column width (0 = share the row)",
+          "min": 0,
+          "max": 480,
+          "step": 20,
+          "unit": "px",
+          "default": 0
+        },
+        {
           "type": "checkbox",
           "id": "show_logo",
           "label": "Show logo",
@@ -753,6 +885,36 @@
       "type": "social",
       "name": "Social media",
       "settings": [
+        {
+          "type": "select",
+          "id": "block_align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "block_width",
+          "label": "Column width (0 = share the row)",
+          "min": 0,
+          "max": 480,
+          "step": 20,
+          "unit": "px",
+          "default": 0
+        },
         {
           "type": "text",
           "id": "heading",
@@ -955,6 +1117,36 @@
       "name": "Menu",
       "settings": [
         {
+          "type": "select",
+          "id": "block_align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "block_width",
+          "label": "Column width (0 = share the row)",
+          "min": 0,
+          "max": 480,
+          "step": 20,
+          "unit": "px",
+          "default": 0
+        },
+        {
           "type": "text",
           "id": "heading",
           "label": "Heading",
@@ -972,6 +1164,36 @@
       "type": "text",
       "name": "Text",
       "settings": [
+        {
+          "type": "select",
+          "id": "block_align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "block_width",
+          "label": "Column width (0 = share the row)",
+          "min": 0,
+          "max": 480,
+          "step": 20,
+          "unit": "px",
+          "default": 0
+        },
         {
           "type": "text",
           "id": "heading",
@@ -1081,6 +1303,22 @@
               "label": "Right"
             }
           ]
+        },
+        {
+          "type": "select",
+          "id": "items_layout",
+          "label": "Details direction",
+          "default": "stack",
+          "options": [
+            {
+              "value": "stack",
+              "label": "Stacked"
+            },
+            {
+              "value": "row",
+              "label": "Horizontal row"
+            }
+          ]
         }
       ]
     },
@@ -1089,6 +1327,36 @@
       "name": "Newsletter",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "block_align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "block_width",
+          "label": "Column width (0 = share the row)",
+          "min": 0,
+          "max": 480,
+          "step": 20,
+          "unit": "px",
+          "default": 0
+        },
         {
           "type": "text",
           "id": "heading",

@@ -1100,10 +1100,10 @@
   justify-content: center;
   width: calc(var(--ig-icon) * 1.7);
   height: calc(var(--ig-icon) * 1.7);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--ig-icon-border, var(--color-border));
   border-radius: 50%;
-  background: var(--color-highlight);
-  color: var(--color-accent);
+  background: var(--ig-icon-bg, var(--color-highlight));
+  color: var(--ig-icon-color, var(--color-accent));
 }
 
 .icon-grid__icon .icon {
@@ -1203,7 +1203,7 @@
   width: auto;
   height: auto;
   border: 0;
-  background: none;
+  background: var(--ig-item-bg, none);
 }
 
 .icon-grid--bar .icon-grid__title {

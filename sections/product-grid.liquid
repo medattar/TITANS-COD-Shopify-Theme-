@@ -37,15 +37,14 @@
   {% endif %}
 >
   <div class="page-width">
-    {%- if s.eyebrow != blank or s.heading != blank or s.subheading != blank -%}
-      <div class="section-header text-{{ s.heading_align }}{% if s.reveal %} reveal{% endif %}">
-        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
-        {%- if s.heading != blank -%}
-          <h2 class="{{ s.heading_size }}" id="ProductGridHeading-{{ section.id }}">{{ s.heading }}</h2>
-        {%- endif -%}
-        {%- if s.subheading != blank -%}<div class="lead rte">{{ s.subheading }}</div>{%- endif -%}
-      </div>
-    {%- endif -%}
+    {%- liquid
+      assign grid_heading_id = 'ProductGridHeading-' | append: section.id
+      assign header_class = 'product-grid__header'
+      if s.reveal
+        assign header_class = header_class | append: ' reveal'
+      endif
+    -%}
+    {%- render 'section-heading', heading_id: grid_heading_id, class: header_class -%}
 
     {%- capture cards -%}
       {%- if products != nil and products.size > 0 -%}
@@ -215,6 +214,358 @@
           "label": "Center"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Heading style"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Eyebrow size (0 = theme size)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter",
+      "label": "Eyebrow letter spacing",
+      "min": -8,
+      "max": 40,
+      "step": 1,
+      "default": 0,
+      "info": "Hundredths of an em. 0 uses the theme spacing."
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_icon",
+      "label": "Eyebrow icon",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "check",
+          "label": "check"
+        },
+        {
+          "value": "check-circle",
+          "label": "Check circle"
+        },
+        {
+          "value": "sparkle",
+          "label": "sparkle"
+        },
+        {
+          "value": "star",
+          "label": "star"
+        },
+        {
+          "value": "heart",
+          "label": "heart"
+        },
+        {
+          "value": "fire",
+          "label": "fire"
+        },
+        {
+          "value": "flame",
+          "label": "flame"
+        },
+        {
+          "value": "blaze",
+          "label": "blaze"
+        },
+        {
+          "value": "shield",
+          "label": "shield"
+        },
+        {
+          "value": "verified",
+          "label": "verified"
+        },
+        {
+          "value": "truck",
+          "label": "truck"
+        },
+        {
+          "value": "package-check",
+          "label": "Package"
+        },
+        {
+          "value": "box",
+          "label": "box"
+        },
+        {
+          "value": "cash",
+          "label": "cash"
+        },
+        {
+          "value": "credit-card",
+          "label": "Card"
+        },
+        {
+          "value": "lock",
+          "label": "lock"
+        },
+        {
+          "value": "return",
+          "label": "return"
+        },
+        {
+          "value": "gift",
+          "label": "gift"
+        },
+        {
+          "value": "clock",
+          "label": "clock"
+        },
+        {
+          "value": "calendar",
+          "label": "calendar"
+        },
+        {
+          "value": "phone",
+          "label": "phone"
+        },
+        {
+          "value": "chat",
+          "label": "chat"
+        },
+        {
+          "value": "whatsapp",
+          "label": "WhatsApp"
+        },
+        {
+          "value": "mail",
+          "label": "mail"
+        },
+        {
+          "value": "headset",
+          "label": "headset"
+        },
+        {
+          "value": "location",
+          "label": "location"
+        },
+        {
+          "value": "store",
+          "label": "store"
+        },
+        {
+          "value": "home",
+          "label": "home"
+        },
+        {
+          "value": "globe",
+          "label": "globe"
+        },
+        {
+          "value": "leaf",
+          "label": "leaf"
+        },
+        {
+          "value": "droplet",
+          "label": "droplet"
+        },
+        {
+          "value": "moon",
+          "label": "moon"
+        },
+        {
+          "value": "sun",
+          "label": "sun"
+        },
+        {
+          "value": "bolt",
+          "label": "bolt"
+        },
+        {
+          "value": "battery",
+          "label": "battery"
+        },
+        {
+          "value": "award",
+          "label": "award"
+        },
+        {
+          "value": "trophy",
+          "label": "trophy"
+        },
+        {
+          "value": "medal",
+          "label": "medal"
+        },
+        {
+          "value": "crown",
+          "label": "crown"
+        },
+        {
+          "value": "diamond",
+          "label": "diamond"
+        },
+        {
+          "value": "rocket",
+          "label": "rocket"
+        },
+        {
+          "value": "bell",
+          "label": "bell"
+        },
+        {
+          "value": "megaphone",
+          "label": "megaphone"
+        },
+        {
+          "value": "target",
+          "label": "target"
+        },
+        {
+          "value": "percent",
+          "label": "percent"
+        },
+        {
+          "value": "tag",
+          "label": "tag"
+        },
+        {
+          "value": "thumbs-up",
+          "label": "Thumbs up"
+        },
+        {
+          "value": "smile",
+          "label": "smile"
+        },
+        {
+          "value": "users",
+          "label": "users"
+        },
+        {
+          "value": "eye",
+          "label": "eye"
+        },
+        {
+          "value": "info",
+          "label": "info"
+        },
+        {
+          "value": "dot",
+          "label": "dot"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_icon_size",
+      "label": "Eyebrow icon size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_icon_color",
+      "label": "Eyebrow icon color"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_px",
+      "label": "Heading size, desktop (0 = style size)",
+      "min": 0,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size, mobile (0 = style size)",
+      "min": 0,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "default": "inherit",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Default"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        },
+        {
+          "value": "900",
+          "label": "Black"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter",
+      "label": "Heading letter spacing",
+      "min": -8,
+      "max": 30,
+      "step": 1,
+      "default": 0,
+      "info": "Hundredths of an em."
+    },
+    {
+      "type": "range",
+      "id": "heading_line",
+      "label": "Heading line height (100 = 1.00)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 0,
+      "info": "0 uses the theme line height."
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size (0 = default)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color"
     },
     {
       "type": "header",
@@ -516,6 +867,57 @@
       "default": 0,
       "visible_if": "{{ section.settings.box_enable }}",
       "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "box_radius_split",
+      "label": "Different radius on each corner",
+      "default": false,
+      "visible_if": "{{ section.settings.box_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tl",
+      "label": "Top left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tr",
+      "label": "Top right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_br",
+      "label": "Bottom right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_bl",
+      "label": "Bottom left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.box_enable and section.settings.box_radius_split }}"
     },
     {
       "type": "range",

@@ -1,0 +1,19 @@
+{%- comment -%}
+  Real icon shapes for the theme editor. Shopify's setting menu can only show text,
+  so this grid is the visual catalog while a block is selected.
+{%- endcomment -%}
+{%- liquid
+  assign icon_names = 'check,check-circle,sparkle,star,heart,fire,flame,blaze,shield,verified,truck,package-check,box,cash,credit-card,lock,return,gift,clock,calendar,phone,chat,whatsapp,mail,headset,location,store,home,globe,leaf,droplet,moon,sun,bolt,battery,award,trophy,medal,crown,diamond,rocket,bell,megaphone,target,percent,tag,thumbs-up,smile,users,eye,info,dot' | split: ','
+-%}
+<template id="IconPaletteTemplate">
+  <div class="icon-palette" data-icon-palette>
+    <p class="icon-palette__label">Icon shapes — hover one, then choose that name in the Icon setting</p>
+    <div class="icon-palette__grid">
+      {%- for name in icon_names -%}
+        <span class="icon-palette__item" data-icon-value="{{ name }}" title="{{ name | replace: '-', ' ' | capitalize }}">
+          {%- render 'icon', icon: name -%}
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+</template>

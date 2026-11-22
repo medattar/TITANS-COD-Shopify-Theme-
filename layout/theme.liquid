@@ -87,5 +87,8 @@
     {%- endif -%}
 
     <div class="toast-region" aria-live="polite" role="status" data-toast-region></div>
+    {%- if request.design_mode -%}
+      {%- render 'icon-palette' -%}
+    {%- endif -%}
   </body>
 </html>

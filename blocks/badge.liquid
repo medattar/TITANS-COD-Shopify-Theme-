@@ -2,9 +2,17 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 {%- if s.text != blank -%}
+  {%- capture badge_style -%}
+    {%- if s.font_size > 0 %}font-size: {{ s.font_size }}px;{% endif -%}
+    {%- if s.pad_y > 0 or s.pad_x > 0 %}padding: {% if s.pad_y > 0 %}{{ s.pad_y }}{% else %}5{% endif %}px {% if s.pad_x > 0 %}{{ s.pad_x }}{% else %}11{% endif %}px;{% endif -%}
+    {%- if s.text_color != blank and s.text_color.alpha != 0 %}color: {{ s.text_color }};{% endif -%}
+    {%- if s.bg_color != blank and s.bg_color.alpha != 0 %}background: {{ s.bg_color }};{% endif -%}
+    {%- if s.border_width > 0 %}border: {{ s.border_width }}px solid {{ s.border_color | default: 'currentColor' }};{% endif -%}
+    {%- if s.radius_tl > 0 or s.radius_tr > 0 or s.radius_br > 0 or s.radius_bl > 0 %}border-radius: {{ s.radius_tl }}px {{ s.radius_tr }}px {{ s.radius_br }}px {{ s.radius_bl }}px;{% endif -%}
+  {%- endcapture -%}
   <div class="badge-block" style="justify-content: {{ s.align }};" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
-    <span class="{% if s.style == 'eyebrow' %}eyebrow{% else %}badge badge--{{ s.style }}{% if s.size == 'large' %} badge--large{% endif %}{% endif %}">
-      {%- if s.icon != 'none' -%}{%- render 'icon', icon: s.icon -%}{%- endif -%}
+    <span class="{% if s.style == 'eyebrow' %}eyebrow{% else %}badge badge--{{ s.style }}{% if s.size == 'large' %} badge--large{% endif %}{% endif %}"{% if badge_style != blank %} style="{{ badge_style | strip_newlines }}"{% endif %}>
+      {%- if s.icon != 'none' -%}{%- render 'icon-or-image', icon: s.icon, size: s.icon_size, color: s.icon_color -%}{%- endif -%}
       {{- s.text -}}
     </span>
   </div>
@@ -70,6 +78,125 @@
       ]
     },
     {
+      "type": "range",
+      "id": "font_size",
+      "label": "Text size (0 = default)",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_y",
+      "label": "Vertical padding (0 = default)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_x",
+      "label": "Horizontal padding (0 = default)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "info": "Colors this badge only, not the section behind it."
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color"
+    },
+    {
+      "type": "header",
+      "content": "Badge corners"
+    },
+    {
+      "type": "paragraph",
+      "content": "Leave every corner at 0 to keep the theme pill. Set any corner to shape this badge on its own."
+    },
+    {
+      "type": "range",
+      "id": "radius_tl",
+      "label": "Top left radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "radius_tr",
+      "label": "Top right radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "radius_br",
+      "label": "Bottom right radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "radius_bl",
+      "label": "Bottom left radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size (0 = default)",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color"
+    },
+    {
       "type": "select",
       "id": "icon",
       "label": "Icon",
@@ -77,207 +204,207 @@
       "options": [
         {
           "value": "none",
-          "label": "— None"
+          "label": "None"
         },
         {
           "value": "check",
-          "label": "✓ Check"
+          "label": "Check"
         },
         {
           "value": "check-circle",
-          "label": "✅ Check circle"
+          "label": "Check circle"
         },
         {
           "value": "sparkle",
-          "label": "✦ Sparkle"
+          "label": "Sparkle"
         },
         {
           "value": "star",
-          "label": "★ Star"
+          "label": "Star"
         },
         {
           "value": "heart",
-          "label": "♥ Heart"
+          "label": "Heart"
         },
         {
           "value": "fire",
-          "label": "🔥 Fire"
+          "label": "Fire"
         },
         {
           "value": "flame",
-          "label": "🔥 Flame"
+          "label": "Flame"
         },
         {
           "value": "blaze",
-          "label": "💥 Blaze"
+          "label": "Blaze"
         },
         {
           "value": "shield",
-          "label": "🛡 Shield"
+          "label": "Shield"
         },
         {
           "value": "verified",
-          "label": "✔ Verified"
+          "label": "Verified"
         },
         {
           "value": "truck",
-          "label": "🚚 Truck"
+          "label": "Truck"
         },
         {
           "value": "package-check",
-          "label": "📦 Package"
+          "label": "Package"
         },
         {
           "value": "box",
-          "label": "📦 Box"
+          "label": "Box"
         },
         {
           "value": "cash",
-          "label": "💵 Cash"
+          "label": "Cash"
         },
         {
           "value": "credit-card",
-          "label": "💳 Card"
+          "label": "Card"
         },
         {
           "value": "lock",
-          "label": "🔒 Lock"
+          "label": "Lock"
         },
         {
           "value": "return",
-          "label": "↩ Return"
+          "label": "Return"
         },
         {
           "value": "gift",
-          "label": "🎁 Gift"
+          "label": "Gift"
         },
         {
           "value": "clock",
-          "label": "🕒 Clock"
+          "label": "Clock"
         },
         {
           "value": "calendar",
-          "label": "📅 Calendar"
+          "label": "Calendar"
         },
         {
           "value": "phone",
-          "label": "📞 Phone"
+          "label": "Phone"
         },
         {
           "value": "chat",
-          "label": "💬 Chat"
+          "label": "Chat"
         },
         {
           "value": "whatsapp",
-          "label": "🟢 WhatsApp"
+          "label": "WhatsApp"
         },
         {
           "value": "mail",
-          "label": "✉ Mail"
+          "label": "Mail"
         },
         {
           "value": "headset",
-          "label": "🎧 Support"
+          "label": "Support"
         },
         {
           "value": "location",
-          "label": "📍 Location"
+          "label": "Location"
         },
         {
           "value": "store",
-          "label": "🏪 Store"
+          "label": "Store"
         },
         {
           "value": "home",
-          "label": "🏠 Home"
+          "label": "Home"
         },
         {
           "value": "globe",
-          "label": "🌐 Globe"
+          "label": "Globe"
         },
         {
           "value": "leaf",
-          "label": "🍃 Leaf"
+          "label": "Leaf"
         },
         {
           "value": "droplet",
-          "label": "💧 Droplet"
+          "label": "Droplet"
         },
         {
           "value": "moon",
-          "label": "🌙 Moon"
+          "label": "Moon"
         },
         {
           "value": "sun",
-          "label": "☀ Sun"
+          "label": "Sun"
         },
         {
           "value": "bolt",
-          "label": "⚡ Bolt"
+          "label": "Bolt"
         },
         {
           "value": "battery",
-          "label": "🔋 Battery"
+          "label": "Battery"
         },
         {
           "value": "award",
-          "label": "🏅 Award"
+          "label": "Award"
         },
         {
           "value": "trophy",
-          "label": "🏆 Trophy"
+          "label": "Trophy"
         },
         {
           "value": "medal",
-          "label": "🥇 Medal"
+          "label": "Medal"
         },
         {
           "value": "crown",
-          "label": "👑 Crown"
+          "label": "Crown"
         },
         {
           "value": "diamond",
-          "label": "💎 Diamond"
+          "label": "Diamond"
         },
         {
           "value": "rocket",
-          "label": "🚀 Rocket"
+          "label": "Rocket"
         },
         {
           "value": "bell",
-          "label": "🔔 Bell"
+          "label": "Bell"
         },
         {
           "value": "megaphone",
-          "label": "📣 Megaphone"
+          "label": "Megaphone"
         },
         {
           "value": "target",
-          "label": "🎯 Target"
+          "label": "Target"
         },
         {
           "value": "percent",
-          "label": "% Percent"
+          "label": "Percent"
         },
         {
           "value": "tag",
-          "label": "🏷 Tag"
+          "label": "Tag"
         },
         {
           "value": "thumbs-up",
-          "label": "👍 Thumbs up"
+          "label": "Thumbs up"
         },
         {
           "value": "smile",
-          "label": "☺ Smile"
+          "label": "Smile"
         },
         {
           "value": "users",
-          "label": "👥 Users"
+          "label": "Users"
         },
         {
           "value": "eye",
-          "label": "👁 Eye"
+          "label": "Eye"
         },
         {
           "value": "info",
@@ -285,7 +412,7 @@
         },
         {
           "value": "dot",
-          "label": "● Dot"
+          "label": "Dot"
         }
       ]
     },
@@ -417,6 +544,57 @@
       "default": 0,
       "visible_if": "{{ block.settings.box_enable }}",
       "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "box_radius_split",
+      "label": "Different radius on each corner",
+      "default": false,
+      "visible_if": "{{ block.settings.box_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tl",
+      "label": "Top left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_tr",
+      "label": "Top right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_br",
+      "label": "Bottom right radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
+    },
+    {
+      "type": "range",
+      "id": "box_radius_bl",
+      "label": "Bottom left radius",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable and block.settings.box_radius_split }}"
     },
     {
       "type": "range",
