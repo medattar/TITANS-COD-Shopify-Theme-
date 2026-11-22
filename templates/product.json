@@ -215,7 +215,7 @@
               "type": "badge",
               "settings": {
                 "text": "✦ Pago contra entrega ✦",
-                "style": "eyebrow",
+                "style": "highlight",
                 "size": "small",
                 "icon": "none",
                 "align": "flex-start"
@@ -283,13 +283,13 @@
       "settings": {
         "color_scheme": "",
         "columns": "1.05fr 1fr",
-        "column_gap": 56,
+        "column_gap": 52,
         "sticky_gallery": true,
         "mobile_order": "head-first",
-        "gallery_layout": "left",
+        "gallery_layout": "stacked",
         "thumb_rail_width": 19,
-        "thumbs_mobile": true,
-        "media_ratio": "portrait",
+        "thumbs_mobile": false,
+        "media_ratio": "adapt",
         "media_fit": "cover",
         "media_radius": 18,
         "media_border": true,

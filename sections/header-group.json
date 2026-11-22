@@ -14,6 +14,17 @@
     "announcement_bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_NLYW4J": {
+          "type": "announcement",
+          "settings": {
+            "text": "Pago contra entrega · Envío a todo México",
+            "link": "",
+            "icon": "truck",
+            "badge": "",
+            "countdown_date": "",
+            "countdown_time": ""
+          }
+        },
         "announcement_1": {
           "type": "announcement",
           "settings": {
@@ -38,14 +49,15 @@
         }
       },
       "block_order": [
+        "announcement_NLYW4J",
         "announcement_1",
         "announcement_2"
       ],
       "settings": {
-        "color_scheme": "scheme-4",
-        "mode": "rotate",
-        "rotate_speed": 5,
-        "marquee_speed": 30,
+        "color_scheme": "scheme-73515b58-eff1-40ba-bd91-96b271d3ed98",
+        "mode": "static",
+        "rotate_speed": 4,
+        "marquee_speed": 16,
         "height": 38,
         "text_size": 12.5,
         "uppercase": true,
