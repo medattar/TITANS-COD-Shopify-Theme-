@@ -380,7 +380,7 @@
       },
       "scheme-8": {
         "settings": {
-          "background": "#04b38d",
+          "background": "#FBFFFE",
           "background_gradient": "",
           "surface": "#ffffff",
           "surface_text": "#0b2e27",
@@ -531,6 +531,37 @@
           "badge_label": "#062a22",
           "success": "#04b38d",
           "icon": "#04b38d"
+        }
+      },
+      "scheme-eea8dc11-e402-4f7c-a7ce-7a7c295d5acd": {
+        "settings": {
+          "background": "#fbf8f3",
+          "background_gradient": "",
+          "surface": "#ffffff",
+          "surface_text": "#1c1517",
+          "highlight": "#f7cdd4",
+          "highlight_text": "#1c1517",
+          "text": "#1c1517",
+          "heading": "#1c1517",
+          "muted": "#4a3d40",
+          "accent": "#8a2a2b",
+          "on_accent": "#ffffff",
+          "button": "#8a2a2b",
+          "button_label": "#ffffff",
+          "button_border": "#1c1517",
+          "button_hover": "#6e2122",
+          "button_hover_label": "#ffffff",
+          "secondary_button": "#fbf8f3",
+          "secondary_button_label": "#1c1517",
+          "border": "#1c1517",
+          "divider": "#eed3d2",
+          "shadow": "#1c1517",
+          "price": "#1c1517",
+          "compare_price": "#8c7a7c",
+          "badge": "#8a2a2b",
+          "badge_label": "#ffffff",
+          "success": "#2fa36b",
+          "icon": "#8a2a2b"
         }
       }
     }
