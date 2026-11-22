@@ -1,0 +1,30 @@
+{%- comment -%}
+  Prints a color scheme id. Sections follow the theme scheme from
+  Theme settings > Colors until "Use the theme color scheme" is turned off.
+  Params: source (section, block, or theme settings), key (setting id).
+{%- endcomment -%}
+{%- liquid
+  assign scheme_key = key | default: 'color_scheme'
+  case scheme_key
+    when 'card_scheme'
+      assign chosen = source.card_scheme
+      assign source_mode = source.card_scheme_source
+    when 'mobile_strip_scheme'
+      assign chosen = source.mobile_strip_scheme
+      assign source_mode = source.mobile_strip_scheme_source
+    when 'card_color_scheme'
+      assign chosen = source.card_color_scheme
+      assign source_mode = source.card_scheme_source
+    when 'drawer_color_scheme'
+      assign chosen = source.drawer_color_scheme
+      assign source_mode = source.drawer_scheme_source
+    else
+      assign chosen = source.color_scheme
+      assign source_mode = source.scheme_source
+  endcase
+  if source_mode == 'custom' and chosen != blank
+    echo chosen
+  else
+    echo settings.page_color_scheme
+  endif
+-%}

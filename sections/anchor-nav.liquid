@@ -3,7 +3,7 @@
 {{ 'section-longform.css' | asset_url | stylesheet_tag }}
 
 <anchor-nav
-  class="anchor-nav color-{{ section.settings.color_scheme }} gradient{% if section.settings.sticky %} anchor-nav--sticky{% endif %}"
+  class="anchor-nav color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %} gradient{% if section.settings.sticky %} anchor-nav--sticky{% endif %}"
   aria-label="{{ section.settings.aria_label | escape }}"
   role="navigation"
 >
@@ -29,10 +29,28 @@
       "content": "Links to sections on this page. Give each target section an anchor ID in its settings (for example \"faq\")."
     },
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "checkbox",

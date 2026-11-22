@@ -2,7 +2,7 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 <div
-  class="guarantee-card{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}{% if s.shadow %} guarantee-card--shadow{% endif %}"
+  class="guarantee-card{% if s.use_scheme %} color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient{% endif %}{% if s.shadow %} guarantee-card--shadow{% endif %}"
   style="--gc-icon: {{ s.icon_size }}px;"
   data-box="{{ block.id }}" {{ block.shopify_attributes }}
 >
@@ -230,10 +230,29 @@
       "default": false
     },
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "visible_if": "{{ block.settings.use_scheme }}",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.use_scheme and block.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "checkbox",

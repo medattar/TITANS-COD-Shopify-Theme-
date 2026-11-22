@@ -256,16 +256,32 @@
         }
       },
       {
+        "type": "paragraph",
+        "content": "Page color scheme is the theme default. Header, footer, product cards, drawers, and every section use it. To style one section differently, open that section and turn off “Use the theme color scheme”."
+      },
+      {
         "type": "color_scheme",
         "id": "page_color_scheme",
         "label": "Page color scheme",
+        "info": "Applies across the theme until a section overrides it.",
         "default": "scheme-1"
+      },
+      {
+        "type": "select",
+        "id": "drawer_scheme_source",
+        "label": "Drawers and pop-ups",
+        "default": "theme",
+        "options": [
+          { "value": "theme", "label": "Theme color scheme" },
+          { "value": "custom", "label": "Custom" }
+        ]
       },
       {
         "type": "color_scheme",
         "id": "drawer_color_scheme",
-        "label": "Drawers and pop-ups",
-        "default": "scheme-1"
+        "label": "Custom drawer scheme",
+        "default": "scheme-1",
+        "visible_if": "{{ settings.drawer_scheme_source == 'custom' }}"
       }
     ]
   },
@@ -1144,10 +1160,22 @@
         "default": 22
       },
       {
+        "type": "select",
+        "id": "card_scheme_source",
+        "label": "Card color scheme",
+        "info": "Theme color scheme follows Theme settings > Colors.",
+        "default": "theme",
+        "options": [
+          { "value": "theme", "label": "Theme color scheme" },
+          { "value": "custom", "label": "Custom" }
+        ]
+      },
+      {
         "type": "color_scheme",
         "id": "card_color_scheme",
-        "label": "Card color scheme",
-        "default": "scheme-2"
+        "label": "Custom card scheme",
+        "default": "scheme-2",
+        "visible_if": "{{ settings.card_scheme_source == 'custom' }}"
       },
       {
         "type": "select",
@@ -1482,10 +1510,21 @@
     "name": "Legal and policy pages",
     "settings": [
       {
+        "type": "select",
+        "id": "policy_scheme_source",
+        "label": "Color scheme",
+        "default": "theme",
+        "options": [
+          { "value": "theme", "label": "Theme color scheme" },
+          { "value": "custom", "label": "Custom" }
+        ]
+      },
+      {
         "type": "color_scheme",
         "id": "policy_color_scheme",
-        "label": "Color scheme",
-        "default": "scheme-1"
+        "label": "Custom color scheme",
+        "default": "scheme-1",
+        "visible_if": "{{ settings.policy_scheme_source == 'custom' }}"
       },
       {
         "type": "range",

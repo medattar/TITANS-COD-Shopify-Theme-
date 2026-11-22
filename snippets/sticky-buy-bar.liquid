@@ -8,7 +8,7 @@
   assign media = variant.featured_media | default: product.featured_media
 -%}
 <sticky-buy-bar
-  class="sticky-bar color-{{ s.color_scheme }}{% unless s.sticky_bar_desktop %} sticky-bar--mobile-only{% endunless %}"
+  class="sticky-bar color-{% render 'color-scheme', source: s, key: 'color_scheme' %}{% unless s.sticky_bar_desktop %} sticky-bar--mobile-only{% endunless %}"
   aria-hidden="true"
   inert
 >

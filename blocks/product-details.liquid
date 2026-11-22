@@ -16,7 +16,7 @@
     <span>{{ s.label }}</span>
   </button>
 
-  <dialog id="{{ dialog_id }}" class="drawer drawer--{{ s.position }} product-details-drawer color-{{ s.color_scheme }}" aria-labelledby="{{ dialog_id }}-title">
+  <dialog id="{{ dialog_id }}" class="drawer drawer--{{ s.position }} product-details-drawer color-{% render 'color-scheme', source: s, key: 'color_scheme' %}" aria-labelledby="{{ dialog_id }}-title">
     <div class="drawer__header">
       <h2 class="drawer__title" id="{{ dialog_id }}-title">{{ s.heading | default: p.title }}</h2>
       <button type="button" class="drawer__close" data-close-dialog aria-label="{{ 'accessibility.close' | t }}">
@@ -284,10 +284,28 @@
       ]
     },
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Drawer color scheme",
-      "default": "scheme-1"
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "header",

@@ -71,7 +71,7 @@
   data-sticky="{{ section.settings.sticky }}"
 >
   <header
-    class="header header--logo-{{ section.settings.layout }} header--icons-{{ section.settings.icon_style }} color-{{ section.settings.color_scheme }} gradient"
+    class="header header--logo-{{ section.settings.layout }} header--icons-{{ section.settings.icon_style }} color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %} gradient"
     style="{{ menu_style | strip_newlines }}"
   >
     <div class="page-width">
@@ -119,7 +119,7 @@
     </div>
 
     {%- if section.settings.mobile_strip_menu != blank -%}
-      <nav class="header__mobile-nav color-{{ section.settings.mobile_strip_scheme }} gradient" aria-label="{{ 'sections.header.shortcuts' | t }}">
+      <nav class="header__mobile-nav color-{% render 'color-scheme', source: section.settings, key: 'mobile_strip_scheme' %} gradient" aria-label="{{ 'sections.header.shortcuts' | t }}">
         {%- for link in section.settings.mobile_strip_menu.links -%}
           <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
         {%- endfor -%}
@@ -130,10 +130,10 @@
 
 <dialog
   id="{{ menu_drawer_id }}"
-  class="drawer menu-drawer color-{{ settings.drawer_color_scheme }}"
+  class="drawer menu-drawer color-{% render 'color-scheme', source: settings, key: 'drawer_color_scheme' %}"
   aria-label="{{ 'sections.header.menu' | t }}"
 >
-  <div class="drawer__header color-{{ section.settings.color_scheme }} gradient">
+  <div class="drawer__header color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %} gradient">
     <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name | escape }}">
       {%- if logo != blank -%}
         {{ logo | image_url: width: 240 | image_tag: loading: 'lazy', alt: shop.name, style: 'width: var(--logo-width-mobile); height: auto;' }}
@@ -248,10 +248,28 @@
   },
   "settings": [
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-3"
+      "label": "Custom color scheme",
+      "default": "scheme-3",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "checkbox",
@@ -387,10 +405,28 @@
       "info": "Optional row of links under the header on mobile"
     },
     {
+      "type": "select",
+      "id": "mobile_strip_scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "mobile_strip_scheme",
       "label": "Shortcut strip color scheme",
-      "default": "scheme-1"
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.mobile_strip_scheme_source == 'custom' }}"
     },
     {
       "type": "header",

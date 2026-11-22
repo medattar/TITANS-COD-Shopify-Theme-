@@ -23,7 +23,7 @@
 
 <product-info
   id="MainProduct-{{ section.id }}"
-  class="section main-product color-{{ s.color_scheme }} gradient"
+  class="section main-product color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient"
   style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-cols-right: {{ s.columns | split: ' ' | reverse | join: ' ' }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px; --product-max: {{ s.single_max_width }}px;"
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -139,10 +139,28 @@
   ],
   "settings": [
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "header",

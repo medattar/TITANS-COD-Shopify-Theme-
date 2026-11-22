@@ -1222,7 +1222,7 @@ textarea.field__input {
 
 .product-card__price {
   --price-size: calc(var(--card-price-size) - 1px);
-  margin-top: 2px;
+  margin-top: auto;
 }
 
 .product-card__price .price__compare {
@@ -1246,7 +1246,6 @@ textarea.field__input {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: auto;
   padding-top: 6px;
 }
 

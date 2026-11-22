@@ -14,7 +14,7 @@
     assign percent = saved | times: 100.0 | divided_by: v.compare_at_price | round
   endif
 -%}
-<div class="offer-stack color-{{ s.color_scheme }}" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
+<div class="offer-stack color-{% render 'color-scheme', source: s, key: 'color_scheme' %}" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
   <div class="offer-stack__header">
     <b>{{ s.heading }}</b>
     <span data-variant-update="offer-badge-{{ block.id }}">
@@ -86,10 +86,28 @@
       "label": "Product"
     },
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-2"
+      "label": "Custom color scheme",
+      "default": "scheme-2",
+      "visible_if": "{{ block.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "text",

@@ -3,7 +3,7 @@
 {{ 'section-pages.css' | asset_url | stylesheet_tag }}
 
 {%- assign s = section.settings -%}
-<article class="section article color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+<article class="section article color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient" style="{% render 'section-style' %}">
   <div class="page-width page-width--narrow">
     <header class="article__header">
       <a class="link article__back" href="{{ blog.url }}">{%- render 'icon', icon: 'arrow-left' -%} {{ blog.title | escape }}</a>
@@ -102,10 +102,28 @@
   "tag": "div",
   "settings": [
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "checkbox",

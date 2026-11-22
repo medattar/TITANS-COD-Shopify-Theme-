@@ -16,7 +16,7 @@
   endif
 -%}
 <section
-  class="section lf-section color-{{ s.color_scheme }} gradient"
+  class="section lf-section color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient"
   style="{% render 'section-style' %}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
@@ -83,10 +83,28 @@
       "content": "Compare against generic alternatives, not named competitors, and only state facts you can support."
     },
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-5"
+      "label": "Custom color scheme",
+      "default": "scheme-5",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "text",

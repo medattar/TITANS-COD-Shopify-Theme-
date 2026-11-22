@@ -10,7 +10,7 @@
 -%}
 
 {%- if fp == blank -%}
-  <div class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="section color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient" style="{% render 'section-style' %}">
     <div class="page-width">
       <div class="featured-product__empty">
         <div class="media ratio-portrait">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -34,7 +34,7 @@
   -%}
   <product-info
     id="FeaturedProduct-{{ section.id }}"
-    class="section main-product featured-product color-{{ s.color_scheme }} gradient"
+    class="section main-product featured-product color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient"
     style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px;"
     data-section-id="{{ section.id }}"
     data-product-id="{{ fp.id }}"
@@ -128,10 +128,28 @@
       "label": "Product"
     },
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "text",

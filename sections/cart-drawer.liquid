@@ -1,6 +1,6 @@
 <dialog
   id="CartDrawer"
-  class="drawer drawer--right cart-drawer color-{{ section.settings.color_scheme }}"
+  class="drawer drawer--right cart-drawer color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %}"
   aria-label="{{ 'cart.general.title' | t }}"
 >
   <div class="cart-drawer__inner" data-cart-drawer-inner data-cart-count-value="{{ cart.item_count }}" style="display: contents;">
@@ -97,9 +97,40 @@
   "name": "Cart drawer",
   "class": "section-cart-drawer",
   "settings": [
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
-    { "type": "text", "id": "empty_heading", "label": "Empty cart heading" },
-    { "type": "text", "id": "empty_text", "label": "Empty cart text" }
+    {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty cart heading"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty cart text"
+    }
   ]
 }
 {% endschema %}

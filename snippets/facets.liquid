@@ -85,7 +85,7 @@
   </div>
 
   {%- if enable_filtering and results.filters.size > 0 -%}
-    <dialog id="FacetsDrawer-{{ section.id }}" class="drawer drawer--left facets__drawer color-{{ section.settings.color_scheme }}" aria-label="{{ 'products.facets.filter_button' | t }}">
+    <dialog id="FacetsDrawer-{{ section.id }}" class="drawer drawer--left facets__drawer color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %}" aria-label="{{ 'products.facets.filter_button' | t }}">
       <div class="drawer__header">
         <h2 class="drawer__title">{{ 'products.facets.filter_button' | t }}</h2>
         <button type="button" class="drawer__close" data-close-dialog aria-label="{{ 'accessibility.close' | t }}">{%- render 'icon', icon: 'close' -%}</button>

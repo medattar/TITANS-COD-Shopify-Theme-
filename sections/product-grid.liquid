@@ -30,7 +30,7 @@
 -%}
 
 <section
-  class="section product-grid color-{{ s.color_scheme }} gradient"
+  class="section product-grid color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient"
   style="{% render 'section-style' %}"
   {% if s.heading != blank %}
     aria-labelledby="ProductGridHeading-{{ section.id }}"
@@ -154,10 +154,28 @@
   "tag": "div",
   "settings": [
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "label": "Custom color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "header",

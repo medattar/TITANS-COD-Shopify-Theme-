@@ -10,7 +10,7 @@
 
 {%- if blocks_count > 0 -%}
   <announcement-bar
-    class="announcement-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.hide_mobile %} hide-mobile{% endif %}"
+    class="announcement-bar color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %} gradient{% if section.settings.hide_mobile %} hide-mobile{% endif %}"
     style="--announcement-height: {{ section.settings.height }}px; --announcement-size: {{ section.settings.text_size }}px; --announcement-transform: {% if section.settings.uppercase %}uppercase{% else %}none{% endif %}; --announcement-border: {% if section.settings.border %}var(--border-width){% else %}0{% endif %}; --marquee-speed: {{ section.settings.marquee_speed }}s;"
     data-speed="{{ section.settings.rotate_speed }}"
     {% if mode == 'marquee' %}
@@ -74,10 +74,28 @@
   },
   "settings": [
     {
+      "type": "select",
+      "id": "scheme_source",
+      "label": "Color scheme",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme color scheme"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-4"
+      "label": "Custom color scheme",
+      "default": "scheme-4",
+      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
     },
     {
       "type": "select",
