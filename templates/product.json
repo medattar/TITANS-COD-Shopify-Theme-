@@ -57,7 +57,7 @@
             "tx_line": 0,
             "tx_transform": "inherit",
             "tx_align": "inherit",
-            "tx_color": "#04B38D"
+            "tx_color": "#04b38d"
           },
           "blocks": {}
         },
@@ -261,8 +261,8 @@
           "settings": {
             "label": "La promoción termina en",
             "date": "",
-            "time": "23:59",
-            "style": "tiles",
+            "time": "3:19",
+            "style": "pills",
             "align": "flex-start",
             "effect": "none",
             "effect_speed": 1.2,
@@ -270,10 +270,10 @@
             "label_size": 0,
             "gap": 0,
             "radius": 0,
-            "number_color": "",
+            "number_color": "#E11F2F",
             "label_color": "",
-            "background": "",
-            "border_color": "",
+            "background": "#FFECEC",
+            "border_color": "#0D0808",
             "urgent_minutes": 0,
             "expired_text": "",
             "box_enable": false,
