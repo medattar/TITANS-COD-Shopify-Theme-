@@ -7,14 +7,14 @@
   assign items = s.list | newline_to_br | split: '<br />'
 -%}
 <section
-  class="section lf-section color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient"
+  class="section lf-section color-{{ s.color_scheme }} gradient"
   style="{% render 'section-style' %}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
   {% endif %}
 >
   <div class="page-width">
-    <div class="final-cta lf-card color-{% render 'color-scheme', source: s, key: 'card_scheme' %}{% if s.image == blank %} final-cta--no-image{% endif %}">
+    <div class="final-cta lf-card color-{{ s.card_scheme }}{% if s.image == blank %} final-cta--no-image{% endif %}">
       {%- if s.image != blank -%}
         <div class="final-cta__media media">
           {%- render 'image', image: s.image, sizes: '(min-width: 990px) 500px, 100vw' -%}
@@ -48,52 +48,16 @@
   "tag": "div",
   "settings": [
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Section color scheme",
-      "default": "scheme-5",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "card_scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
+      "default": "scheme-5"
     },
     {
       "type": "color_scheme",
       "id": "card_scheme",
       "label": "Card color scheme",
-      "default": "scheme-1",
-      "visible_if": "{{ section.settings.card_scheme_source == 'custom' }}"
+      "default": "scheme-1"
     },
     {
       "type": "text",

@@ -10,7 +10,7 @@
 -%}
 
 {%- paginate search.results by s.results_per_page -%}
-  <facet-filters class="section search-page color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
+  <facet-filters class="section search-page color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
     <div class="page-width">
       <header class="collection__header text-center">
         <h1 class="h1 collection__title">{{ 'templates.search.title' | t }}</h1>
@@ -82,28 +82,10 @@
   "tag": "section",
   "settings": [
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-1",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "range",

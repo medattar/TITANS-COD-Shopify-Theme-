@@ -8,7 +8,7 @@
 -%}
 
 <footer
-  class="footer color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %} gradient"
+  class="footer color-{{ section.settings.color_scheme }} gradient"
   style="{% render 'section-style' %} --footer-columns: {{ section.settings.columns }}; --footer-border: {% if section.settings.border %}var(--border-width){% else %}0px{% endif %}; --footer-logo-width: {{ section.settings.logo_width }}px;"
 >
   <div class="page-width footer__inner">
@@ -141,28 +141,10 @@
   },
   "settings": [
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-3",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-3"
     },
     {
       "type": "checkbox",

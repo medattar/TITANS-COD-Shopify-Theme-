@@ -2,7 +2,7 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 <tabs-component
-  class="tabs-block tabs-block--{{ s.style }}{% if s.use_scheme %} color-{% render 'color-scheme', source: s, key: 'color_scheme' %}{% endif %}"
+  class="tabs-block tabs-block--{{ s.style }}{% if s.use_scheme %} color-{{ s.color_scheme }}{% endif %}"
   data-build-tabs
   data-box="{{ block.id }}" {{ block.shopify_attributes }}
 >
@@ -49,29 +49,10 @@
       "default": true
     },
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "visible_if": "{{ block.settings.use_scheme }}",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Panel color scheme",
-      "default": "scheme-6",
-      "visible_if": "{{ block.settings.use_scheme and block.settings.scheme_source == 'custom' }}"
+      "default": "scheme-6"
     },
     {
       "type": "header",

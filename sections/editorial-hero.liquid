@@ -4,7 +4,7 @@
 
 {%- assign s = section.settings -%}
 <section
-  class="editorial-hero color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient"
+  class="editorial-hero color-{{ s.color_scheme }} gradient"
   style="{% render 'section-style' %}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
@@ -64,28 +64,10 @@
   "max_blocks": 8,
   "settings": [
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-4",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-4"
     },
     {
       "type": "text",

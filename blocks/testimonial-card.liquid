@@ -3,7 +3,7 @@
 {%- assign s = block.settings -%}
 {%- if s.quote != blank -%}
   <div
-    class="testimonial-card{% if s.use_scheme %} color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient{% endif %}{% if s.shadow %} testimonial-card--shadow{% endif %}"
+    class="testimonial-card{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}{% if s.shadow %} testimonial-card--shadow{% endif %}"
     data-box="{{ block.id }}" {{ block.shopify_attributes }}
   >
     {%- if s.avatar != blank -%}
@@ -79,29 +79,10 @@
       "default": false
     },
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "visible_if": "{{ block.settings.use_scheme }}",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-1",
-      "visible_if": "{{ block.settings.use_scheme and block.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "checkbox",

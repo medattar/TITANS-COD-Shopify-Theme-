@@ -1,7 +1,7 @@
 {%- capture box_sel -%}#shopify-section-{{ section.id }} > :not(style, link, script, template){%- endcapture -%}
 {%- render 'box-style', bs: section.settings, sel: box_sel -%}
 <div
-  class="section color-{% render 'color-scheme', source: section.settings, key: 'color_scheme' %} gradient"
+  class="section color-{{ section.settings.color_scheme }} gradient"
   style="{% render 'section-style' %}"
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handle }}"
@@ -25,28 +25,10 @@
       "info": "Use for app snippets or embeds that do not provide an app block."
     },
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-1",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "text",

@@ -25,12 +25,12 @@
 -%}
 
 <section
-  class="hero section color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient{% if s.inset %} hero--inset{% endif %} hero--{{ placement }} hero--align-{{ s.content_align }} hero--v-{{ s.content_vertical }}"
+  class="hero section{% if s.inset %} hero--inset{% endif %} hero--{{ placement }} hero--align-{{ s.content_align }} hero--v-{{ s.content_vertical }}"
   style="{% render 'section-style' %} --hero-min-h: {{ s.min_height }}px; --hero-min-h-mobile: {{ s.min_height_mobile }}px; --hero-radius: {{ s.radius }}px; --hero-overlay: {{ s.overlay_opacity | divided_by: 100.0 }}; --hero-content-width: {{ s.content_width }}px;"
   aria-label="{{ s.aria_label | default: shop.name | escape }}"
 >
   <div class="{% if s.inset %}page-width{% endif %}">
-    <div class="hero__card color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient{% if s.shadow %} hero__card--shadow{% endif %}">
+    <div class="hero__card color-{{ s.color_scheme }} gradient{% if s.shadow %} hero__card--shadow{% endif %}">
       {%- if placement != 'none' -%}
         <div class="hero__media">
           {%- if s.video != blank -%}
@@ -196,28 +196,10 @@
   "max_blocks": 12,
   "settings": [
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-4",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-4"
     },
     {
       "type": "checkbox",

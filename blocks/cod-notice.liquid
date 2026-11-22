@@ -2,7 +2,7 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 <div
-  class="cod-notice cod-notice--{{ s.style }}{% if s.use_scheme %} color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient{% endif %}"
+  class="cod-notice cod-notice--{{ s.style }}{% if s.use_scheme %} color-{{ s.color_scheme }} gradient{% endif %}"
   data-box="{{ block.id }}" {{ block.shopify_attributes }}
 >
   {%- if s.icon != 'none' or s.image != blank -%}
@@ -63,29 +63,10 @@
       "default": false
     },
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "visible_if": "{{ block.settings.use_scheme }}",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-5",
-      "visible_if": "{{ block.settings.use_scheme and block.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-5"
     },
     {
       "type": "select",

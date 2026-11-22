@@ -61,7 +61,7 @@
 -%}
 
 <article
-  class="product-card product-card--{{ settings.card_style }} product-card--hover-{{ settings.card_hover }} color-{% render 'color-scheme', source: settings, key: 'card_color_scheme' %}"
+  class="product-card product-card--{{ settings.card_style }} product-card--hover-{{ settings.card_hover }} color-{{ settings.card_color_scheme }}"
   style="--ratio: {{ ratio }}; --fit: {{ settings.card_image_fit }}; --card-align: {{ settings.card_text_align }};"
 >
   {%- if product != blank -%}

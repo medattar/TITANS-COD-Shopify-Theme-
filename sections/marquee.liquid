@@ -10,7 +10,7 @@
   endcapture
 -%}
 <div
-  class="marquee-section color-{% render 'color-scheme', source: s, key: 'color_scheme' %} gradient{% if s.border %} marquee-section--border{% endif %}"
+  class="marquee-section color-{{ s.color_scheme }} gradient{% if s.border %} marquee-section--border{% endif %}"
   style="--marquee-speed: {{ s.speed }}s; --mq-size-d: {{ s.size }}px; --mq-size-m: {{ s.size_mobile }}px;"
 >
   <div class="marquee{% if s.reverse %} marquee--reverse{% endif %}">
@@ -78,28 +78,10 @@
   "max_blocks": 12,
   "settings": [
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors. Custom keeps a scheme on this section only."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-5",
-      "visible_if": "{{ section.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-5"
     },
     {
       "type": "text",

@@ -4,10 +4,7 @@
   assign s = block.settings
   assign classes = 'block-group'
   if s.use_scheme
-    capture scheme_id
-      render 'color-scheme', source: s, key: 'color_scheme'
-    endcapture
-    assign classes = classes | append: ' color-' | append: scheme_id | append: ' gradient'
+    assign classes = classes | append: ' color-' | append: s.color_scheme | append: ' gradient'
   endif
   if s.border
     assign classes = classes | append: ' block-group--border'
@@ -161,29 +158,10 @@
       "default": false
     },
     {
-      "type": "select",
-      "id": "scheme_source",
-      "label": "Color scheme",
-      "default": "theme",
-      "visible_if": "{{ block.settings.use_scheme }}",
-      "options": [
-        {
-          "value": "theme",
-          "label": "Theme color scheme"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
-      ],
-      "info": "Theme color scheme follows Theme settings > Colors."
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Custom color scheme",
-      "default": "scheme-2",
-      "visible_if": "{{ block.settings.use_scheme and block.settings.scheme_source == 'custom' }}"
+      "label": "Color scheme",
+      "default": "scheme-2"
     },
     {
       "type": "range",
