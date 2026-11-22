@@ -17,6 +17,8 @@
         "brand": {
           "type": "brand",
           "settings": {
+            "block_align": "left",
+            "block_width": 0,
             "show_logo": true,
             "tagline": "Bienvenido a MexiMall, tu tienda en línea para encontrar productos útiles y a buen precio.",
             "text": "<p>¡Haz tu pedido hoy y recíbelo en la puerta de tu casa! 📦</p>",
@@ -27,6 +29,8 @@
         "menu_shop": {
           "type": "menu",
           "settings": {
+            "block_align": "left",
+            "block_width": 0,
             "heading": "Tienda",
             "menu": "main-menu"
           }
@@ -34,6 +38,8 @@
         "menu_help": {
           "type": "menu",
           "settings": {
+            "block_align": "left",
+            "block_width": 0,
             "heading": "Ayuda",
             "menu": "ayuda"
           }
@@ -51,13 +57,16 @@
             "icon_color": "",
             "text_size": 15,
             "gap": 12,
-            "align": "left"
+            "align": "left",
+            "items_layout": "row"
           }
         },
         "social": {
           "type": "social",
           "disabled": true,
           "settings": {
+            "block_align": "left",
+            "block_width": 0,
             "heading": "Síguenos",
             "instagram": "",
             "facebook": "",
@@ -88,6 +97,8 @@
           "type": "text",
           "disabled": true,
           "settings": {
+            "block_align": "left",
+            "block_width": 0,
             "heading": "Sobre nosotros",
             "text": "<p>Comparte información sobre tu tienda.</p>"
           }
@@ -106,6 +117,9 @@
         "use_inverse_logo": true,
         "logo_width": 140,
         "columns": "1.6fr 1fr 1fr",
+        "block_layout": "columns",
+        "row_align": "space-between",
+        "row_on_mobile": false,
         "border": true,
         "copyright": "",
         "bottom_text": "✦ Pago contra entrega ✦",
@@ -122,6 +136,11 @@
         "box_mb_m": 0,
         "box_inset": 0,
         "box_radius": 0,
+        "box_radius_split": false,
+        "box_radius_tl": 0,
+        "box_radius_tr": 0,
+        "box_radius_br": 0,
+        "box_radius_bl": 0,
         "box_border_width": 0,
         "box_border_style": "solid",
         "box_border_color": "",
