@@ -38,6 +38,22 @@
             "menu": "ayuda"
           }
         },
+        "contact": {
+          "type": "contact",
+          "settings": {
+            "heading": "Contacto",
+            "whatsapp": "5215540733779",
+            "phone": "",
+            "email": "hola@meximall.shop",
+            "hours": "",
+            "address": "",
+            "icon_size": 18,
+            "icon_color": "",
+            "text_size": 15,
+            "gap": 12,
+            "align": "left"
+          }
+        },
         "social": {
           "type": "social",
           "disabled": true,
@@ -70,15 +86,10 @@
         },
         "text_8eY6E3": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "heading": "Sobre nosotros",
             "text": "<p>Comparte información sobre tu tienda.</p>"
-          }
-        },
-        "contact": {
-          "type": "contact",
-          "settings": {
-            "heading": "Contacto"
           }
         }
       },
