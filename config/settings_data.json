@@ -9,8 +9,10 @@
  */
 {
   "current": {
-    "logo_width_desktop": 120,
-    "logo_width_mobile": 96,
+    "logo": "shopify://shop_images/Normal.svg",
+    "logo_width_desktop": 148,
+    "logo_width_mobile": 116,
+    "favicon": "shopify://shop_images/favicon_2.svg",
     "page_color_scheme": "scheme-8",
     "drawer_color_scheme": "scheme-8",
     "type_display_font": "archivo_black_n4",
