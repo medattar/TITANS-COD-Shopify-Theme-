@@ -19,7 +19,7 @@
           "settings": {
             "text": "Pago contra entrega · Envío a todo México",
             "link": "",
-            "icon": "truck",
+            "icon": "none",
             "icon_size": 20,
             "icon_color": "",
             "effect": "heartbeat",
@@ -53,10 +53,15 @@
         "box_mb_m": 0,
         "box_inset": 0,
         "box_radius": 0,
+        "box_radius_split": false,
+        "box_radius_tl": 0,
+        "box_radius_tr": 0,
+        "box_radius_br": 0,
+        "box_radius_bl": 0,
         "box_border_width": 0,
         "box_border_style": "solid",
         "box_border_color": "",
-        "box_bg": "#FFB14B",
+        "box_bg": "#ffb14b",
         "box_bg_gradient": "",
         "box_shadow": "none",
         "box_shadow_color": "#000000",
@@ -73,7 +78,7 @@
         "tx_line": 0,
         "tx_transform": "inherit",
         "tx_align": "inherit",
-        "tx_color": "#FBFFFE"
+        "tx_color": "#fbfffe"
       }
     },
     "header": {
@@ -112,6 +117,11 @@
         "box_mb_m": 0,
         "box_inset": 0,
         "box_radius": 0,
+        "box_radius_split": false,
+        "box_radius_tl": 0,
+        "box_radius_tr": 0,
+        "box_radius_br": 0,
+        "box_radius_bl": 0,
         "box_border_width": 0,
         "box_border_style": "solid",
         "box_border_color": "",
