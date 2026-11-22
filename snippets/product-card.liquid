@@ -41,8 +41,22 @@
       assign percent = saved | times: 100.0 | divided_by: product.compare_at_price | round
     endif
     assign card_label = product.metafields.custom.card_label.value
+    assign manual_badge = product.metafields.custom.badge_text.value
     assign rating = product.metafields.reviews.rating.value
     assign rating_count = product.metafields.reviews.rating_count.value
+    assign rating_value = rating.rating
+    assign rating_scale = rating.scale_max
+    if rating == blank and product.metafields.custom.rating != blank
+      assign own_rating = product.metafields.custom.rating
+      if own_rating.type == 'rating'
+        assign rating_value = own_rating.value.rating
+        assign rating_scale = own_rating.value.scale_max
+      else
+        assign rating_value = own_rating.value
+        assign rating_scale = 5
+      endif
+      assign rating_count = product.metafields.custom.rating_count.value
+    endif
   endif
 -%}
 
@@ -51,6 +65,7 @@
   style="--ratio: {{ ratio }}; --fit: {{ settings.card_image_fit }}; --card-align: {{ settings.card_text_align }};"
 >
   {%- if product != blank -%}
+    <div class="product-card__top">
     <a class="product-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
       {%- if product.featured_media -%}
         {%- render 'image', image: product.featured_media.preview_image, sizes: img_sizes, widths: '240, 360, 480, 600, 720, 900', loading: loading, priority: eager, class: 'product-card__image' -%}
@@ -63,9 +78,11 @@
     </a>
 
     {%- if settings.card_show_badge -%}
-      {%- if product.available == false -%}
+      {%- if product.available == false and settings.card_badge_sold_out -%}
         <span class="product-card__badge product-card__badge--{{ settings.card_badge_position }} badge badge--ink">{{ 'products.product.sold_out' | t }}</span>
-      {%- elsif on_sale -%}
+      {%- elsif manual_badge != blank and settings.card_badge_mode != 'auto' -%}
+        <span class="product-card__badge product-card__badge--{{ settings.card_badge_position }} badge">{{ manual_badge | escape }}</span>
+      {%- elsif on_sale and settings.card_badge_mode != 'manual' -%}
         <span class="product-card__badge product-card__badge--{{ settings.card_badge_position }} badge">
           {%- case settings.sale_badge_format -%}
             {%- when 'amount' -%}
@@ -79,6 +96,7 @@
         </span>
       {%- endif -%}
     {%- endif -%}
+    </div>
 
     <div class="product-card__body">
       {%- if settings.card_show_vendor -%}
@@ -93,9 +111,9 @@
         <p class="product-card__label">{{ card_label | escape }}</p>
       {%- endif -%}
 
-      {%- if settings.card_show_rating and rating != blank -%}
+      {%- if settings.card_show_rating and rating_value != blank -%}
         <div class="product-card__rating">
-          {%- render 'stars', rating: rating.rating, scale: rating.scale_max, count: rating_count -%}
+          {%- render 'stars', rating: rating_value, scale: rating_scale, count: rating_count, color: settings.card_star_color -%}
         </div>
       {%- endif -%}
 

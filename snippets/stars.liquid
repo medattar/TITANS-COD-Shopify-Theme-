@@ -1,12 +1,62 @@
 {%- comment -%}
-  Star rating from real rating data. Params: rating (number), scale (default 5), count (optional), label (optional)
+  Star rating. Partial values fill exactly (4.5 = four and a half stars).
+  Params:
+  - rating (number), scale (default 5), count (optional, shown in brackets)
+  - shape: 'classic' (default), 'rounded', 'heart'
+  - outline: true to draw empty stars as outlines
+  - size, gap: px (optional); color, empty_color: colors (optional)
 {%- endcomment -%}
 {%- liquid
   assign rating_scale = scale | default: 5
-  assign pct = rating | times: 100.0 | divided_by: rating_scale
+  assign stars_value = rating | times: 5.0 | divided_by: rating_scale | at_most: 5 | at_least: 0
+  assign full_count = stars_value | floor
+  assign partial = stars_value | minus: full_count
+  assign star_shape = shape | default: 'classic'
+
+  capture star_style
+    if size != blank
+      echo '--star-size:' | append: size | append: 'px;'
+    endif
+    if gap != blank
+      echo '--star-gap:' | append: gap | append: 'px;'
+    endif
+    if color != blank and color.alpha != 0
+      echo '--star-fill:' | append: color | append: ';'
+    endif
+    if empty_color != blank and empty_color.alpha != 0
+      echo '--star-empty:' | append: empty_color | append: ';'
+    endif
+  endcapture
+
+  case star_shape
+    when 'heart'
+      assign star_path = 'M12 20.5s-8.5-5.1-8.5-11.3A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.6c0 6.2-8.5 11.3-8.5 11.3z'
+    else
+      assign star_path = 'M12 2.8l2.84 5.9 6.46.86-4.73 4.5 1.2 6.43L12 17.37l-5.77 3.12 1.2-6.43-4.73-4.5 6.46-.86z'
+  endcase
+  assign stroke = ''
+  if star_shape == 'rounded'
+    assign stroke = ' stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"'
+  endif
 -%}
-<span class="stars" role="img" aria-label="{{ 'accessibility.star_rating' | t: rating: rating, max: rating_scale }}">
-  <span class="stars__fill" style="width: {{ pct }}%;"></span>
+<span
+  class="stars stars--{{ star_shape }}{% if outline %} stars--outline{% endif %}"
+  role="img"
+  aria-label="{{ 'accessibility.star_rating' | t: rating: rating, max: rating_scale }}"
+  {% if star_style != blank %}
+    style="{{ star_style | strip }}"
+  {% endif %}
+>
+  <span class="stars__row stars__row--empty" aria-hidden="true">
+    {%- for i in (1..5) -%}
+      <svg viewBox="0 0 24 24" focusable="false"><path d="{{ star_path }}"{{ stroke }}/></svg>
+    {%- endfor -%}
+  </span>
+  <span class="stars__row stars__row--fill" aria-hidden="true" style="width: calc({{ full_count }} * (var(--star-size) + var(--star-gap)) + {{ partial }} * var(--star-size));">
+    {%- for i in (1..5) -%}
+      <svg viewBox="0 0 24 24" focusable="false"><path d="{{ star_path }}"{{ stroke }}/></svg>
+    {%- endfor -%}
+  </span>
 </span>
 {%- if count != blank and count > 0 -%}
   <span class="stars__count">({{ count }})</span>

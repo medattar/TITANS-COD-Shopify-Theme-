@@ -1,0 +1,130 @@
+{%- comment -%}
+  Per-block / per-section style overrides from the shared "Box style" and "Text style" settings.
+  Params:
+  - bs: the settings object (block.settings or section.settings)
+  - sel: CSS selector of the element to style
+  - clip: true to clip children to the corner radius (blocks only; sections may contain sticky children)
+{%- endcomment -%}
+{%- if bs.box_enable or bs.tx_enable -%}
+  {%- style -%}
+    {%- if bs.box_enable -%}
+      {%- liquid
+        case bs.box_shadow
+          when 'soft'
+            assign shadow_alpha = bs.box_shadow_color | color_modify: 'alpha', 0.16
+            assign shadow = '0 10px 30px ' | append: shadow_alpha
+          when 'medium'
+            assign shadow_alpha = bs.box_shadow_color | color_modify: 'alpha', 0.24
+            assign shadow = '0 16px 40px ' | append: shadow_alpha
+          when 'hard'
+            assign shadow = '5px 5px 0 ' | append: bs.box_shadow_color
+          when 'glow'
+            assign shadow_alpha = bs.box_shadow_color | color_modify: 'alpha', 0.45
+            assign shadow = '0 0 26px ' | append: shadow_alpha
+          else
+            assign shadow = 'none'
+        endcase
+      -%}
+      {{ sel }} {
+        margin-top: {{ bs.box_mt_m }}px;
+        margin-bottom: {{ bs.box_mb_m }}px;
+        {%- if bs.box_py != nil %}
+          padding: {{ bs.box_py_m }}px {{ bs.box_px_m }}px;
+        {%- endif %}
+        {%- if bs.box_inset > 0 %}
+          margin-inline: {{ bs.box_inset | at_most: 16 }}px;
+        {%- endif %}
+        border-radius: {{ bs.box_radius }}px;
+        {%- if bs.box_border_width > 0 %}
+          border: {{ bs.box_border_width }}px {{ bs.box_border_style }} {{ bs.box_border_color | default: 'currentColor' }};
+        {%- endif %}
+        {%- if bs.box_bg != blank and bs.box_bg.alpha != 0 %}
+          background: {{ bs.box_bg }};
+        {%- endif %}
+        {%- if bs.box_bg_gradient != blank %}
+          background: {{ bs.box_bg_gradient }};
+        {%- endif %}
+        box-shadow: {{ shadow }};
+        {%- if bs.box_max_width > 0 %}
+          max-width: {{ bs.box_max_width }}px;
+          {%- case bs.box_align -%}
+            {%- when 'center' %} margin-inline: auto;
+            {%- when 'right' %} margin-inline: auto 0;
+            {%- else %} margin-inline: 0 auto;
+          {%- endcase -%}
+        {%- endif %}
+        {%- if clip and bs.box_radius > 0 %}
+          overflow: hidden;
+        {%- endif %}
+        {%- if bs.box_effect != 'none' %}
+          transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        {%- endif %}
+      }
+      @media (min-width: 750px) {
+        {{ sel }} {
+          margin-top: {{ bs.box_mt }}px;
+          margin-bottom: {{ bs.box_mb }}px;
+          {%- if bs.box_py != nil %}
+            padding: {{ bs.box_py }}px {{ bs.box_px }}px;
+          {%- endif %}
+          {%- if bs.box_inset > 0 %}
+            margin-inline: {{ bs.box_inset }}px;
+          {%- endif %}
+        }
+      }
+      @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        {%- case bs.box_effect -%}
+          {%- when 'lift' %}
+            {{ sel }}:hover { transform: translateY(-4px); }
+          {%- when 'grow' %}
+            {{ sel }}:hover { transform: scale(1.03); }
+          {%- when 'glow' %}
+            {{ sel }}:hover { box-shadow: 0 0 0 3px {{ bs.box_shadow_color | color_modify: 'alpha', 0.25 }}, 0 12px 34px {{ bs.box_shadow_color | color_modify: 'alpha', 0.3 }}; }
+          {%- when 'dim' %}
+            {{ sel }}:hover { filter: brightness(0.94); }
+        {%- endcase %}
+      }
+    {%- endif -%}
+
+    {%- if bs.tx_enable -%}
+      {{ sel }},
+      {{ sel }} :is(h1, h2, h3, h4, h5, h6, p, li, span, a, label, summary, button, .button) {
+        {%- if bs.tx_font != 'inherit' %}
+          font-family: var(--font-{{ bs.tx_font }}-family);
+        {%- endif %}
+        {%- if bs.tx_weight != 'inherit' %}
+          font-weight: {{ bs.tx_weight }};
+        {%- endif %}
+        letter-spacing: {{ bs.tx_letter | divided_by: 100.0 }}em;
+        word-spacing: {{ bs.tx_word | divided_by: 100.0 }}em;
+        {%- if bs.tx_line > 0 %}
+          line-height: {{ bs.tx_line | divided_by: 10.0 }};
+        {%- endif %}
+        {%- if bs.tx_transform != 'inherit' %}
+          text-transform: {{ bs.tx_transform }};
+        {%- endif %}
+        {%- if bs.tx_color != blank and bs.tx_color.alpha != 0 %}
+          color: {{ bs.tx_color }};
+        {%- endif %}
+      }
+      {{ sel }} {
+        {%- if bs.tx_align != 'inherit' %}
+          text-align: {{ bs.tx_align }};
+          justify-content: {% case bs.tx_align %}{% when 'center' %}center{% when 'right' %}flex-end{% else %}flex-start{% endcase %};
+        {%- endif %}
+      }
+      {%- if bs.tx_size_m > 0 or bs.tx_size > 0 %}
+        {{ sel }},
+        {{ sel }} :is(h1, h2, h3, h4, h5, h6, p, li) {
+          {%- if bs.tx_size_m > 0 %} font-size: {{ bs.tx_size_m }}px;{% endif %}
+        }
+        @media (min-width: 750px) {
+          {{ sel }},
+          {{ sel }} :is(h1, h2, h3, h4, h5, h6, p, li) {
+            {%- if bs.tx_size > 0 %} font-size: {{ bs.tx_size }}px;{% endif %}
+          }
+        }
+      {%- endif %}
+    {%- endif -%}
+  {%- endstyle -%}
+{%- endif -%}

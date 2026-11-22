@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero": {
@@ -25,7 +16,7 @@
           "settings": {
             "text": "Tu producto estrella",
             "accent_line": "Paga al recibir",
-            "font": "heading",
+            "font": "display",
             "size_desktop": 84,
             "size_mobile": 42,
             "effect": "none",
@@ -47,8 +38,7 @@
             "link_1": "shopify://collections/all",
             "style_1": "highlight",
             "label_2": "",
-            "link_2": "",
-            "style_2": "highlight",
+            "style_2": "outline",
             "large": true,
             "arrow": true
           }
@@ -73,57 +63,89 @@
       ],
       "settings": {
         "color_scheme": "scheme-4",
-        "inset": false,
-        "shadow": false,
-        "radius": 18,
-        "image": "shopify://shop_images/banner.png",
+        "inset": true,
+        "radius": 24,
         "media_placement": "background",
-        "overlay_opacity": 50,
         "content_align": "center",
         "content_vertical": "center",
-        "content_width": 820,
         "min_height": 520,
-        "min_height_mobile": 420,
-        "aria_label": "",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "padding_top_mobile": 12,
-        "padding_bottom_mobile": 12
+        "min_height_mobile": 420
       }
     },
     "products": {
       "type": "product-grid",
       "settings": {
-        "color_scheme": "",
         "eyebrow": "✦ Más vendidos ✦",
         "heading": "Nuestros productos",
-        "subheading": "",
-        "heading_size": "h2",
-        "heading_align": "center",
         "source": "collection",
-        "collection": "",
-        "product_list": [],
         "products_to_show": 8,
         "columns_desktop": 4,
         "columns_tablet": 3,
-        "columns_mobile": "1",
-        "mobile_layout": "grid",
-        "slide_width": 70,
-        "reveal": false,
-        "card_action": "global",
-        "button_label": "",
-        "view_all_label": "",
-        "view_all_link": "",
-        "view_all_style": "outline",
-        "padding_top": 64,
-        "padding_bottom": 80,
-        "padding_top_mobile": 40,
-        "padding_bottom_mobile": 56
+        "columns_mobile": "2",
+        "mobile_layout": "grid"
       }
+    },
+    "trust": {
+      "type": "icon-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "style": "bar",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "icon_size": 28,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "anchor": "",
+        "color_scheme": "scheme-2"
+      },
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "cash",
+            "title": "Pago contra entrega",
+            "text": ""
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Envío a todo México",
+            "text": ""
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Soporte por WhatsApp",
+            "text": ""
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Compra segura",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
     }
   },
   "order": [
     "hero",
+    "trust",
     "products"
   ]
 }

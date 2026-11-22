@@ -191,6 +191,10 @@
       "button": "Suscribirme",
       "email": "Correo electrónico",
       "success": "Gracias por suscribirte."
+    },
+    "recommendations": {
+      "disabled_hint": "Las recomendaciones de productos están desactivadas. Actívalas en la configuración de esta sección.",
+      "manual_hint": "Elige productos en la configuración de esta sección."
     }
   },
   "templates": {

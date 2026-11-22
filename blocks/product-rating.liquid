@@ -1,23 +1,81 @@
+{%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
+{%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- liquid
-  assign p = block.settings.product | default: closest.product
+  assign p = closest.product
+  if block.settings.product.id != blank
+    assign p = block.settings.product
+  endif
   assign s = block.settings
-  assign rating = p.metafields.reviews.rating.value
-  assign rating_count = p.metafields.reviews.rating_count.value | default: 0
+  assign rating_value = nil
+  assign rating_scale = 5
+  assign rating_count = 0
+  assign rating_text = s.text
+
+  if s.source == 'manual'
+    assign rating_value = s.manual_rating
+    assign rating_count = s.manual_count
+  else
+    assign app_rating = p.metafields.reviews.rating.value
+    assign own_rating = p.metafields.custom.rating
+    if s.source == 'auto' and app_rating != blank
+      assign rating_value = app_rating.rating
+      assign rating_scale = app_rating.scale_max
+      assign rating_count = p.metafields.reviews.rating_count.value | default: 0
+    elsif own_rating != blank
+      if own_rating.type == 'rating'
+        assign rating_value = own_rating.value.rating
+        assign rating_scale = own_rating.value.scale_max
+      else
+        assign rating_value = own_rating.value
+      endif
+      assign rating_count = p.metafields.custom.rating_count.value | default: 0
+      if p.metafields.custom.rating_text != blank
+        assign rating_text = p.metafields.custom.rating_text.value
+      endif
+    endif
+  endif
+
+  assign rating_number = rating_value | times: 1.0
+  if rating_value == blank or rating_number <= 0
+    assign rating_value = nil
+  endif
+
+  if rating_value != nil
+    assign value_label = rating_value | round: 1 | append: '/' | append: rating_scale
+    assign count_label = 'products.product.reviews_count' | t: count: rating_count
+    assign rating_text = rating_text | replace: '[rating]', value_label | replace: '[count]', rating_count
+  endif
 -%}
-{%- if rating != blank -%}
-  <div class="product-rating" style="justify-content: {{ s.align }};" {{ block.shopify_attributes }}>
+{%- if rating_value != nil -%}
+  <div
+    class="product-rating product-rating--{{ s.text_position }}"
+    style="justify-content: {{ s.align }}; --rating-align: {{ s.align }}; --rating-gap: {{ s.gap }}px; --rating-text-size: {{ s.text_size }}px;{% if s.text_color != blank and s.text_color.alpha != 0 %} --rating-text-color: {{ s.text_color }};{% endif %}"
+    data-box="{{ block.id }}" {{ block.shopify_attributes }}
+  >
     {%- if s.link != blank -%}<a href="{{ s.link }}" class="product-rating__link">{%- endif -%}
-    {%- render 'stars', rating: rating.rating, scale: rating.scale_max, count: rating_count -%}
+    {%- render 'stars',
+      rating: rating_value,
+      scale: rating_scale,
+      shape: s.star_shape,
+      outline: s.star_outline,
+      size: s.star_size,
+      gap: s.star_gap,
+      color: s.star_color,
+      empty_color: s.empty_color
+    -%}
     {%- if s.show_value -%}
-      <span class="product-rating__value">{{ rating.rating | round: 1 }}/{{ rating.scale_max | round }}</span>
+      <span class="product-rating__value">{{ value_label }}</span>
     {%- endif -%}
     {%- if s.show_count and rating_count > 0 -%}
-      <span class="product-rating__count">({{ 'products.product.reviews_count' | t: count: rating_count }})</span>
+      <span class="product-rating__count">({{ count_label }})</span>
+    {%- endif -%}
+    {%- if rating_text != blank -%}
+      <span class="product-rating__text">{{ rating_text }}</span>
     {%- endif -%}
     {%- if s.link != blank -%}</a>{%- endif -%}
   </div>
 {%- elsif request.design_mode -%}
-  <p class="product-rating product-rating--empty" {{ block.shopify_attributes }}>
+  <p class="product-rating product-rating--empty" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
     {{- 'products.product.rating_editor_hint' | t -}}
   </p>
 {%- endif -%}
@@ -27,18 +85,657 @@
   "name": "Product rating",
   "tag": null,
   "settings": [
-    { "type": "paragraph", "content": "Shows real ratings saved by a reviews app in the reviews.rating and reviews.rating_count metafields. Nothing is shown when the product has no ratings." },
-    { "type": "product", "id": "product", "label": "Product" },
-    { "type": "checkbox", "id": "show_value", "label": "Show rating value", "default": false },
-    { "type": "checkbox", "id": "show_count", "label": "Show review count", "default": true },
-    { "type": "text", "id": "link", "label": "Link target", "default": "#reviews", "info": "Anchor of your reviews section, e.g. #reviews" },
     {
-      "type": "select", "id": "align", "label": "Alignment", "default": "flex-start",
-      "options": [ { "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" } ]
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Rating source",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Reviews app, then product metafields"
+        },
+        {
+          "value": "metafield",
+          "label": "Product metafields only"
+        },
+        {
+          "value": "manual",
+          "label": "Manual (set below)"
+        }
+      ],
+      "info": "Product metafields let every product have its own rating: custom.rating (rating or decimal), custom.rating_count (integer), custom.rating_text (text). Only show ratings backed by real customer reviews."
+    },
+    {
+      "type": "range",
+      "id": "manual_rating",
+      "label": "Rating",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 4.8,
+      "visible_if": "{{ block.settings.source == 'manual' }}"
+    },
+    {
+      "type": "number",
+      "id": "manual_count",
+      "label": "Number of reviews",
+      "default": 0,
+      "visible_if": "{{ block.settings.source == 'manual' }}"
+    },
+    {
+      "type": "header",
+      "content": "Stars"
+    },
+    {
+      "type": "select",
+      "id": "star_shape",
+      "label": "Shape",
+      "default": "classic",
+      "options": [
+        {
+          "value": "classic",
+          "label": "Classic star"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "star_outline",
+      "label": "Outline empty stars",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#F5A623"
+    },
+    {
+      "type": "color",
+      "id": "empty_color",
+      "label": "Empty star color",
+      "default": "#E5DCD6"
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "label": "Star size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "star_gap",
+      "label": "Space between stars",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_value",
+      "label": "Show rating value (e.g. 4.8/5)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show review count",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "text",
+      "label": "Text beside the stars",
+      "info": "Use [rating] and [count] to insert the values, e.g. \"[rating] · [count] reseñas verificadas\". Can be connected to a product metafield."
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "default": "inline",
+      "options": [
+        {
+          "value": "inline",
+          "label": "Beside the stars"
+        },
+        {
+          "value": "below",
+          "label": "Below the stars"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between stars and text",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "link",
+      "label": "Link target",
+      "default": "#reviews",
+      "info": "Anchor of your reviews section, e.g. #reviews"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Box style"
+    },
+    {
+      "type": "checkbox",
+      "id": "box_enable",
+      "label": "Customize spacing, border and shadow",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "box_mt",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_mb",
+      "label": "Space below (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_mt_m",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_mb_m",
+      "label": "Space below (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_py",
+      "label": "Inner padding top/bottom (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_px",
+      "label": "Inner padding left/right (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_py_m",
+      "label": "Inner padding top/bottom (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_px_m",
+      "label": "Inner padding left/right (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "box_border_style",
+      "label": "Border style",
+      "default": "solid",
+      "visible_if": "{{ block.settings.box_enable }}",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "dashed",
+          "label": "Dashed"
+        },
+        {
+          "value": "dotted",
+          "label": "Dotted"
+        },
+        {
+          "value": "double",
+          "label": "Double"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "label": "Border color",
+      "visible_if": "{{ block.settings.box_enable }}"
+    },
+    {
+      "type": "color",
+      "id": "box_bg",
+      "label": "Background color",
+      "visible_if": "{{ block.settings.box_enable }}"
+    },
+    {
+      "type": "color_background",
+      "id": "box_bg_gradient",
+      "label": "Background gradient",
+      "visible_if": "{{ block.settings.box_enable }}"
+    },
+    {
+      "type": "select",
+      "id": "box_shadow",
+      "label": "Shadow",
+      "default": "none",
+      "visible_if": "{{ block.settings.box_enable }}",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "soft",
+          "label": "Soft"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "hard",
+          "label": "Hard (offset)"
+        },
+        {
+          "value": "glow",
+          "label": "Glow"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "box_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000",
+      "visible_if": "{{ block.settings.box_enable }}"
+    },
+    {
+      "type": "select",
+      "id": "box_effect",
+      "label": "Hover effect",
+      "default": "none",
+      "visible_if": "{{ block.settings.box_enable }}",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "lift",
+          "label": "Lift"
+        },
+        {
+          "value": "grow",
+          "label": "Grow"
+        },
+        {
+          "value": "glow",
+          "label": "Glow"
+        },
+        {
+          "value": "dim",
+          "label": "Dim"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "box_max_width",
+      "label": "Max width (0 = full)",
+      "min": 0,
+      "max": 1600,
+      "step": 20,
+      "default": 0,
+      "visible_if": "{{ block.settings.box_enable }}",
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "box_align",
+      "label": "Position when narrower",
+      "default": "center",
+      "visible_if": "{{ block.settings.box_enable }}",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Text style"
+    },
+    {
+      "type": "checkbox",
+      "id": "tx_enable",
+      "label": "Customize fonts and spacing",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "tx_font",
+      "label": "Font",
+      "default": "inherit",
+      "visible_if": "{{ block.settings.tx_enable }}",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Default"
+        },
+        {
+          "value": "display",
+          "label": "Display"
+        },
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "body",
+          "label": "Body"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "tx_weight",
+      "label": "Weight",
+      "default": "inherit",
+      "visible_if": "{{ block.settings.tx_enable }}",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Default"
+        },
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        },
+        {
+          "value": "900",
+          "label": "Black"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "tx_size",
+      "label": "Font size, desktop (0 = default)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.tx_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "tx_size_m",
+      "label": "Font size, mobile (0 = default)",
+      "min": 0,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.tx_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "tx_letter",
+      "label": "Letter spacing (1/100 em)",
+      "min": -10,
+      "max": 40,
+      "step": 1,
+      "default": 0,
+      "visible_if": "{{ block.settings.tx_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "tx_word",
+      "label": "Word spacing (1/100 em)",
+      "min": -20,
+      "max": 100,
+      "step": 2,
+      "default": 0,
+      "visible_if": "{{ block.settings.tx_enable }}"
+    },
+    {
+      "type": "range",
+      "id": "tx_line",
+      "label": "Line height (10 = 1.0, 0 = default)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 0,
+      "visible_if": "{{ block.settings.tx_enable }}"
+    },
+    {
+      "type": "select",
+      "id": "tx_transform",
+      "label": "Letter case",
+      "default": "inherit",
+      "visible_if": "{{ block.settings.tx_enable }}",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Default"
+        },
+        {
+          "value": "none",
+          "label": "As typed"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "lowercase",
+          "label": "lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "tx_align",
+      "label": "Alignment",
+      "default": "inherit",
+      "visible_if": "{{ block.settings.tx_enable }}",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Default"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "tx_color",
+      "label": "Text color",
+      "visible_if": "{{ block.settings.tx_enable }}"
     }
   ],
   "presets": [
-    { "name": "Product rating", "settings": { "product": "{{ closest.product }}" } }
+    {
+      "name": "Product rating",
+      "settings": {
+        "product": "{{ closest.product }}"
+      }
+    }
   ]
 }
 {% endschema %}

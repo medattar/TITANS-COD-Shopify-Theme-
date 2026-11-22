@@ -342,6 +342,15 @@
       },
       {
         "type": "range",
+        "id": "body_word_spacing",
+        "label": "Body word spacing (1/100 em)",
+        "min": -10,
+        "max": 60,
+        "step": 1,
+        "default": 0
+      },
+      {
+        "type": "range",
         "id": "text_max_width",
         "label": "Paragraph max width",
         "min": 400,
@@ -504,6 +513,15 @@
       },
       {
         "type": "range",
+        "id": "heading_word_spacing",
+        "label": "Heading word spacing (1/100 em)",
+        "min": -10,
+        "max": 60,
+        "step": 1,
+        "default": 0
+      },
+      {
+        "type": "range",
         "id": "display_letter_spacing",
         "label": "Letter spacing (display font)",
         "min": -4,
@@ -511,6 +529,15 @@
         "step": 1,
         "default": 0,
         "info": "In 1/100 em"
+      },
+      {
+        "type": "range",
+        "id": "display_line_height",
+        "label": "Display line height (100 = 1.0)",
+        "min": 70,
+        "max": 150,
+        "step": 2,
+        "default": 94
       },
       {
         "type": "select",
@@ -715,6 +742,34 @@
         "step": 2,
         "unit": "px",
         "default": 14
+      },
+      {
+        "type": "header",
+        "content": "Space below the header"
+      },
+      {
+        "type": "paragraph",
+        "content": "Extra space between the header and the first section of every page. Sections also have their own top padding."
+      },
+      {
+        "type": "range",
+        "id": "header_gap_desktop",
+        "label": "Desktop",
+        "min": 0,
+        "max": 120,
+        "step": 2,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "header_gap_mobile",
+        "label": "Mobile",
+        "min": 0,
+        "max": 80,
+        "step": 2,
+        "unit": "px",
+        "default": 0
       }
     ]
   },
@@ -1197,6 +1252,12 @@
         "info": "Only shown when a reviews app fills the reviews.rating metafield."
       },
       {
+        "type": "color",
+        "id": "card_star_color",
+        "label": "Star color",
+        "default": "#F5A623"
+      },
+      {
         "type": "checkbox",
         "id": "card_show_badge",
         "label": "Show sale badge",
@@ -1225,6 +1286,43 @@
             "label": "Bottom right"
           }
         ]
+      },
+      {
+        "type": "select",
+        "id": "card_badge_mode",
+        "label": "Badge text",
+        "default": "both",
+        "options": [
+          {
+            "value": "both",
+            "label": "Manual text if set, otherwise automatic discount"
+          },
+          {
+            "value": "auto",
+            "label": "Automatic discount only"
+          },
+          {
+            "value": "manual",
+            "label": "Manual text only"
+          }
+        ],
+        "info": "Manual text comes from the product metafield custom.badge_text (e.g. \"52% off\" or \"Más vendido\"). Automatic discount uses the compare-at price."
+      },
+      {
+        "type": "checkbox",
+        "id": "card_badge_sold_out",
+        "label": "Show \"Sold out\" badge",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "card_badge_offset",
+        "label": "Badge distance from the image edge",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 12
       },
       {
         "type": "select",
