@@ -67,16 +67,24 @@
             "align": "flex-start",
             "new_tab": true
           }
+        },
+        "text_8eY6E3": {
+          "type": "text",
+          "settings": {
+            "heading": "Sobre nosotros",
+            "text": "<p>Comparte información sobre tu tienda.</p>"
+          }
         }
       },
       "block_order": [
         "brand",
         "menu_shop",
         "menu_help",
-        "social"
+        "social",
+        "text_8eY6E3"
       ],
       "settings": {
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-11",
         "use_inverse_logo": true,
         "logo_width": 140,
         "columns": "1.6fr 1fr 1fr",

@@ -26,9 +26,9 @@
             "text": "Tu producto estrella",
             "accent_line": "Paga al recibir",
             "font": "display",
-            "size_desktop": 84,
-            "size_mobile": 42,
-            "effect": "none",
+            "size_desktop": 60,
+            "size_mobile": 36,
+            "effect": "fade",
             "tag": "auto"
           }
         },
@@ -78,12 +78,12 @@
         "radius": 24,
         "image": "shopify://shop_images/banner.png",
         "media_placement": "split-left",
-        "overlay_opacity": 30,
+        "overlay_opacity": 0,
         "content_align": "center",
         "content_vertical": "center",
-        "content_width": 820,
-        "min_height": 520,
-        "min_height_mobile": 420,
+        "content_width": 520,
+        "min_height": 180,
+        "min_height_mobile": 290,
         "aria_label": "",
         "padding_top": 24,
         "padding_bottom": 24,
@@ -151,7 +151,7 @@
             "title": "Soporte por WhatsApp",
             "text": "",
             "value": "",
-            "icon_color": "",
+            "icon_color": "#3CC7A5",
             "link": ""
           }
         },
