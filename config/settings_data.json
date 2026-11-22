@@ -15,7 +15,7 @@
     "favicon": "shopify://shop_images/favicon_2.svg",
     "page_color_scheme": "scheme-8",
     "drawer_color_scheme": "scheme-8",
-    "type_display_font": "archivo_black_n4",
+    "type_display_font": "funnel_sans_n7",
     "type_heading_font": "funnel_sans_n5",
     "type_body_font": "dm_sans_n4",
     "body_size_desktop": 16,
@@ -380,7 +380,7 @@
       },
       "scheme-8": {
         "settings": {
-          "background": "#FBFFFE",
+          "background": "#fbfffe",
           "background_gradient": "",
           "surface": "#ffffff",
           "surface_text": "#0b2e27",
