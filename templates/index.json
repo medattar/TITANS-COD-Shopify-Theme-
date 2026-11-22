@@ -140,6 +140,18 @@
         "t1": {
           "type": "item",
           "settings": {
+            "icon": "verified",
+            "title": "<strong>Garantía de 30 días incluida&nbsp;&nbsp;</strong>",
+            "text": "",
+            "value": "",
+            "icon_color": "",
+            "icon_bg": "",
+            "link": ""
+          }
+        },
+        "item_gwGUgb": {
+          "type": "item",
+          "settings": {
             "icon": "cash",
             "title": "Pago contra entrega",
             "text": "",
@@ -184,13 +196,40 @@
             "icon_bg": "",
             "link": ""
           }
+        },
+        "item_PRdMEr": {
+          "type": "item",
+          "settings": {
+            "icon": "heart",
+            "title": "<strong>Atención al cliente 24h</strong>",
+            "text": "",
+            "value": "",
+            "icon_color": "",
+            "icon_bg": "",
+            "link": ""
+          }
+        },
+        "item_wtNmcA": {
+          "type": "item",
+          "settings": {
+            "icon": "check-circle",
+            "title": "Satisfacción Garantizada",
+            "text": "",
+            "value": "",
+            "icon_color": "",
+            "icon_bg": "",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "t1",
+        "item_gwGUgb",
         "t2",
         "t3",
-        "t4"
+        "t4",
+        "item_PRdMEr",
+        "item_wtNmcA"
       ],
       "settings": {
         "color_scheme": "scheme-8",
