@@ -25,6 +25,12 @@
           },
           "blocks": {}
         },
+        "easysell_cod_form_app_block_LtkL96": {
+          "type": "shopify://apps/easysell-cod-form/blocks/app-block/7bfd0a95-6839-4f02-b2ee-896832dbe67e",
+          "settings": {
+            "product": ""
+          }
+        },
         "variant_picker_6": {
           "type": "variant-picker",
           "disabled": true,
@@ -274,6 +280,7 @@
       },
       "block_order": [
         "product_price_5",
+        "easysell_cod_form_app_block_LtkL96",
         "variant_picker_6",
         "quantity_7",
         "delivery_estimate_8",
