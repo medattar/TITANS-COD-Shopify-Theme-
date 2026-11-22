@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer group",
@@ -9,8 +18,10 @@
           "type": "brand",
           "settings": {
             "show_logo": true,
-            "tagline": "Calidad que llega a tu puerta.",
-            "show_social": true
+            "tagline": "Bienvenido a MexiMall, tu tienda en línea para encontrar productos útiles y a buen precio.",
+            "text": "<p>¡Haz tu pedido hoy y recíbelo en la puerta de tu casa! 📦</p>",
+            "show_social": true,
+            "social_style": "pills"
           }
         },
         "menu_shop": {
@@ -24,16 +35,44 @@
           "type": "menu",
           "settings": {
             "heading": "Ayuda",
-            "menu": "footer"
+            "menu": "ayuda"
           }
         },
         "social": {
           "type": "social",
+          "disabled": true,
           "settings": {
             "heading": "Síguenos",
+            "instagram": "",
+            "facebook": "",
+            "tiktok": "",
+            "youtube": "",
+            "whatsapp": "",
+            "pinterest": "",
+            "x": "",
+            "threads": "",
+            "telegram": "",
+            "linkedin": "",
+            "snapchat": "",
             "style": "icons",
             "shape": "circle",
-            "outline": true
+            "icon_size": 18,
+            "button_size": 40,
+            "gap": 10,
+            "icon_color": "",
+            "bg_color": "",
+            "outline": true,
+            "hover_bg": "",
+            "hover_color": "",
+            "align": "flex-start",
+            "new_tab": true
+          }
+        },
+        "text_8eY6E3": {
+          "type": "text",
+          "settings": {
+            "heading": "Sobre nosotros",
+            "text": "<p>Comparte información sobre tu tienda.</p>"
           }
         },
         "contact": {
@@ -52,11 +91,51 @@
         "menu_shop",
         "menu_help",
         "contact",
-        "social"
+        "social",
+        "text_8eY6E3"
       ],
       "settings": {
-        "color_scheme": "scheme-3",
-        "bottom_text": "✦ Pago contra entrega ✦"
+        "color_scheme": "scheme-11",
+        "use_inverse_logo": true,
+        "logo_width": 140,
+        "columns": "1.6fr 1fr 1fr",
+        "border": true,
+        "copyright": "",
+        "bottom_text": "✦ Pago contra entrega ✦",
+        "show_policies": false,
+        "show_payment_icons": false,
+        "padding_top": 64,
+        "padding_bottom": 32,
+        "padding_top_mobile": 44,
+        "padding_bottom_mobile": 28,
+        "box_enable": false,
+        "box_mt": 0,
+        "box_mb": 0,
+        "box_mt_m": 0,
+        "box_mb_m": 0,
+        "box_inset": 0,
+        "box_radius": 0,
+        "box_border_width": 0,
+        "box_border_style": "solid",
+        "box_border_color": "",
+        "box_bg": "",
+        "box_bg_gradient": "",
+        "box_shadow": "none",
+        "box_shadow_color": "#000000",
+        "box_effect": "none",
+        "box_max_width": 0,
+        "box_align": "center",
+        "tx_enable": false,
+        "tx_font": "inherit",
+        "tx_weight": "inherit",
+        "tx_size": 0,
+        "tx_size_m": 0,
+        "tx_letter": 0,
+        "tx_word": 0,
+        "tx_line": 0,
+        "tx_transform": "inherit",
+        "tx_align": "inherit",
+        "tx_color": ""
       }
     }
   },
