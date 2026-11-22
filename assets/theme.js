@@ -371,6 +371,8 @@
         return;
       }
       const s = Math.floor(diff / 1000);
+      const urgent = parseInt(this.dataset.urgent || '0', 10);
+      if (urgent > 0) this.classList.toggle('countdown--urgent', s < urgent * 60);
       const pad = (n) => String(n).padStart(2, '0');
       if (this.parts.days) this.parts.days.textContent = pad(Math.floor(s / 86400));
       if (this.parts.hours) this.parts.hours.textContent = pad(Math.floor((s % 86400) / 3600));

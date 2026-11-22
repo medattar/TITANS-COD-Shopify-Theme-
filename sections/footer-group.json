@@ -35,12 +35,23 @@
             "shape": "circle",
             "outline": true
           }
+        },
+        "contact": {
+          "type": "contact",
+          "settings": {
+            "heading": "Contacto",
+            "icon_size": 18,
+            "text_size": 15,
+            "gap": 12,
+            "align": "left"
+          }
         }
       },
       "block_order": [
         "brand",
         "menu_shop",
         "menu_help",
+        "contact",
         "social"
       ],
       "settings": {

@@ -7,16 +7,24 @@ import json
 import pathlib
 
 ICONS = [
-    ("none", "None"), ("check", "Check"), ("check-circle", "Check circle"), ("sparkle", "Sparkle"),
-    ("star", "Star"), ("heart", "Heart"), ("shield", "Shield"), ("verified", "Verified badge"),
-    ("truck", "Truck"), ("package-check", "Package"), ("box", "Box"), ("cash", "Cash"),
-    ("credit-card", "Card"), ("lock", "Lock"), ("return", "Return"), ("gift", "Gift"),
-    ("clock", "Clock"), ("calendar", "Calendar"), ("phone", "Phone"), ("chat", "Chat"),
-    ("whatsapp", "WhatsApp"), ("mail", "Mail"), ("headset", "Support"), ("location", "Location"),
-    ("home", "Home"), ("globe", "Globe"), ("leaf", "Leaf"), ("droplet", "Droplet"),
-    ("moon", "Moon"), ("sun", "Sun"), ("bolt", "Bolt"), ("battery", "Battery"),
-    ("award", "Award"), ("percent", "Percent"), ("tag", "Tag"), ("thumbs-up", "Thumbs up"),
-    ("smile", "Smile"), ("users", "Users"), ("eye", "Eye"), ("info", "Info"),
+    ("none", "— None"), ("check", "✓ Check"), ("check-circle", "✅ Check circle"),
+    ("sparkle", "✦ Sparkle"), ("star", "★ Star"), ("heart", "♥ Heart"),
+    ("fire", "🔥 Fire"), ("flame", "🔥 Flame"), ("blaze", "💥 Blaze"),
+    ("shield", "🛡 Shield"), ("verified", "✔ Verified"), ("truck", "🚚 Truck"),
+    ("package-check", "📦 Package"), ("box", "📦 Box"), ("cash", "💵 Cash"),
+    ("credit-card", "💳 Card"), ("lock", "🔒 Lock"), ("return", "↩ Return"),
+    ("gift", "🎁 Gift"), ("clock", "🕒 Clock"), ("calendar", "📅 Calendar"),
+    ("phone", "📞 Phone"), ("chat", "💬 Chat"), ("whatsapp", "🟢 WhatsApp"),
+    ("mail", "✉ Mail"), ("headset", "🎧 Support"), ("location", "📍 Location"),
+    ("store", "🏪 Store"), ("home", "🏠 Home"), ("globe", "🌐 Globe"),
+    ("leaf", "🍃 Leaf"), ("droplet", "💧 Droplet"), ("moon", "🌙 Moon"),
+    ("sun", "☀ Sun"), ("bolt", "⚡ Bolt"), ("battery", "🔋 Battery"),
+    ("award", "🏅 Award"), ("trophy", "🏆 Trophy"), ("medal", "🥇 Medal"),
+    ("crown", "👑 Crown"), ("diamond", "💎 Diamond"), ("rocket", "🚀 Rocket"),
+    ("bell", "🔔 Bell"), ("megaphone", "📣 Megaphone"), ("target", "🎯 Target"),
+    ("percent", "% Percent"), ("tag", "🏷 Tag"), ("thumbs-up", "👍 Thumbs up"),
+    ("smile", "☺ Smile"), ("users", "👥 Users"), ("eye", "👁 Eye"),
+    ("info", "ℹ Info"), ("dot", "● Dot"),
 ]
 
 options = json.dumps([{"value": v, "label": l} for v, l in ICONS], ensure_ascii=False)

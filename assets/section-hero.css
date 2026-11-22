@@ -69,11 +69,15 @@
   --hero-h: flex-end;
 }
 
+.hero {
+  background: var(--hero-canvas, transparent);
+}
+
 .hero__content-inner {
   display: flex;
   flex-direction: column;
   align-items: var(--hero-h, center);
-  gap: 16px;
+  gap: var(--hero-gap, 16px);
   width: 100%;
   max-width: var(--hero-content-width);
   text-align: center;
@@ -109,7 +113,7 @@
 
 .hero__accent-line {
   display: block;
-  color: var(--color-highlight);
+  color: var(--hero-accent, var(--color-highlight));
 }
 
 .hero__text {
@@ -143,6 +147,21 @@
 
 .hero__buttons {
   justify-content: var(--hero-h, center);
+  gap: var(--hero-btn-gap, 10px);
+}
+
+.hero__buttons .button {
+  font-size: var(--hero-btn-size, inherit);
+  border-radius: var(--hero-btn-radius, var(--button-radius, 999px));
+  min-width: var(--hero-btn-min, 0);
+}
+
+.hero__buttons--full {
+  width: 100%;
+}
+
+.hero__buttons--full .button {
+  width: 100%;
 }
 
 .hero__trust {
@@ -163,10 +182,15 @@
   gap: 6px;
 }
 
-.hero__trust .icon {
-  width: 16px;
-  height: 16px;
-  color: var(--color-highlight);
+.hero__trust {
+  gap: var(--trust-gap, 8px) 18px;
+  font-size: var(--trust-size, 14px);
+  color: var(--trust-color, inherit);
+}
+
+.hero__trust .icon,
+.hero__trust .icon-wrap {
+  color: var(--trust-icon, var(--color-highlight));
 }
 
 @media (min-width: 990px) {

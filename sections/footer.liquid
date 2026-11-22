@@ -59,19 +59,41 @@
                 {%- if block.settings.heading != blank -%}
                   <h2 class="footer__heading">{{ block.settings.heading }}</h2>
                 {%- endif -%}
-                <ul class="footer__links" role="list">
-                  {%- if block.settings.whatsapp != blank -%}
-                    {%- assign wa_digits = block.settings.whatsapp | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' -%}
-                    <li><a href="https://wa.me/{{ wa_digits }}" target="_blank" rel="noopener">WhatsApp: {{ block.settings.whatsapp }}</a></li>
-                  {%- endif -%}
+                <ul
+                  class="footer-contact"
+                  role="list"
+                  style="--fc-gap: {{ block.settings.gap | default: 12 }}px; --fc-size: {{ block.settings.text_size | default: 15 }}px; --fc-icon: {{ block.settings.icon_color | default: 'var(--color-accent)' }}; --fc-align: {% if block.settings.align == 'center' %}center{% elsif block.settings.align == 'right' %}flex-end{% else %}flex-start{% endif %}; --fc-text: {{ block.settings.align | default: 'left' }};"
+                >
                   {%- if block.settings.phone != blank -%}
-                    <li><a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a></li>
+                    <li class="footer-contact__row">
+                      {%- render 'icon-or-image', icon: 'phone', size: block.settings.icon_size, color: block.settings.icon_color -%}
+                      <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a>
+                    </li>
                   {%- endif -%}
                   {%- if block.settings.email != blank -%}
-                    <li><a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a></li>
+                    <li class="footer-contact__row">
+                      {%- render 'icon-or-image', icon: 'mail', size: block.settings.icon_size, color: block.settings.icon_color -%}
+                      <a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a>
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.whatsapp != blank -%}
+                    {%- assign wa_digits = block.settings.whatsapp | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' -%}
+                    <li class="footer-contact__row">
+                      {%- render 'icon-or-image', icon: 'whatsapp', size: block.settings.icon_size, color: block.settings.icon_color -%}
+                      <a href="https://wa.me/{{ wa_digits }}" target="_blank" rel="noopener">{{ block.settings.whatsapp }}</a>
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.address != blank -%}
+                    <li class="footer-contact__row">
+                      {%- render 'icon-or-image', icon: 'location', size: block.settings.icon_size, color: block.settings.icon_color -%}
+                      <span>{{ block.settings.address | newline_to_br }}</span>
+                    </li>
                   {%- endif -%}
                   {%- if block.settings.hours != blank -%}
-                    <li class="footer__text">{{ block.settings.hours }}</li>
+                    <li class="footer-contact__row">
+                      {%- render 'icon-or-image', icon: 'clock', size: block.settings.icon_size, color: block.settings.icon_color -%}
+                      <span>{{ block.settings.hours }}</span>
+                    </li>
                   {%- endif -%}
                 </ul>
 
@@ -995,6 +1017,70 @@
           "id": "hours",
           "label": "Service hours",
           "placeholder": "Lun–Vie 9:00–18:00"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Address"
+        },
+        {
+          "type": "header",
+          "content": "Style"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "label": "Icon size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "label": "Text size",
+          "min": 12,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "gap",
+          "label": "Space between rows",
+          "min": 4,
+          "max": 28,
+          "step": 2,
+          "unit": "px",
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "align",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
         }
       ]
     },

@@ -6,7 +6,23 @@
     {%- if s.label != blank -%}
       <p class="countdown-block__label">{{ s.label }}</p>
     {%- endif -%}
-    {%- render 'countdown', date: s.date, time: s.time, style: s.style, expired_text: s.expired_text -%}
+    {%- render 'countdown',
+      date: s.date,
+      time: s.time,
+      style: s.style,
+      effect: s.effect,
+      expired_text: s.expired_text,
+      number_size: s.number_size,
+      label_size: s.label_size,
+      gap: s.gap,
+      radius: s.radius,
+      number_color: s.number_color,
+      label_color: s.label_color,
+      background: s.background,
+      border_color: s.border_color,
+      effect_speed: s.effect_speed,
+      urgent_minutes: s.urgent_minutes
+    -%}
   </div>
 {%- else -%}
   <div data-box="{{ block.id }}" {{ block.shopify_attributes }}></div>
@@ -54,6 +70,26 @@
         {
           "value": "inline",
           "label": "Inline"
+        },
+        {
+          "value": "pills",
+          "label": "Pills"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "circles",
+          "label": "Circles"
+        },
+        {
+          "value": "banner",
+          "label": "Banner"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal"
         }
       ]
     },
@@ -76,6 +112,149 @@
           "label": "Right"
         }
       ]
+    },
+    {
+      "type": "select",
+      "id": "effect",
+      "label": "Effect",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "bounce",
+          "label": "Bounce"
+        },
+        {
+          "value": "heartbeat",
+          "label": "Heartbeat"
+        },
+        {
+          "value": "shake",
+          "label": "Shake"
+        },
+        {
+          "value": "pulse",
+          "label": "Pulse"
+        },
+        {
+          "value": "flash",
+          "label": "Flash"
+        },
+        {
+          "value": "swing",
+          "label": "Swing"
+        },
+        {
+          "value": "wiggle",
+          "label": "Wiggle"
+        },
+        {
+          "value": "float",
+          "label": "Float"
+        },
+        {
+          "value": "tada",
+          "label": "Tada"
+        },
+        {
+          "value": "jello",
+          "label": "Jello"
+        },
+        {
+          "value": "rubber",
+          "label": "Rubber band"
+        },
+        {
+          "value": "pop",
+          "label": "Pop"
+        },
+        {
+          "value": "glow",
+          "label": "Glow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "effect_speed",
+      "label": "Effect speed",
+      "min": 0.4,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "number_size",
+      "label": "Number size (0 = default)",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Label size (0 = default)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap (0 = default)",
+      "min": 0,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius (0 = default)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "number_color",
+      "label": "Number color"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color"
+    },
+    {
+      "type": "range",
+      "id": "urgent_minutes",
+      "label": "Urgent color under (minutes, 0 = off)",
+      "min": 0,
+      "max": 180,
+      "step": 5,
+      "default": 0
     },
     {
       "type": "text",
