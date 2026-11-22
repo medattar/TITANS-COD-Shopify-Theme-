@@ -20,28 +20,13 @@
             "text": "Pago contra entrega · Envío a todo México",
             "link": "",
             "icon": "truck",
-            "badge": "",
-            "countdown_date": "",
-            "countdown_time": ""
-          }
-        },
-        "announcement_1": {
-          "type": "announcement",
-          "settings": {
-            "text": "<strong>Pago contra entrega</strong> · Paga cuando recibas tu pedido",
-            "link": "",
-            "icon": "cash",
-            "badge": "",
-            "countdown_date": "",
-            "countdown_time": ""
-          }
-        },
-        "announcement_2": {
-          "type": "announcement",
-          "settings": {
-            "text": "Envío con seguimiento a todo México",
-            "link": "",
-            "icon": "truck",
+            "icon_size": 20,
+            "icon_color": "",
+            "effect": "heartbeat",
+            "effect_speed": 2.2,
+            "effect_distance": 5,
+            "effect_delay": 0.8,
+            "effect_repeat": "infinite",
             "badge": "",
             "countdown_date": "",
             "countdown_time": ""
@@ -49,13 +34,11 @@
         }
       },
       "block_order": [
-        "announcement_NLYW4J",
-        "announcement_1",
-        "announcement_2"
+        "announcement_NLYW4J"
       ],
       "settings": {
         "color_scheme": "scheme-73515b58-eff1-40ba-bd91-96b271d3ed98",
-        "mode": "marquee",
+        "mode": "static",
         "rotate_speed": 4,
         "marquee_speed": 16,
         "height": 38,
@@ -63,7 +46,7 @@
         "uppercase": true,
         "border": false,
         "hide_mobile": false,
-        "box_enable": false,
+        "box_enable": true,
         "box_mt": 0,
         "box_mb": 0,
         "box_mt_m": 0,
@@ -73,16 +56,16 @@
         "box_border_width": 0,
         "box_border_style": "solid",
         "box_border_color": "",
-        "box_bg": "",
+        "box_bg": "#FFB14B",
         "box_bg_gradient": "",
         "box_shadow": "none",
         "box_shadow_color": "#000000",
         "box_effect": "none",
         "box_max_width": 0,
         "box_align": "center",
-        "tx_enable": false,
+        "tx_enable": true,
         "tx_font": "inherit",
-        "tx_weight": "inherit",
+        "tx_weight": "900",
         "tx_size": 0,
         "tx_size_m": 0,
         "tx_letter": 0,
@@ -90,7 +73,7 @@
         "tx_line": 0,
         "tx_transform": "inherit",
         "tx_align": "inherit",
-        "tx_color": ""
+        "tx_color": "#FBFFFE"
       }
     },
     "header": {

@@ -16,8 +16,16 @@
           "type": "tag",
           "settings": {
             "text": "Pago contra entrega",
-            "style": "highlight",
-            "icon": "cash"
+            "style": "outline",
+            "icon": "cash",
+            "size": 17,
+            "weight": "inherit",
+            "letter": 0,
+            "radius": 0,
+            "text_color": "",
+            "bg_color": "",
+            "icon_size": 23,
+            "icon_color": ""
           }
         },
         "heading": {
@@ -26,9 +34,15 @@
             "text": "Tu producto estrella",
             "accent_line": "Paga al recibir",
             "font": "display",
-            "size_desktop": 60,
+            "size_desktop": 46,
             "size_mobile": 36,
             "effect": "fade",
+            "weight": "inherit",
+            "color": "",
+            "accent_color": "",
+            "letter": 0,
+            "line": 0,
+            "max_width": 0,
             "tag": "auto"
           }
         },
@@ -37,7 +51,12 @@
           "settings": {
             "text": "<p>Recíbelo en casa y paga en efectivo cuando llegue tu pedido. Te confirmamos por WhatsApp antes del envío.</p>",
             "size_desktop": 19,
-            "size_mobile": 16
+            "size_mobile": 16,
+            "color": "",
+            "weight": "inherit",
+            "letter": 0,
+            "line": 0,
+            "max_width": 0
           }
         },
         "buttons": {
@@ -50,17 +69,35 @@
             "link_2": "",
             "style_2": "outline",
             "large": true,
-            "arrow": true
+            "arrow": true,
+            "font_size": 0,
+            "btn_radius": 0,
+            "btn_min": 0,
+            "btn_gap": 0,
+            "full_width": false
           }
         },
         "trust": {
           "type": "trust",
           "settings": {
             "icon": "check",
+            "icon_size": 16,
+            "icon_color": "#CF1919",
+            "text_size": 14,
+            "text_color": "",
+            "gap": 8,
             "item_1": "Pago contra entrega",
+            "color_1": "",
+            "icon_1": "inherit",
             "item_2": "Envío a todo México",
+            "color_2": "#7AFCDC",
+            "icon_2": "inherit",
             "item_3": "Confirmación por WhatsApp",
-            "item_4": ""
+            "color_3": "#3CC7A5",
+            "icon_3": "inherit",
+            "item_4": "",
+            "color_4": "#3CC7A5",
+            "icon_4": "inherit"
           }
         }
       },
@@ -73,15 +110,17 @@
       ],
       "settings": {
         "color_scheme": "scheme-11",
+        "section_bg": "#FBFFFE",
+        "section_bg_gradient": "",
         "inset": false,
         "shadow": false,
         "radius": 24,
-        "image": "shopify://shop_images/banner.png",
         "media_placement": "split-left",
         "overlay_opacity": 0,
         "content_align": "center",
         "content_vertical": "center",
         "content_width": 520,
+        "content_gap": 16,
         "min_height": 180,
         "min_height_mobile": 290,
         "aria_label": "",
@@ -174,7 +213,7 @@
         "t4"
       ],
       "settings": {
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-8",
         "anchor": "",
         "eyebrow": "",
         "heading": "",
@@ -187,8 +226,8 @@
         "icon_size": 28,
         "icon_size_mobile": 28,
         "icon_shape": "circle",
-        "icon_color": "",
-        "icon_bg": "",
+        "icon_color": "#3CC7A5",
+        "icon_bg": "#E9E9E9",
         "image_width": 68,
         "image_width_mobile": 48,
         "item_gap": 12,
@@ -199,7 +238,7 @@
         "title_size_mobile": 0,
         "title_transform": "auto",
         "title_letter_spacing": 0,
-        "title_color": "",
+        "title_color": "#FFFFFF",
         "text_size": 0,
         "text_color": "",
         "image_style": "icon",
@@ -210,17 +249,17 @@
         "padding_bottom": 28,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 20,
-        "box_enable": false,
+        "box_enable": true,
         "box_mt": 0,
         "box_mb": 0,
         "box_mt_m": 0,
         "box_mb_m": 0,
         "box_inset": 0,
-        "box_radius": 0,
+        "box_radius": 80,
         "box_border_width": 0,
         "box_border_style": "solid",
         "box_border_color": "",
-        "box_bg": "",
+        "box_bg": "#3CC7A5",
         "box_bg_gradient": "",
         "box_shadow": "none",
         "box_shadow_color": "#000000",
@@ -243,7 +282,7 @@
     "products": {
       "type": "product-grid",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-7",
         "eyebrow": "✦ Más vendidos ✦",
         "heading": "Nuestros productos",
         "subheading": "",
