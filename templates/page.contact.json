@@ -1,49 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-contact",
-      "settings": {}
-    },
-    "faq": {
-      "type": "faq",
       "settings": {
-        "anchor": "faq",
-        "layout": "stacked",
-        "heading": "antes de escribirnos",
-        "padding_top": 40
-      },
-      "blocks": {
-        "q1": {
-          "type": "question",
-          "settings": {
-            "question": "¿Cómo funciona el pago contra entrega?",
-            "answer": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo al recibirlo.</p>"
-          }
-        },
-        "q2": {
-          "type": "question",
-          "settings": {
-            "question": "¿Cómo confirmo mi pedido?",
-            "answer": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
-          }
-        },
-        "q3": {
-          "type": "question",
-          "settings": {
-            "question": "¿Dónde está mi pedido?",
-            "answer": "<p>Explica aquí cómo consultar el estado de un pedido.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "q1",
-        "q2",
-        "q3"
-      ]
+        "color_scheme": "scheme-8",
+        "eyebrow": "✦ Estamos para ayudarte ✦",
+        "heading": "",
+        "whatsapp_link": "",
+        "padding_top": 64,
+        "padding_bottom": 80,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 56,
+        "box_enable": false,
+        "box_mt": 0,
+        "box_mb": 0,
+        "box_mt_m": 0,
+        "box_mb_m": 0,
+        "box_inset": 0,
+        "box_radius": 0,
+        "box_radius_split": false,
+        "box_radius_tl": 0,
+        "box_radius_tr": 0,
+        "box_radius_br": 0,
+        "box_radius_bl": 0,
+        "box_border_width": 0,
+        "box_border_style": "solid",
+        "box_border_color": "",
+        "box_bg": "",
+        "box_bg_gradient": "",
+        "box_shadow": "none",
+        "box_shadow_color": "#000000",
+        "box_effect": "none",
+        "box_max_width": 0,
+        "box_align": "center",
+        "tx_enable": false,
+        "tx_font": "inherit",
+        "tx_weight": "inherit",
+        "tx_size": 0,
+        "tx_size_m": 0,
+        "tx_letter": 0,
+        "tx_word": 0,
+        "tx_line": 0,
+        "tx_transform": "inherit",
+        "tx_align": "inherit",
+        "tx_color": ""
+      }
     }
   },
   "order": [
-    "main",
-    "faq"
+    "main"
   ]
 }
