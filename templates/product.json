@@ -683,7 +683,7 @@
             "trust_badge_12": {
               "type": "_trust-badge",
               "settings": {
-                "icon": "check-circle",
+                "icon": "verified",
                 "image_size": 0,
                 "text": "<strong>Garantía de 30 días incluida&nbsp;&nbsp;</strong>",
                 "subtext": "",
