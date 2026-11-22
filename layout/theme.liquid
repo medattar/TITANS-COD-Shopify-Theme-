@@ -28,12 +28,12 @@
 
     {% render 'meta-tags' %}
 
-    {%- unless settings.type_body_font.system? -%}
+    {%- if settings.type_body_font.family != blank and settings.type_body_font.system? == false -%}
       {{ settings.type_body_font | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-    {%- endunless -%}
-    {%- unless settings.type_display_font.system? -%}
+    {%- endif -%}
+    {%- if settings.type_display_font.family != blank and settings.type_display_font.system? == false -%}
       {{ settings.type_display_font | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-    {%- endunless -%}
+    {%- endif -%}
 
     {% render 'theme-styles-variables' %}
     {{ 'base.css' | asset_url | stylesheet_tag }}
