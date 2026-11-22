@@ -78,11 +78,7 @@
         "contact": {
           "type": "contact",
           "settings": {
-            "heading": "Contacto",
-            "icon_size": 18,
-            "text_size": 15,
-            "gap": 12,
-            "align": "left"
+            "heading": "Contacto"
           }
         }
       },

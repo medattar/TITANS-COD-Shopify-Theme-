@@ -17,7 +17,15 @@
           "settings": {
             "text": "Pago contra entrega",
             "style": "highlight",
-            "icon": "cash"
+            "icon": "cash",
+            "size": 0,
+            "weight": "inherit",
+            "letter": 0,
+            "radius": 0,
+            "text_color": "",
+            "bg_color": "",
+            "icon_size": 14,
+            "icon_color": ""
           }
         },
         "heading": {
@@ -29,6 +37,12 @@
             "size_desktop": 60,
             "size_mobile": 36,
             "effect": "fade",
+            "weight": "inherit",
+            "color": "",
+            "accent_color": "",
+            "letter": 0,
+            "line": 0,
+            "max_width": 0,
             "tag": "auto"
           }
         },
@@ -37,7 +51,12 @@
           "settings": {
             "text": "<p>Recíbelo en casa y paga en efectivo cuando llegue tu pedido. Te confirmamos por WhatsApp antes del envío.</p>",
             "size_desktop": 19,
-            "size_mobile": 16
+            "size_mobile": 16,
+            "color": "",
+            "weight": "inherit",
+            "letter": 0,
+            "line": 0,
+            "max_width": 0
           }
         },
         "buttons": {
@@ -50,17 +69,35 @@
             "link_2": "",
             "style_2": "outline",
             "large": true,
-            "arrow": true
+            "arrow": true,
+            "font_size": 0,
+            "btn_radius": 0,
+            "btn_min": 0,
+            "btn_gap": 0,
+            "full_width": false
           }
         },
         "trust": {
           "type": "trust",
           "settings": {
             "icon": "check",
+            "icon_size": 16,
+            "icon_color": "#CF1919",
+            "text_size": 14,
+            "text_color": "",
+            "gap": 8,
             "item_1": "Pago contra entrega",
+            "color_1": "",
+            "icon_1": "inherit",
             "item_2": "Envío a todo México",
+            "color_2": "#7AFCDC",
+            "icon_2": "inherit",
             "item_3": "Confirmación por WhatsApp",
-            "item_4": ""
+            "color_3": "#3CC7A5",
+            "icon_3": "inherit",
+            "item_4": "",
+            "color_4": "#3CC7A5",
+            "icon_4": "inherit"
           }
         }
       },
@@ -73,6 +110,8 @@
       ],
       "settings": {
         "color_scheme": "scheme-11",
+        "section_bg": "#FBFFFE",
+        "section_bg_gradient": "",
         "inset": false,
         "shadow": false,
         "radius": 24,
@@ -82,6 +121,7 @@
         "content_align": "center",
         "content_vertical": "center",
         "content_width": 520,
+        "content_gap": 16,
         "min_height": 180,
         "min_height_mobile": 290,
         "aria_label": "",
@@ -151,7 +191,7 @@
             "title": "Soporte por WhatsApp",
             "text": "",
             "value": "",
-            "icon_color": "#3CC7A5",
+            "icon_color": "#7AFCDC",
             "link": ""
           }
         },
