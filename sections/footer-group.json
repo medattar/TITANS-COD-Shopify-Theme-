@@ -26,14 +26,30 @@
             "heading": "Ayuda",
             "menu": "footer"
           }
+        },
+        "social": {
+          "type": "social",
+          "settings": {
+            "heading": "Síguenos",
+            "style": "icons",
+            "shape": "circle",
+            "outline": true
+          }
         }
       },
-      "block_order": ["brand", "menu_shop", "menu_help"],
+      "block_order": [
+        "brand",
+        "menu_shop",
+        "menu_help",
+        "social"
+      ],
       "settings": {
         "color_scheme": "scheme-3",
         "bottom_text": "✦ Pago contra entrega ✦"
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

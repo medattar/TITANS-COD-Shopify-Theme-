@@ -69,6 +69,11 @@
     --heading-line-height: {{ settings.heading_line_height | divided_by: 10.0 }};
     --heading-letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em;
     --display-letter-spacing: {{ settings.display_letter_spacing | divided_by: 100.0 }}em;
+    --display-line-height: {{ settings.display_line_height | divided_by: 100.0 }};
+    --heading-word-spacing: {{ settings.heading_word_spacing | divided_by: 100.0 }}em;
+    --body-word-spacing: {{ settings.body_word_spacing | divided_by: 100.0 }}em;
+    --header-gap-mobile: {{ settings.header_gap_mobile }}px;
+    --header-gap-desktop: {{ settings.header_gap_desktop }}px;
     --display-transform: {{ settings.display_transform }};
     --heading-transform: {{ settings.heading_transform }};
     --eyebrow-size: {{ settings.eyebrow_size }}px;
@@ -107,6 +112,7 @@
     --card-radius: {{ settings.card_radius }}px;
     --card-title-size: {{ settings.card_title_size }}px;
     --card-price-size: {{ settings.card_price_size }}px;
+    --card-badge-offset: {{ settings.card_badge_offset }}px;
 
     --icon-stroke: {{ settings.icon_stroke }};
     --icon-size: {{ settings.icon_size }}px;

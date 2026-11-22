@@ -1,0 +1,47 @@
+{%- comment -%}
+  Footer "Social media" block. Links fall back to Theme settings > Social media.
+  Params: block
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  assign networks = 'instagram,facebook,tiktok,youtube,whatsapp,pinterest,x,threads,telegram,linkedin,snapchat' | split: ','
+  assign labels = 'Instagram,Facebook,TikTok,YouTube,WhatsApp,Pinterest,X,Threads,Telegram,LinkedIn,Snapchat' | split: ','
+  assign has_any = false
+  for network in networks
+    assign key = 'social_' | append: network | append: '_link'
+    if s[network] != blank or settings[key] != blank
+      assign has_any = true
+    endif
+  endfor
+-%}
+{%- if s.heading != blank -%}
+  <h2 class="footer__heading">{{ s.heading }}</h2>
+{%- endif -%}
+{%- if has_any -%}
+  <ul
+    class="social-block social-block--{{ s.style }} social-block--{{ s.shape }}{% if s.outline %} social-block--outline{% endif %}"
+    role="list"
+    style="--sb-icon: {{ s.icon_size }}px; --sb-size: {{ s.button_size }}px; --sb-gap: {{ s.gap }}px; justify-content: {{ s.align }};{% if s.icon_color != blank and s.icon_color.alpha != 0 %} --sb-color: {{ s.icon_color }};{% endif %}{% if s.bg_color != blank and s.bg_color.alpha != 0 %} --sb-bg: {{ s.bg_color }};{% endif %}{% if s.hover_bg != blank and s.hover_bg.alpha != 0 %} --sb-hover-bg: {{ s.hover_bg }};{% endif %}{% if s.hover_color != blank and s.hover_color.alpha != 0 %} --sb-hover-color: {{ s.hover_color }};{% endif %}"
+  >
+    {%- for network in networks -%}
+      {%- assign key = 'social_' | append: network | append: '_link' -%}
+      {%- assign url = s[network] | default: settings[key] -%}
+      {%- if url != blank -%}
+        <li>
+          <a
+            href="{{ url }}"
+            {% if s.new_tab %}
+              target="_blank" rel="noopener"
+            {% endif %}
+            aria-label="{{ labels[forloop.index0] }}"
+          >
+            {%- unless s.style == 'labels' -%}{%- render 'icon', icon: network -%}{%- endunless -%}
+            {%- unless s.style == 'icons' -%}<span>{{ labels[forloop.index0] }}</span>{%- endunless -%}
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- elsif request.design_mode -%}
+  <p class="footer__text">Add your social media links in this block's settings.</p>
+{%- endif -%}

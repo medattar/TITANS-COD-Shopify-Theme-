@@ -191,6 +191,10 @@
       "button": "Subscribe",
       "email": "Email",
       "success": "Thanks for subscribing."
+    },
+    "recommendations": {
+      "disabled_hint": "Product recommendations are turned off. Turn them on in this section's settings.",
+      "manual_hint": "Choose products in this section's settings."
     }
   },
   "templates": {

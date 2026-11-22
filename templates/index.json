@@ -5,7 +5,11 @@
       "blocks": {
         "tag": {
           "type": "tag",
-          "settings": { "text": "Pago contra entrega", "style": "highlight", "icon": "cash" }
+          "settings": {
+            "text": "Pago contra entrega",
+            "style": "highlight",
+            "icon": "cash"
+          }
         },
         "heading": {
           "type": "heading",
@@ -50,7 +54,13 @@
           }
         }
       },
-      "block_order": ["tag", "heading", "text", "buttons", "trust"],
+      "block_order": [
+        "tag",
+        "heading",
+        "text",
+        "buttons",
+        "trust"
+      ],
       "settings": {
         "color_scheme": "scheme-4",
         "inset": true,
@@ -74,7 +84,68 @@
         "columns_mobile": "2",
         "mobile_layout": "grid"
       }
+    },
+    "trust": {
+      "type": "icon-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "style": "bar",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "icon_size": 28,
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20,
+        "anchor": "",
+        "color_scheme": "scheme-2"
+      },
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "cash",
+            "title": "Pago contra entrega",
+            "text": ""
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Envío a todo México",
+            "text": ""
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "whatsapp",
+            "title": "Soporte por WhatsApp",
+            "text": ""
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Compra segura",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
     }
   },
-  "order": ["hero", "products"]
+  "order": [
+    "hero",
+    "trust",
+    "products"
+  ]
 }

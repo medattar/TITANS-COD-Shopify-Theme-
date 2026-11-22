@@ -50,6 +50,42 @@
   }
 }
 
+.product--single {
+  max-width: var(--product-max, 760px);
+  margin-inline: auto;
+}
+
+@media (min-width: 990px) {
+  .product.product--single {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: 'head' 'buy';
+  }
+
+  .product.product--media-right:not(.featured-product__grid) {
+    grid-template-columns: var(--product-cols-right, 1fr 1.05fr);
+    grid-template-areas: 'head gal' 'buy gal';
+  }
+}
+
+.product-media-block {
+  width: var(--pm-width-m, 100%);
+  min-width: 0;
+}
+
+@media (min-width: 750px) {
+  .product-media-block {
+    width: var(--pm-width, 100%);
+    flex: 0 0 auto;
+  }
+
+  .product-media-block--sticky {
+    position: sticky;
+    top: calc(var(--header-offset, 0px) + 20px);
+    align-self: flex-start;
+  }
+}
+
 .product-header {
   display: flex;
   flex-direction: column;
@@ -404,23 +440,40 @@ product-info[aria-busy='true'] [data-variant-update] {
 
 .product-rating {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: var(--rating-gap, 8px);
   margin: 0;
-  font-size: 14px;
+  font-size: var(--rating-text-size, 14px);
+  color: var(--rating-text-color, inherit);
 }
 
 .product-rating__link {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: inherit;
   color: inherit;
   text-decoration: none;
 }
 
+.product-rating--below,
+.product-rating--below .product-rating__link {
+  flex-direction: column;
+  align-items: inherit;
+}
+
+.product-rating--below {
+  align-items: var(--rating-align, flex-start);
+}
+
+.product-rating__value {
+  font-weight: var(--font-body-weight-bold);
+}
+
 .product-rating__count,
 .product-rating--empty {
-  color: var(--color-muted);
+  color: var(--rating-text-color, var(--color-muted));
 }
 
 /* ---------- Stock + details button ---------- */
@@ -1228,16 +1281,17 @@ product-info[aria-busy='true'] [data-variant-update] {
 .trust-badges {
   display: grid;
   grid-template-columns: repeat(var(--tb-cols-m, 3), minmax(0, 1fr));
-  gap: 10px;
+  gap: var(--tb-gap, 10px);
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-@media (min-width: 750px) {
-  .trust-badges {
-    grid-template-columns: repeat(var(--tb-cols, 3), minmax(0, 1fr));
-  }
+  font-family: var(--tb-font, inherit);
+  font-size: var(--tb-size-m, 12px);
+  font-weight: var(--tb-weight, 700);
+  line-height: var(--tb-line, 1.2);
+  letter-spacing: var(--tb-letter, 0);
+  text-transform: var(--tb-transform, none);
+  color: var(--tb-color, inherit);
 }
 
 .trust-badge {
@@ -1245,35 +1299,84 @@ product-info[aria-busy='true'] [data-variant-update] {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
-  font-weight: var(--font-body-weight-bold);
-  line-height: 1.25;
+  min-width: 0;
   text-align: center;
+}
+
+.trust-badges--align-left .trust-badge { align-items: flex-start; text-align: left; }
+.trust-badges--align-right .trust-badge { align-items: flex-end; text-align: right; }
+
+.trust-badge__link {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+}
+
+.trust-badge__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trust-badge__sub {
+  font-size: 0.85em;
+  font-weight: var(--font-body-weight);
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.8;
 }
 
 .trust-badge__icon {
   display: inline-flex;
-  color: var(--color-accent);
+  flex: 0 0 auto;
+  color: var(--tb-icon-color, var(--color-accent));
 }
 
 .trust-badge__icon .icon,
 .trust-badge__icon img {
-  width: 28px;
-  height: 28px;
+  width: var(--tb-icon-m, 26px);
+  height: var(--tb-icon-m, 26px);
   object-fit: contain;
 }
 
-.trust-badges--row .trust-badge {
+.trust-badges--row .trust-badge,
+.trust-badges--inline .trust-badge {
   flex-direction: row;
+  align-items: center;
   text-align: left;
 }
+
+.trust-badges--row.trust-badges--align-center .trust-badge { justify-content: center; }
+.trust-badges--row.trust-badges--align-right .trust-badge { justify-content: flex-end; }
+
+.trust-badges--inline {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: calc(var(--tb-gap, 10px) * 2);
+}
+
+.trust-badges--inline.trust-badges--align-center { justify-content: center; }
+.trust-badges--inline.trust-badges--align-right { justify-content: flex-end; }
 
 .trust-badges--boxed .trust-badge {
   padding: 12px 8px;
   border: 1.5px solid var(--color-border);
   border-radius: 14px;
-  background: var(--color-surface);
-  color: var(--color-surface-text);
+  background: var(--tb-box, var(--color-surface));
+  color: var(--tb-color, var(--color-surface-text));
+}
+
+@media (min-width: 750px) {
+  .trust-badges {
+    grid-template-columns: repeat(var(--tb-cols, 3), minmax(0, 1fr));
+    font-size: var(--tb-size, 13px);
+  }
+
+  .trust-badge__icon .icon,
+  .trust-badge__icon img {
+    width: var(--tb-icon, 28px);
+    height: var(--tb-icon, 28px);
+  }
 }
 
 /* ---------- Payment block ---------- */

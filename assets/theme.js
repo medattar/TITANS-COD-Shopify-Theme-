@@ -608,6 +608,51 @@
   }
   if (!customElements.get('before-after-slider')) customElements.define('before-after-slider', BeforeAfterSlider);
 
+  class SplitSlider extends HTMLElement {
+    connectedCallback() {
+      this.range = this.querySelector('.split-slider__range');
+      if (!this.range) return;
+      this.vertical = this.dataset.orientation === 'vertical';
+      this.range.addEventListener('input', () => this.set(Number(this.range.value)));
+      this.range.addEventListener('keydown', (event) => {
+        const keys = this.vertical ? { ArrowUp: -1, ArrowDown: 1 } : { ArrowLeft: -1, ArrowRight: 1 };
+        if (!(event.key in keys)) return;
+        event.preventDefault();
+        this.set(Number(this.range.value) + keys[event.key] * (event.shiftKey ? 10 : 2));
+      });
+      this.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        this.dragging = true;
+        this.setPointerCapture(event.pointerId);
+        this.fromPointer(event);
+        this.range.focus({ preventScroll: true });
+      });
+      this.addEventListener('pointermove', (event) => {
+        const follow = this.hasAttribute('data-follow') && event.pointerType === 'mouse';
+        if (this.dragging || follow) this.fromPointer(event);
+      });
+      const stop = () => {
+        this.dragging = false;
+      };
+      this.addEventListener('pointerup', stop);
+      this.addEventListener('pointercancel', stop);
+      this.set(Number(this.range.value));
+    }
+
+    fromPointer(event) {
+      const rect = this.getBoundingClientRect();
+      const ratio = this.vertical ? (event.clientY - rect.top) / rect.height : (event.clientX - rect.left) / rect.width;
+      this.set(ratio * 100);
+    }
+
+    set(value) {
+      const pos = Math.min(100, Math.max(0, value));
+      this.range.value = String(Math.round(pos));
+      this.style.setProperty('--pos', `${pos}%`);
+    }
+  }
+  if (!customElements.get('split-slider')) customElements.define('split-slider', SplitSlider);
+
   /* ---------- Announcement bar rotator ---------- */
 
   class AnnouncementBar extends HTMLElement {
