@@ -24,8 +24,34 @@
     assign saved = compare | minus: price
     assign percent = saved | times: 100.0 | divided_by: compare | round
   endif
+
+  assign price_style = ''
+  if compare_size > 0
+    assign price_style = price_style | append: '--compare-size:' | append: compare_size | append: 'px;'
+  endif
+  if compare_color != blank
+    assign price_style = price_style | append: '--compare-color:' | append: compare_color | append: ';'
+  endif
+  if compare_weight != blank and compare_weight != 'inherit'
+    assign price_style = price_style | append: '--compare-weight:' | append: compare_weight | append: ';'
+  endif
+  if save_size > 0
+    assign price_style = price_style | append: '--save-size:' | append: save_size | append: 'px;'
+  endif
+  if save_color != blank
+    assign price_style = price_style | append: '--save-color:' | append: save_color | append: ';'
+  endif
+  if save_bg != blank
+    assign price_style = price_style | append: '--save-bg:' | append: save_bg | append: ';'
+  endif
+  if save_radius > 0
+    assign price_style = price_style | append: '--save-radius:' | append: save_radius | append: 'px;'
+  endif
+  if save_pad > 0
+    assign price_style = price_style | append: '--save-pad:' | append: save_pad | append: 'px;'
+  endif
 -%}
-<div class="price{% if on_sale %} price--sale{% endif %}{% if class %} {{ class }}{% endif %}">
+<div class="price{% if on_sale %} price--sale{% endif %}{% if meta_layout == 'below' %} price--meta-below{% endif %}{% if class %} {{ class }}{% endif %}"{% if price_style != blank %} style="{{ price_style }}"{% endif %}>
   {%- if on_sale -%}<span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>{%- endif -%}
   <span class="price__current" data-price-current>
     {%- if use_range and product.price_varies -%}
@@ -33,23 +59,32 @@
     {%- endif -%}
     {%- render 'format-money', amount: price -%}
   </span>
+  {%- if show_compare != false or show_savings -%}<span class="price__meta">{%- endif -%}
   {%- unless show_compare == false -%}
-    <s class="price__compare" data-price-compare{% unless on_sale %} hidden{% endunless %}>
-      {%- if on_sale %}<span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>{% render 'format-money', amount: compare %}{% endif -%}
+    <s class="price__compare{% if compare_strike == false %} price__compare--plain{% endif %}" data-price-compare{% unless on_sale %} hidden{% endunless %}>
+      {%- if on_sale -%}
+        <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+        {%- if compare_prefix != blank -%}<span class="price__compare-label">{{ compare_prefix | escape }}</span>{% endif -%}
+        <span class="price__compare-amount">{% render 'format-money', amount: compare %}</span>
+      {%- endif -%}
     </s>
   {%- endunless -%}
   {%- if show_savings -%}
     <span class="price__savings badge" data-price-savings data-savings-format="{{ savings_format | default: 'amount' }}"{% unless on_sale %} hidden{% endunless %}>
       {%- if on_sale -%}
-        {%- if savings_format == 'percent' -%}
+        {%- capture saved_money %}{% render 'format-money', amount: saved %}{% endcapture -%}
+        {%- assign saved_money = saved_money | strip -%}
+        {%- if savings_text != blank -%}
+          {{- savings_text | escape | replace: '[percent]', percent | replace: '[amount]', saved_money -}}
+        {%- elsif savings_format == 'percent' -%}
           {{- 'products.product.save_percent' | t: percent: percent -}}
         {%- else -%}
-          {%- capture saved_money %}{% render 'format-money', amount: saved %}{% endcapture -%}
           {{- 'products.product.save_amount' | t: amount: saved_money -}}
         {%- endif -%}
       {%- endif -%}
     </span>
   {%- endif -%}
+  {%- if show_compare != false or show_savings -%}</span>{%- endif -%}
   {%- if target.unit_price_measurement -%}
     <small class="unit-price">
       {%- render 'format-money', amount: target.unit_price -%}/

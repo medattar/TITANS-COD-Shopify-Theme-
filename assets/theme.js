@@ -352,7 +352,32 @@
 
   class CountdownTimer extends HTMLElement {
     connectedCallback() {
-      this.end = parseCountdownEnd(this.dataset.end);
+      const duration = parseInt(this.dataset.duration || '0', 10);
+      if (duration > 0) {
+        const key = this.dataset.key;
+        let stored = NaN;
+        if (key && !(window.Shopify && Shopify.designMode)) {
+          try {
+            stored = Number(localStorage.getItem(key));
+          } catch (error) {
+            stored = NaN;
+          }
+        }
+        if (stored > Date.now()) this.end = stored;
+        else if (stored > 0) this.end = stored;
+        else {
+          this.end = Date.now() + duration * 1000;
+          if (key && !(window.Shopify && Shopify.designMode)) {
+            try {
+              localStorage.setItem(key, String(this.end));
+            } catch (error) {
+              /* private browsing */
+            }
+          }
+        }
+      } else {
+        this.end = parseCountdownEnd(this.dataset.end);
+      }
       if (Number.isNaN(this.end)) {
         if (!(window.Shopify && Shopify.designMode)) this.hidden = true;
         return;
@@ -386,14 +411,23 @@
         else this.hidden = true;
         return;
       }
-      const s = Math.floor(diff / 1000);
+      let remain = Math.floor(diff / 1000);
       const urgent = parseInt(this.dataset.urgent || '0', 10);
-      if (urgent > 0) this.classList.toggle('countdown--urgent', s < urgent * 60);
+      if (urgent > 0) this.classList.toggle('countdown--urgent', remain < urgent * 60);
       const pad = (n) => String(n).padStart(2, '0');
-      if (this.parts.days) this.parts.days.textContent = pad(Math.floor(s / 86400));
-      if (this.parts.hours) this.parts.hours.textContent = pad(Math.floor((s % 86400) / 3600));
-      if (this.parts.minutes) this.parts.minutes.textContent = pad(Math.floor((s % 3600) / 60));
-      if (this.parts.seconds) this.parts.seconds.textContent = pad(s % 60);
+      if (this.parts.days) {
+        this.parts.days.textContent = pad(Math.floor(remain / 86400));
+        remain %= 86400;
+      }
+      if (this.parts.hours) {
+        this.parts.hours.textContent = pad(Math.floor(remain / 3600));
+        remain %= 3600;
+      }
+      if (this.parts.minutes) {
+        this.parts.minutes.textContent = pad(Math.floor(remain / 60));
+        remain %= 60;
+      }
+      if (this.parts.seconds) this.parts.seconds.textContent = pad(remain);
     }
   }
   if (!customElements.get('countdown-timer')) customElements.define('countdown-timer', CountdownTimer);

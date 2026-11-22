@@ -5,15 +5,46 @@
 {%- endcomment -%}
 {%- liquid
   assign cd_date = date | strip | replace: '/', '-'
-  assign cd_is_preview = false
-  if cd_date == blank
-    if request.design_mode or request.visual_preview_mode
-      assign cd_date = 'now' | date: '%s' | plus: 2592000 | date: '%Y-%m-%d'
-      assign cd_is_preview = true
-    endif
+  assign cd_days_part = duration_days | default: 0 | times: 86400
+  assign cd_hours_part = duration_hours | default: 0 | times: 3600
+  assign cd_minutes_part = duration_minutes | default: 0 | times: 60
+  assign cd_span = cd_days_part | plus: cd_hours_part | plus: cd_minutes_part
+  assign cd_mode = ''
+  if cd_date != blank
+    assign cd_mode = 'date'
+  elsif cd_span > 0
+    assign cd_mode = 'duration'
+  elsif request.design_mode or request.visual_preview_mode
+    assign cd_mode = 'preview'
+    assign cd_span = 172800
   endif
+
+  assign cd_show_days = true
+  assign cd_show_hours = true
+  assign cd_show_minutes = true
+  assign cd_show_seconds = true
+  if show_days == false
+    assign cd_show_days = false
+  endif
+  if show_hours == false
+    assign cd_show_hours = false
+  endif
+  if show_minutes == false
+    assign cd_show_minutes = false
+  endif
+  if show_seconds == false
+    assign cd_show_seconds = false
+  endif
+  assign cd_any_unit = false
+  if cd_show_days or cd_show_hours or cd_show_minutes or cd_show_seconds
+    assign cd_any_unit = true
+  endif
+  unless cd_any_unit
+    assign cd_show_hours = true
+    assign cd_show_minutes = true
+  endunless
 -%}
-{%- if cd_date != blank -%}
+{%- if cd_mode != blank -%}
   {%- liquid
     assign end_time = time | default: '23:59' | strip
     if end_time contains 'T'
@@ -37,25 +68,42 @@
     endif
     assign cd_style = style | default: 'tiles'
     assign cd_effect = effect | default: 'none'
+    assign cd_scale = ''
+    if scale != blank and scale != 100
+      assign cd_scale = scale | divided_by: 100.0
+    endif
+    assign cd_key = storage_key | default: 'timer' | append: '-' | append: cd_span
   -%}
-  {%- if cd_is_preview -%}
-    <p class="countdown__preview-note">Set an end date to publish this timer.</p>
+  {%- if cd_mode == 'preview' -%}
+    <p class="countdown__preview-note">Set a length or an end date to publish this timer.</p>
   {%- endif -%}
   <countdown-timer
     class="countdown countdown--{{ cd_style }}{% if cd_effect != 'none' and cd_effect != blank %} fx-motion{% endif %}"
-    style="{% if number_size > 0 %}--cd-size: {{ number_size }}px;{% endif %}{% if label_size > 0 %}--cd-label: {{ label_size }}px;{% endif %}{% if gap > 0 %}--cd-gap: {{ gap }}px;{% endif %}{% if radius > 0 %}--cd-radius: {{ radius }}px;{% endif %}{% if number_color != blank %}--cd-color: {{ number_color }};{% endif %}{% if label_color != blank %}--cd-muted: {{ label_color }};{% endif %}{% if background != blank %}--cd-bg: {{ background }};{% endif %}{% if border_color != blank %}--cd-border: {{ border_color }};{% endif %}{% if cd_effect != 'none' and cd_effect != blank %}--fx-name: fx-{{ cd_effect }}; --fx-speed: {{ effect_speed | default: 1.2 }}s; --fx-distance: 8;{% endif %}"
-    data-end="{{ cd_date }}T{{ end_hh }}:{{ end_mm }}:00{{ tz_offset }}"
+    style="{% if cd_scale != blank %}--cd-scale: {{ cd_scale }};{% endif %}{% if number_size > 0 %}--cd-size: {{ number_size }}px;{% endif %}{% if label_size > 0 %}--cd-label: {{ label_size }}px;{% endif %}{% if gap > 0 %}--cd-gap: {{ gap }}px;{% endif %}{% if radius > 0 %}--cd-radius: {{ radius }}px;{% endif %}{% if number_color != blank %}--cd-color: {{ number_color }};{% endif %}{% if label_color != blank %}--cd-muted: {{ label_color }};{% endif %}{% if background != blank %}--cd-bg: {{ background }};{% endif %}{% if border_color != blank %}--cd-border: {{ border_color }};{% endif %}{% if cd_effect != 'none' and cd_effect != blank %}--fx-name: fx-{{ cd_effect }}; --fx-speed: {{ effect_speed | default: 1.2 }}s; --fx-distance: 8;{% endif %}"
+    {% if cd_mode == 'date' %}data-end="{{ cd_date }}T{{ end_hh }}:{{ end_mm }}:00{{ tz_offset }}"{% else %}data-duration="{{ cd_span }}" data-key="cd-{{ cd_key }}"{% endif %}
     data-expired-text="{{ expired_text | escape }}"
     {% if urgent_minutes > 0 %}data-urgent="{{ urgent_minutes }}"{% endif %}
     role="timer"
     aria-live="off"
   >
-    <span class="countdown__unit"><span class="countdown__value" data-days>00</span><small>{{ 'general.countdown.days_short' | t }}</small></span>
-    <span class="countdown__sep" aria-hidden="true">:</span>
-    <span class="countdown__unit"><span class="countdown__value" data-hours>00</span><small>{{ 'general.countdown.hours_short' | t }}</small></span>
-    <span class="countdown__sep" aria-hidden="true">:</span>
-    <span class="countdown__unit"><span class="countdown__value" data-minutes>00</span><small>{{ 'general.countdown.minutes_short' | t }}</small></span>
-    <span class="countdown__sep" aria-hidden="true">:</span>
-    <span class="countdown__unit"><span class="countdown__value" data-seconds>00</span><small>{{ 'general.countdown.seconds_short' | t }}</small></span>
+    {%- assign cd_prev = false -%}
+    {%- if cd_show_days -%}
+      <span class="countdown__unit"><span class="countdown__value" data-days>00</span><small>{{ 'general.countdown.days_short' | t }}</small></span>
+      {%- assign cd_prev = true -%}
+    {%- endif -%}
+    {%- if cd_show_hours -%}
+      {%- if cd_prev -%}<span class="countdown__sep" aria-hidden="true">:</span>{%- endif -%}
+      <span class="countdown__unit"><span class="countdown__value" data-hours>00</span><small>{{ 'general.countdown.hours_short' | t }}</small></span>
+      {%- assign cd_prev = true -%}
+    {%- endif -%}
+    {%- if cd_show_minutes -%}
+      {%- if cd_prev -%}<span class="countdown__sep" aria-hidden="true">:</span>{%- endif -%}
+      <span class="countdown__unit"><span class="countdown__value" data-minutes>00</span><small>{{ 'general.countdown.minutes_short' | t }}</small></span>
+      {%- assign cd_prev = true -%}
+    {%- endif -%}
+    {%- if cd_show_seconds -%}
+      {%- if cd_prev -%}<span class="countdown__sep" aria-hidden="true">:</span>{%- endif -%}
+      <span class="countdown__unit"><span class="countdown__value" data-seconds>00</span><small>{{ 'general.countdown.seconds_short' | t }}</small></span>
+    {%- endif -%}
   </countdown-timer>
 {%- endif -%}

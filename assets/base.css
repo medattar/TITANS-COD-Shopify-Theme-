@@ -1101,20 +1101,64 @@ textarea.field__input {
 }
 
 .price__compare {
-  color: var(--color-compare);
-  font-size: 0.7em;
-  font-weight: var(--font-body-weight);
+  color: var(--compare-color, var(--color-compare));
+  font-size: var(--compare-size, 0.7em);
+  font-weight: var(--compare-weight, var(--font-body-weight));
+  text-decoration: none;
+}
+
+.price__compare-label {
+  margin-right: 0.35em;
+}
+
+.price__compare-amount {
   text-decoration: line-through;
   text-decoration-color: var(--color-accent);
   text-decoration-thickness: 1.5px;
+}
+
+.price__compare--plain .price__compare-amount {
+  text-decoration: none;
+}
+
+.price__meta {
+  display: contents;
+}
+
+.price--meta-below {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.price--meta-below .price__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
 }
 
 .price--sale .price__current {
   color: var(--color-price);
 }
 
-.price__savings {
-  font-size: 0.75em;
+.price__savings.badge {
+  font-size: var(--save-size, 0.75em);
+}
+
+.price[style*='--save-color'] .price__savings {
+  color: var(--save-color);
+}
+
+.price[style*='--save-bg'] .price__savings {
+  background: var(--save-bg);
+}
+
+.price[style*='--save-radius'] .price__savings {
+  border-radius: var(--save-radius);
+}
+
+.price[style*='--save-pad'] .price__savings {
+  padding: var(--save-pad) calc(var(--save-pad) * 1.8);
 }
 
 .unit-price {
@@ -1291,7 +1335,7 @@ textarea.field__input {
 }
 
 .product-card__price .price__compare {
-  font-size: 13px;
+  font-size: var(--compare-size, 13px);
 }
 
 @media (min-width: 420px) {
@@ -1587,6 +1631,7 @@ textarea.field__input {
   gap: var(--cd-gap, 10px);
   width: max-content;
   max-width: 100%;
+  zoom: var(--cd-scale, 1);
 }
 
 .countdown__unit {

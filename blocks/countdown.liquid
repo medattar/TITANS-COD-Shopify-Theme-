@@ -20,7 +20,16 @@
       background: s.background,
       border_color: s.border_color,
       effect_speed: s.effect_speed,
-      urgent_minutes: s.urgent_minutes
+      urgent_minutes: s.urgent_minutes,
+      show_days: s.show_days,
+      show_hours: s.show_hours,
+      show_minutes: s.show_minutes,
+      show_seconds: s.show_seconds,
+      duration_days: s.duration_days,
+      duration_hours: s.duration_hours,
+      duration_minutes: s.duration_minutes,
+      scale: s.scale,
+      storage_key: block.id
     -%}
 </div>
 
@@ -31,7 +40,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Only use real deadlines. The timer hides itself (or shows the text below) once the date passes."
+      "content": "Use a length of time, or an end date. A length starts when each visitor first sees the timer. An end date replaces the length. Only use a real deadline."
     },
     {
       "type": "text",
@@ -40,18 +49,81 @@
       "default": "La promoción termina en"
     },
     {
+      "type": "header",
+      "content": "Length"
+    },
+    {
+      "type": "range",
+      "id": "duration_days",
+      "label": "Days",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "duration_hours",
+      "label": "Hours",
+      "min": 0,
+      "max": 72,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "duration_minutes",
+      "label": "Minutes",
+      "min": 0,
+      "max": 180,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "End date (optional)"
+    },
+    {
       "type": "text",
       "id": "date",
       "label": "End date",
       "placeholder": "2026-12-31",
-      "info": "YYYY-MM-DD"
+      "info": "Optional. YYYY-MM-DD. When filled, this date is used instead of the length."
     },
     {
       "type": "text",
       "id": "time",
       "label": "End time",
       "default": "23:59",
-      "info": "24-hour HH:MM"
+      "info": "24-hour HH:MM. Used only with the end date."
+    },
+    {
+      "type": "header",
+      "content": "Units"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_days",
+      "label": "Show days",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hours",
+      "label": "Show hours",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_minutes",
+      "label": "Show minutes",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_seconds",
+      "label": "Show seconds",
+      "default": true
     },
     {
       "type": "select",
@@ -185,10 +257,20 @@
     },
     {
       "type": "range",
+      "id": "scale",
+      "label": "Size",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
       "id": "number_size",
       "label": "Number size (0 = default)",
       "min": 0,
-      "max": 72,
+      "max": 96,
       "step": 2,
       "unit": "px",
       "default": 0

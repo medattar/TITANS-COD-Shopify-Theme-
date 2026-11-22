@@ -19,7 +19,19 @@
       variant: v,
       show_compare: s.show_compare,
       show_savings: s.show_savings,
-      savings_format: s.savings_format
+      savings_format: s.savings_format,
+      compare_prefix: s.compare_prefix,
+      compare_size: s.compare_size,
+      compare_color: s.compare_color,
+      compare_weight: s.compare_weight,
+      compare_strike: s.compare_strike,
+      savings_text: s.savings_text,
+      save_size: s.save_size,
+      save_color: s.save_color,
+      save_bg: s.save_bg,
+      save_radius: s.save_radius,
+      save_pad: s.save_pad,
+      meta_layout: s.meta_layout
     -%}
     {%- if s.show_tax_note -%}
       <p class="product-price-block__note">
@@ -91,6 +103,148 @@
           "label": "Amount"
         }
       ]
+    },
+    {
+      "type": "select",
+      "id": "meta_layout",
+      "label": "Compare price and badge position",
+      "default": "inline",
+      "options": [
+        {
+          "value": "inline",
+          "label": "Same line as the price"
+        },
+        {
+          "value": "below",
+          "label": "On their own line"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Compare-at price",
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "text",
+      "id": "compare_prefix",
+      "label": "Text before the price",
+      "info": "Example: Precio regular. Leave blank to show only the amount.",
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "range",
+      "id": "compare_size",
+      "label": "Size (0 = default)",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "color",
+      "id": "compare_color",
+      "label": "Color",
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "select",
+      "id": "compare_weight",
+      "label": "Weight",
+      "default": "inherit",
+      "visible_if": "{{ block.settings.show_compare }}",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Default"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra bold"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "compare_strike",
+      "label": "Strikethrough",
+      "default": true,
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "header",
+      "content": "Savings badge",
+      "visible_if": "{{ block.settings.show_savings }}"
+    },
+    {
+      "type": "text",
+      "id": "savings_text",
+      "label": "Badge text",
+      "info": "Use [percent] and [amount]. Leave blank for the default “Ahorras 17%”.",
+      "visible_if": "{{ block.settings.show_savings }}"
+    },
+    {
+      "type": "range",
+      "id": "save_size",
+      "label": "Size (0 = default)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_savings }}"
+    },
+    {
+      "type": "color",
+      "id": "save_color",
+      "label": "Text color",
+      "visible_if": "{{ block.settings.show_savings }}"
+    },
+    {
+      "type": "color",
+      "id": "save_bg",
+      "label": "Background",
+      "visible_if": "{{ block.settings.show_savings }}"
+    },
+    {
+      "type": "range",
+      "id": "save_radius",
+      "label": "Corner radius (0 = default)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_savings }}"
+    },
+    {
+      "type": "range",
+      "id": "save_pad",
+      "label": "Padding (0 = default)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_savings }}"
     },
     {
       "type": "checkbox",
