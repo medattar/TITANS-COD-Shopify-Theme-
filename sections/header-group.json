@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
@@ -9,34 +18,75 @@
           "type": "announcement",
           "settings": {
             "text": "<strong>Pago contra entrega</strong> · Paga cuando recibas tu pedido",
+            "link": "",
             "icon": "cash",
-            "badge": ""
+            "badge": "",
+            "countdown_date": "",
+            "countdown_time": ""
           }
         },
         "announcement_2": {
           "type": "announcement",
           "settings": {
             "text": "Envío con seguimiento a todo México",
+            "link": "",
             "icon": "truck",
-            "badge": ""
+            "badge": "",
+            "countdown_date": "",
+            "countdown_time": ""
           }
         }
       },
-      "block_order": ["announcement_1", "announcement_2"],
+      "block_order": [
+        "announcement_1",
+        "announcement_2"
+      ],
       "settings": {
         "color_scheme": "scheme-4",
-        "mode": "rotate"
+        "mode": "rotate",
+        "rotate_speed": 5,
+        "marquee_speed": 30,
+        "height": 38,
+        "text_size": 12.5,
+        "uppercase": true,
+        "border": false,
+        "hide_mobile": false
       }
     },
     "header": {
       "type": "header",
       "settings": {
         "color_scheme": "scheme-3",
+        "use_inverse_logo": true,
         "layout": "center",
         "sticky": "always",
-        "menu": "main-menu"
+        "height_desktop": 64,
+        "height_mobile": 56,
+        "border": false,
+        "menu": "main-menu",
+        "menu_secondary": "",
+        "menu_size": 12.5,
+        "menu_letter_spacing": 12,
+        "menu_uppercase": true,
+        "menu_gap": 28,
+        "menu_toggle_desktop": false,
+        "mobile_strip_menu": "",
+        "mobile_strip_scheme": "",
+        "icon_style": "boxed",
+        "icon_size": 18,
+        "cart_icon": "bag",
+        "show_search": false,
+        "show_account": false,
+        "drawer_cards_heading": "✦ Tienda ✦",
+        "drawer_menu": "",
+        "drawer_links_heading": "✦ Ayuda ✦",
+        "drawer_footer_badge": "",
+        "drawer_footer_text": ""
       }
     }
   },
-  "order": ["announcement_bar", "header"]
+  "order": [
+    "announcement_bar",
+    "header"
+  ]
 }

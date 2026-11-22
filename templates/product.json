@@ -1,103 +1,115 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {},
       "blocks": {
-        "product-header": {
-          "type": "_product-header",
-          "settings": {
-            "gap": 10,
-            "align": "left"
-          },
-          "static": true,
-          "blocks": {
-            "badge_1": {
-              "type": "badge",
-              "settings": {
-                "text": "✦ Pago contra entrega ✦",
-                "style": "eyebrow"
-              }
-            },
-            "product_title_2": {
-              "type": "product-title",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
-            },
-            "product_rating_3": {
-              "type": "product-rating",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
-            },
-            "product_subtitle_4": {
-              "type": "product-subtitle",
-              "settings": {
-                "product": "{{ closest.product }}",
-                "source": "metafield"
-              }
-            }
-          },
-          "block_order": [
-            "badge_1",
-            "product_title_2",
-            "product_rating_3",
-            "product_subtitle_4"
-          ]
-        },
         "product_price_5": {
           "type": "product-price",
           "settings": {
-            "product": "{{ closest.product }}"
-          }
+            "product": "{{ closest.product }}",
+            "size": "large",
+            "show_compare": true,
+            "show_savings": true,
+            "savings_format": "percent",
+            "show_tax_note": false,
+            "shipping_note": ""
+          },
+          "blocks": {}
         },
         "variant_picker_6": {
           "type": "variant-picker",
           "settings": {
             "product": "{{ closest.product }}",
-            "style": "buttons"
-          }
+            "style": "buttons",
+            "show_selected": true,
+            "use_swatches": true,
+            "show_card_savings": true,
+            "card_savings_label": "Ahorras [amount]"
+          },
+          "blocks": {}
         },
         "quantity_7": {
           "type": "quantity",
           "settings": {
-            "product": "{{ closest.product }}"
-          }
+            "product": "{{ closest.product }}",
+            "label": "Cantidad"
+          },
+          "blocks": {}
         },
         "delivery_estimate_8": {
           "type": "delivery-estimate",
-          "settings": {}
+          "settings": {
+            "text": "Llega entre el [start] y el [end]",
+            "fallback": "Entrega estimada de 2 a 6 días hábiles",
+            "min_days": 2,
+            "max_days": 6,
+            "business_days": true,
+            "cutoff_hour": 14,
+            "show_dot": true,
+            "icon": "none",
+            "align": "center"
+          },
+          "blocks": {}
         },
         "buy_buttons_9": {
           "type": "buy-buttons",
           "settings": {
             "product": "{{ closest.product }}",
-            "purchase_mode": "inherit"
-          }
+            "purchase_mode": "inherit",
+            "label": "",
+            "button_style": "primary",
+            "show_price": true,
+            "show_savings": true,
+            "savings_label": "Ahorras [amount]",
+            "subline": "",
+            "show_dynamic_checkout": true,
+            "terms": "Pago contra entrega · Envío con seguimiento"
+          },
+          "blocks": {}
         },
         "cod_notice_10": {
           "type": "cod-notice",
           "settings": {
             "style": "card",
+            "use_scheme": false,
+            "color_scheme": "",
             "icon": "cash",
             "title": "Pago contra entrega",
-            "text": "<p>Paga cuando recibas tu pedido.</p>"
-          }
+            "text": "<p>Paga cuando recibas tu pedido.</p>",
+            "link_label": "",
+            "link": ""
+          },
+          "blocks": {}
         },
         "cod_notice_11": {
           "type": "cod-notice",
           "settings": {
             "style": "soft",
+            "use_scheme": false,
+            "color_scheme": "",
             "icon": "whatsapp",
             "title": "Confirma tu pedido por WhatsApp",
-            "text": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
-          }
+            "text": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>",
+            "link_label": "",
+            "link": ""
+          },
+          "blocks": {}
         },
         "trust_badges_15": {
           "type": "trust-badges",
           "settings": {
-            "style": "row"
+            "style": "row",
+            "columns": 3,
+            "columns_mobile": 3
           },
           "blocks": {
             "trust_badge_12": {
@@ -105,21 +117,24 @@
               "settings": {
                 "icon": "cash",
                 "text": "Pago contra entrega"
-              }
+              },
+              "blocks": {}
             },
             "trust_badge_13": {
               "type": "_trust-badge",
               "settings": {
                 "icon": "truck",
                 "text": "Envío con seguimiento"
-              }
+              },
+              "blocks": {}
             },
             "trust_badge_14": {
               "type": "_trust-badge",
               "settings": {
                 "icon": "whatsapp",
                 "text": "Soporte por WhatsApp"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -132,41 +147,124 @@
           "type": "product-description",
           "settings": {
             "product": "{{ closest.product }}",
-            "collapsible": true
-          }
+            "heading": "",
+            "collapsible": true,
+            "preview_words": 30
+          },
+          "blocks": {}
         },
         "accordion_20": {
           "type": "accordion",
           "settings": {
-            "style": "lines"
+            "heading": "",
+            "style": "lines",
+            "icon": "plus",
+            "gap": 10,
+            "exclusive": true
           },
           "blocks": {
             "accordion_item_17": {
               "type": "_accordion-item",
               "settings": {
                 "title": "¿Cómo funciona el pago contra entrega?",
-                "content": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo cuando el repartidor te entregue el paquete.</p>"
-              }
+                "content": "<p>Haces tu pedido sin pagar en línea y pagas en efectivo cuando el repartidor te entregue el paquete.</p>",
+                "page": "",
+                "icon": "none",
+                "open": false
+              },
+              "blocks": {}
             },
             "accordion_item_18": {
               "type": "_accordion-item",
               "settings": {
                 "title": "¿Cómo confirmo mi pedido?",
-                "content": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>"
-              }
+                "content": "<p>Recibirás un mensaje por WhatsApp para confirmar tu pedido. Sin tu confirmación, tu pedido no será preparado ni enviado.</p>",
+                "page": "",
+                "icon": "none",
+                "open": false
+              },
+              "blocks": {}
             },
             "accordion_item_19": {
               "type": "_accordion-item",
               "settings": {
                 "title": "¿Cuánto tarda el envío?",
-                "content": "<p>Indica aquí tus tiempos reales de entrega por zona.</p>"
-              }
+                "content": "<p>Indica aquí tus tiempos reales de entrega por zona.</p>",
+                "page": "",
+                "icon": "none",
+                "open": false
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "accordion_item_17",
             "accordion_item_18",
             "accordion_item_19"
+          ]
+        },
+        "product-header": {
+          "type": "_product-header",
+          "static": true,
+          "settings": {
+            "gap": 10,
+            "align": "left"
+          },
+          "blocks": {
+            "badge_1": {
+              "type": "badge",
+              "settings": {
+                "text": "✦ Pago contra entrega ✦",
+                "style": "eyebrow",
+                "size": "small",
+                "icon": "none",
+                "align": "flex-start"
+              },
+              "blocks": {}
+            },
+            "product_title_2": {
+              "type": "product-title",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "font": "body",
+                "size_desktop": 42,
+                "size_mobile": 31,
+                "show_vendor": false,
+                "show_sku": false,
+                "tag": "auto"
+              },
+              "blocks": {}
+            },
+            "product_rating_3": {
+              "type": "product-rating",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "show_value": false,
+                "show_count": true,
+                "link": "#reviews",
+                "align": "flex-start"
+              },
+              "blocks": {}
+            },
+            "product_subtitle_4": {
+              "type": "product-subtitle",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "text": "",
+                "source": "metafield",
+                "lines": "",
+                "marker": "✦",
+                "size_desktop": 19,
+                "size_mobile": 16
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "badge_1",
+            "product_title_2",
+            "product_rating_3",
+            "product_subtitle_4"
           ]
         }
       },
@@ -181,31 +279,44 @@
         "trust_badges_15",
         "product_description_16",
         "accordion_20"
-      ]
+      ],
+      "settings": {
+        "color_scheme": "",
+        "columns": "1.05fr 1fr",
+        "column_gap": 56,
+        "sticky_gallery": true,
+        "mobile_order": "head-first",
+        "gallery_layout": "left",
+        "thumb_rail_width": 19,
+        "thumbs_mobile": true,
+        "media_ratio": "portrait",
+        "media_fit": "cover",
+        "media_radius": 18,
+        "media_border": true,
+        "media_shadow": false,
+        "video_autoplay": false,
+        "video_loop": true,
+        "sticky_bar": true,
+        "sticky_bar_desktop": false,
+        "sticky_bar_image": true,
+        "sticky_bar_label": "",
+        "update_url": true,
+        "padding_top": 40,
+        "padding_bottom": 72,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 48
+      }
     },
     "trust": {
       "type": "icon-grid",
-      "settings": {
-        "eyebrow": "",
-        "heading": "",
-        "style": "bar",
-        "columns_desktop": 4,
-        "columns_mobile": 2,
-        "icon_size": 28,
-        "padding_top": 28,
-        "padding_bottom": 28,
-        "padding_top_mobile": 20,
-        "padding_bottom_mobile": 20,
-        "anchor": "",
-        "color_scheme": "scheme-2"
-      },
       "blocks": {
         "t1": {
           "type": "item",
           "settings": {
             "icon": "cash",
             "title": "Pago contra entrega",
-            "text": ""
+            "text": "",
+            "value": ""
           }
         },
         "t2": {
@@ -213,7 +324,8 @@
           "settings": {
             "icon": "truck",
             "title": "Envío a todo México",
-            "text": ""
+            "text": "",
+            "value": ""
           }
         },
         "t3": {
@@ -221,7 +333,8 @@
           "settings": {
             "icon": "whatsapp",
             "title": "Soporte por WhatsApp",
-            "text": ""
+            "text": "",
+            "value": ""
           }
         },
         "t4": {
@@ -229,7 +342,8 @@
           "settings": {
             "icon": "shield",
             "title": "Compra segura",
-            "text": ""
+            "text": "",
+            "value": ""
           }
         }
       },
@@ -238,11 +352,44 @@
         "t2",
         "t3",
         "t4"
-      ]
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "anchor": "",
+        "eyebrow": "",
+        "heading": "",
+        "subheading": "",
+        "heading_align": "center",
+        "style": "bar",
+        "align": "center",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "icon_size": 28,
+        "image_style": "icon",
+        "note": "",
+        "button_label": "",
+        "button_link": "#buy",
+        "padding_top": 28,
+        "padding_bottom": 28,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20
+      }
     },
     "recommendations": {
       "type": "product-recommendations",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "eyebrow": "✦ También te puede gustar ✦",
+        "heading": "productos relacionados",
+        "heading_align": "center",
+        "intent": "related",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "padding_top": 72,
+        "padding_bottom": 72,
+        "padding_top_mobile": 44,
+        "padding_bottom_mobile": 44
+      }
     }
   },
   "order": [
