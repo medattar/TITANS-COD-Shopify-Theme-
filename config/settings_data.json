@@ -59,7 +59,6 @@
     "button_padding_y": 16,
     "button_padding_x": 32,
     "button_shadow": true,
-    "button_hover": "darken",
     "badge_shape": "pill",
     "badge_size": 12,
     "badge_uppercase": false,
@@ -287,7 +286,8 @@
           "highlight_text": "#2E0B12"
         }
       }
-    }
+    },
+    "button_hover_effect": "darken"
   },
   "presets": {
     "Default": {
@@ -350,7 +350,6 @@
       "button_padding_y": 16,
       "button_padding_x": 32,
       "button_shadow": true,
-      "button_hover": "darken",
       "badge_shape": "pill",
       "badge_size": 12,
       "badge_uppercase": false,
@@ -578,7 +577,8 @@
             "highlight_text": "#2E0B12"
           }
         }
-      }
+      },
+      "button_hover_effect": "darken"
     }
   }
 }

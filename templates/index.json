@@ -71,7 +71,7 @@
         "products_to_show": 8,
         "columns_desktop": 4,
         "columns_tablet": 3,
-        "columns_mobile": 2,
+        "columns_mobile": "2",
         "mobile_layout": "grid"
       }
     }
