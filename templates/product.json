@@ -573,6 +573,7 @@
         },
         "cod_notice_11": {
           "type": "cod-notice",
+          "disabled": true,
           "settings": {
             "style": "soft",
             "use_scheme": false,
