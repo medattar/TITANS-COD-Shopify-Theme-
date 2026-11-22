@@ -16,15 +16,15 @@
           "type": "tag",
           "settings": {
             "text": "Pago contra entrega",
-            "style": "highlight",
+            "style": "outline",
             "icon": "cash",
-            "size": 0,
+            "size": 17,
             "weight": "inherit",
             "letter": 0,
             "radius": 0,
             "text_color": "",
             "bg_color": "",
-            "icon_size": 14,
+            "icon_size": 23,
             "icon_color": ""
           }
         },
@@ -34,7 +34,7 @@
             "text": "Tu producto estrella",
             "accent_line": "Paga al recibir",
             "font": "display",
-            "size_desktop": 60,
+            "size_desktop": 46,
             "size_mobile": 36,
             "effect": "fade",
             "weight": "inherit",
@@ -115,7 +115,6 @@
         "inset": false,
         "shadow": false,
         "radius": 24,
-        "image": "shopify://shop_images/banner.png",
         "media_placement": "split-left",
         "overlay_opacity": 0,
         "content_align": "center",
@@ -191,7 +190,7 @@
             "title": "Soporte por WhatsApp",
             "text": "",
             "value": "",
-            "icon_color": "#7AFCDC",
+            "icon_color": "#3CC7A5",
             "link": ""
           }
         },
@@ -283,7 +282,7 @@
     "products": {
       "type": "product-grid",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-7",
         "eyebrow": "✦ Más vendidos ✦",
         "heading": "Nuestros productos",
         "subheading": "",
