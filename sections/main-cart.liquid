@@ -3,7 +3,32 @@
 {{ 'section-pages.css' | asset_url | stylesheet_tag }}
 
 {%- assign s = section.settings -%}
-<section class="section cart-page color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+{%- liquid
+  assign show_checkout_button = true
+  if settings.show_drawer_checkout == false
+    assign show_checkout_button = false
+  endif
+  assign cart_shadow = ''
+  case s.card_shadow
+    when 'none'
+      assign cart_shadow = 'none'
+    when 'soft'
+      assign cart_shadow_color = s.card_shadow_color | color_modify: 'alpha', 0.16
+      assign cart_shadow = '0 10px 30px ' | append: cart_shadow_color
+    when 'medium'
+      assign cart_shadow_color = s.card_shadow_color | color_modify: 'alpha', 0.24
+      assign cart_shadow = '0 16px 40px ' | append: cart_shadow_color
+    when 'hard'
+      assign cart_shadow = '5px 5px 0 ' | append: s.card_shadow_color
+    when 'glow'
+      assign cart_shadow_color = s.card_shadow_color | color_modify: 'alpha', 0.45
+      assign cart_shadow = '0 0 26px ' | append: cart_shadow_color
+  endcase
+-%}
+<section
+  class="section cart-page color-{{ s.color_scheme }} gradient"
+  style="{% render 'section-style' %}{% if s.card_radius > 0 %}--cart-radius: {{ s.card_radius }}px;{% endif %}{% if s.card_bg != blank and s.card_bg.alpha != 0 %}--cart-card-bg: {{ s.card_bg }};{% endif %}{% if s.card_text != blank and s.card_text.alpha != 0 %}--cart-card-text: {{ s.card_text }};{% endif %}{% if s.card_border != blank and s.card_border.alpha != 0 %}--cart-border: {{ s.card_border }};{% endif %}{% if s.card_border_width > 0 %}--cart-border-width: {{ s.card_border_width }}px;{% endif %}{% if cart_shadow != blank %}--cart-shadow: {{ cart_shadow }};{% endif %}{% if s.card_gap > 0 %}--cart-gap: {{ s.card_gap }}px;{% endif %}{% if s.image_radius > 0 %}--cart-image-radius: {{ s.image_radius }}px;{% endif %}{% if s.title_color != blank and s.title_color.alpha != 0 %}--cart-title: {{ s.title_color }};{% endif %}{% if s.price_color != blank and s.price_color.alpha != 0 %}--cart-price: {{ s.price_color }};{% endif %}{% if s.muted_color != blank and s.muted_color.alpha != 0 %}--cart-muted: {{ s.muted_color }};{% endif %}"
+>
   <div class="page-width">
     <h1 class="h1 cart-page__title">{{ 'cart.general.title' | t }}</h1>
     {%- if cart.item_count > 0 -%}
@@ -34,7 +59,7 @@
                 <textarea id="CartPage-Note" class="field__input" name="note" rows="3">{{ cart.note }}</textarea>
               </div>
             {%- endif -%}
-            <button type="submit" name="checkout" class="button button--full button--large">{{ 'cart.general.checkout' | t }}</button>
+            <button type="submit" name="checkout" class="button button--full button--large"{% unless show_checkout_button %} hidden{% endunless %}>{{ 'cart.general.checkout' | t }}</button>
           </form>
           {%- if additional_checkout_buttons and s.show_dynamic_checkout -%}
             <div class="cart-page__dynamic">{{ content_for_additional_checkout_buttons }}</div>
@@ -69,6 +94,104 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius (0 = theme)",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "card_shadow",
+      "label": "Card shadow",
+      "default": "theme",
+      "options": [
+        { "value": "theme", "label": "Theme default" },
+        { "value": "none", "label": "None" },
+        { "value": "soft", "label": "Soft" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "hard", "label": "Hard" },
+        { "value": "glow", "label": "Glow" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "card_shadow_color",
+      "label": "Shadow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card text"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card border"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Card border width (0 = theme)",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Space between cards (0 = theme)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Inside the cards"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Product image radius (0 = theme)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Page title color"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Note color"
     },
     {
       "type": "checkbox",

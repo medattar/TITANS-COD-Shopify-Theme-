@@ -1456,7 +1456,7 @@
         "id": "show_drawer_checkout",
         "label": "Show checkout button",
         "default": true,
-        "info": "The checkout button in the cart drawer."
+        "info": "Hides Finalizar pedido in the cart drawer and on the cart page. A COD app button stays."
       },
       {
         "type": "select",
