@@ -1,3 +1,15 @@
+{%- liquid
+  assign show_here = true
+  if block.settings.show_on == 'selected'
+    assign show_here = false
+    assign show_for = block.settings.product | default: product
+    assign show_ids = block.settings.show_products | map: 'id'
+    if show_for and show_ids contains show_for.id
+      assign show_here = true
+    endif
+  endif
+-%}
+{%- if show_here -%}
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- liquid
@@ -18,12 +30,17 @@
   {%- if s.icon != 'none' -%}{%- render 'icon', icon: s.icon -%}{%- endif -%}
   <span data-delivery-text data-template="{{ s.text | escape }}">{{ s.fallback }}</span>
 </delivery-estimate>
+{%- else -%}
+  {%- render 'block-placeholder', message: 'Hidden on this product. Change Show on to display it here.' -%}
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Delivery estimate",
   "tag": null,
   "settings": [
+    {"type": "select", "id": "show_on", "label": "Show on", "default": "all", "options": [{"value": "all", "label": "All products"}, {"value": "selected", "label": "Only the products below"}]},
+    {"type": "product_list", "id": "show_products", "label": "Products", "limit": 50, "info": "Used when Show on is set to Only the products below."},
     {
       "type": "paragraph",
       "content": "Calculated in the shopper's browser from the day ranges below. Use your real carrier times."
