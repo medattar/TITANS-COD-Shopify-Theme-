@@ -1445,6 +1445,20 @@
     "name": "Cart",
     "settings": [
       {
+        "type": "checkbox",
+        "id": "show_cart_icon",
+        "label": "Show cart icon",
+        "default": true,
+        "info": "The cart icon in the header."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_drawer_checkout",
+        "label": "Show checkout button",
+        "default": true,
+        "info": "The checkout button in the cart drawer."
+      },
+      {
         "type": "select",
         "id": "cart_type",
         "label": "Cart type",

@@ -53,7 +53,7 @@
       {{- icon_account -}}
     </a>
   {%- endif -%}
-  {%- if section.settings.show_cart != false -%}
+  {%- if section.settings.show_cart != false and settings.show_cart_icon != false -%}
     <a
       href="{{ routes.cart_url }}"
       class="header__icon"
@@ -250,6 +250,13 @@
   },
   "settings": [
     {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show cart icon",
+      "default": true,
+      "info": "The cart icon at the right of the header."
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
@@ -423,12 +430,6 @@
       "step": 1,
       "unit": "px",
       "default": 18
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart",
-      "label": "Show cart",
-      "default": true
     },
     {
       "type": "select",

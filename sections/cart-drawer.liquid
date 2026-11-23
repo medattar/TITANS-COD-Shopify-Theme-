@@ -70,7 +70,13 @@
           <span class="cart-totals__value">{% render 'format-money', amount: cart.total_price %}</span>
         </div>
         <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
-        {%- if settings.cart_note or section.settings.show_checkout != false -%}
+        {%- liquid
+          assign show_checkout_button = false
+          if section.settings.show_checkout != false and settings.show_drawer_checkout != false
+            assign show_checkout_button = true
+          endif
+        -%}
+        {%- if settings.cart_note or show_checkout_button -%}
           <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form">
             {%- if settings.cart_note -%}
               <div class="field cart-note">
@@ -78,7 +84,7 @@
                 <textarea id="CartDrawer-Note" class="field__input" name="note" rows="2">{{ cart.note }}</textarea>
               </div>
             {%- endif -%}
-            {%- if section.settings.show_checkout != false -%}
+            {%- if show_checkout_button -%}
               <button type="submit" name="checkout" class="button button--full button--large">
                 {{- 'cart.general.checkout' | t -}}
               </button>
@@ -102,6 +108,7 @@
   "class": "section-cart-drawer",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "paragraph", "content": "Show or hide the checkout button here, or in Theme settings > Cart." },
     { "type": "checkbox", "id": "show_checkout", "label": "Show checkout button", "default": true },
     { "type": "text", "id": "empty_heading", "label": "Empty cart heading" },
     { "type": "text", "id": "empty_text", "label": "Empty cart text" }
