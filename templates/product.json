@@ -23,12 +23,16 @@
             "meta_layout": "inline",
             "compare_prefix": "",
             "compare_size": 20,
-            "compare_color": "#EF0F0F",
+            "compare_size_mobile": 0,
+            "compare_color": "#ef0f0f",
+            "compare_line": "",
+            "compare_gap": 0,
+            "compare_letter": 0,
             "compare_weight": "inherit",
             "compare_strike": true,
             "savings_text": "",
             "save_size": 0,
-            "save_color": "#FDFDFD",
+            "save_color": "#fdfdfd",
             "save_bg": "",
             "save_radius": 0,
             "save_pad": 0,
@@ -272,6 +276,8 @@
           "name": "Countdown",
           "settings": {
             "label": "La promoción termina en",
+            "label_direction": "horizontal",
+            "label_gap": 8,
             "duration_days": 0,
             "duration_hours": 3,
             "duration_minutes": 28,
@@ -331,7 +337,7 @@
             "tx_line": 18,
             "tx_transform": "inherit",
             "tx_align": "inherit",
-            "tx_color": "#EF0F0F"
+            "tx_color": "#ef0f0f"
           },
           "blocks": {}
         },
