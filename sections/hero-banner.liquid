@@ -116,15 +116,21 @@
                       assign tag = 'h2'
                     endif
                   endif
+                  assign accent_paint = ''
+                  if block.settings.accent_color != blank and block.settings.accent_color.alpha != 0
+                    assign accent_paint = block.settings.accent_color
+                  elsif block.settings.color != blank and block.settings.color.alpha != 0
+                    assign accent_paint = block.settings.color
+                  endif
                 -%}
                 <{{ tag }}
                   class="hero__heading font-{{ block.settings.font }}{% if block.settings.effect != 'none' %} fx-{{ block.settings.effect }}{% endif %}"
-                  style="--size-d: {{ block.settings.size_desktop }}px; --size-m: {{ block.settings.size_mobile }}px;{% if block.settings.color != blank %}color: {{ block.settings.color }};{% endif %}{% if block.settings.accent_color != blank %}--hero-accent: {{ block.settings.accent_color }};{% endif %}{% if block.settings.weight != blank and block.settings.weight != 'inherit' %}font-weight: {{ block.settings.weight }};{% endif %}{% if block.settings.letter != 0 %}letter-spacing: {{ block.settings.letter | divided_by: 100.0 }}em;{% endif %}{% if block.settings.line > 0 %}line-height: {{ block.settings.line | divided_by: 100.0 }};{% endif %}{% if block.settings.max_width > 0 %}max-width: {{ block.settings.max_width }}px;{% endif %}"
+                  style="--size-d: {{ block.settings.size_desktop }}px; --size-m: {{ block.settings.size_mobile }}px;{% if block.settings.color != blank and block.settings.color.alpha != 0 %}color: {{ block.settings.color }};{% endif %}{% if accent_paint != blank %}--hero-accent: {{ accent_paint }};{% endif %}{% if block.settings.weight != blank and block.settings.weight != 'inherit' %}font-weight: {{ block.settings.weight }};{% endif %}{% if block.settings.letter != 0 %}letter-spacing: {{ block.settings.letter | divided_by: 100.0 }}em;{% endif %}{% if block.settings.line > 0 %}line-height: {{ block.settings.line | divided_by: 100.0 }};{% endif %}{% if block.settings.max_width > 0 %}max-width: {{ block.settings.max_width }}px;{% endif %}"
                   {{ block.shopify_attributes }}
                 >
                   {{- block.settings.text -}}
                   {%- if block.settings.accent_line != blank -%}
-                    <span class="hero__accent-line">{{ block.settings.accent_line }}</span>
+                    <span class="hero__accent-line"{% if accent_paint != blank %} style="color: {{ accent_paint }};"{% endif %}>{{ block.settings.accent_line }}</span>
                   {%- endif -%}
                 </{{ tag }}>
 
@@ -1406,7 +1412,7 @@
           "id": "accent_line",
           "label": "Accent second line",
           "default": "Paga al recibir",
-          "info": "Shown on its own line in the scheme's highlight color"
+          "info": "Shown on its own line. Its color is set below."
         },
         {
           "type": "select",
@@ -1511,12 +1517,14 @@
         {
           "type": "color",
           "id": "color",
-          "label": "Color"
+          "label": "Heading color",
+          "info": "Colors the heading. The second line uses this too, unless a second-line color is set."
         },
         {
           "type": "color",
           "id": "accent_color",
-          "label": "Accent line color"
+          "label": "Second line color",
+          "info": "Colors only the second line, such as Paga al recibir."
         },
         {
           "type": "range",

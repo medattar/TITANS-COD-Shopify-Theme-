@@ -4,10 +4,10 @@
   aria-label="{{ 'cart.general.title' | t }}"
 >
   <div class="cart-drawer__inner" data-cart-drawer-inner data-cart-count-value="{{ cart.item_count }}" style="display: contents;">
-    <div class="drawer__header" style="border-bottom: var(--border-width) solid var(--color-border);">
+    <div class="drawer__header">
       <h2 class="drawer__title">
         {{- 'cart.general.title' | t }}
-        <span class="badge badge--ink" aria-hidden="true">{{ cart.item_count }}</span>
+        <span class="cart-drawer__count" aria-hidden="true">{{ cart.item_count }}</span>
         <span class="visually-hidden">{{ 'cart.general.item_count' | t: count: cart.item_count }}</span>
       </h2>
       <button type="button" class="drawer__close" data-close-dialog aria-label="{{ 'accessibility.close' | t }}">
@@ -76,27 +76,27 @@
             assign show_checkout_button = true
           endif
         -%}
-        {%- if settings.cart_note or show_checkout_button -%}
-          <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form">
-            {%- if settings.cart_note -%}
-              <div class="field cart-note">
-                <label class="field__label" for="CartDrawer-Note">{{ 'cart.general.note' | t }}</label>
-                <textarea id="CartDrawer-Note" class="field__input" name="note" rows="2">{{ cart.note }}</textarea>
-              </div>
-            {%- endif -%}
-            {%- if show_checkout_button -%}
-              <button type="submit" name="checkout" class="button button--full button--large">
-                {{- 'cart.general.checkout' | t -}}
-              </button>
-            {%- endif -%}
-          </form>
-        {%- endif -%}
+        <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form" class="cart-drawer__form">
+          {%- if settings.cart_note -%}
+            <div class="field cart-note">
+              <label class="field__label" for="CartDrawer-Note">{{ 'cart.general.note' | t }}</label>
+              <textarea id="CartDrawer-Note" class="field__input" name="note" rows="2">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+          <div class="cart-drawer__apps">
+            {% content_for 'blocks' %}
+          </div>
+          {%- comment -%}
+            The checkout button stays in the DOM when hidden so COD apps can place their button beside it.
+          {%- endcomment -%}
+          <button type="submit" name="checkout" class="button button--full button--large cart-drawer__checkout"{% unless show_checkout_button %} hidden{% endunless %}>
+            {{- 'cart.general.checkout' | t -}}
+          </button>
+        </form>
         {%- if settings.cart_trust_text != blank -%}
           <p class="cart-trust">{{ settings.cart_trust_text }}</p>
         {%- endif -%}
-        <p style="margin-top: 10px; text-align: center;">
-          <a href="{{ routes.cart_url }}" class="link" style="font-size: 13.5px;">{{ 'cart.general.view_cart' | t }}</a>
-        </p>
+        <a href="{{ routes.cart_url }}" class="cart-drawer__view link">{{ 'cart.general.view_cart' | t }}</a>
       </div>
     {%- endif -%}
   </div>
@@ -109,9 +109,12 @@
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
     { "type": "paragraph", "content": "Show or hide the checkout button here, or in Theme settings > Cart." },
-    { "type": "checkbox", "id": "show_checkout", "label": "Show checkout button", "default": true },
+    { "type": "checkbox", "id": "show_checkout", "label": "Show checkout button", "default": true, "info": "Hides Finalizar pedido only. A COD app button placed here stays visible." },
     { "type": "text", "id": "empty_heading", "label": "Empty cart heading" },
     { "type": "text", "id": "empty_text", "label": "Empty cart text" }
+  ],
+  "blocks": [
+    { "type": "@app" }
   ]
 }
 {% endschema %}
