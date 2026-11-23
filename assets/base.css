@@ -1089,23 +1089,27 @@ textarea.field__input {
 .price {
   display: inline-flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 4px 8px;
   color: var(--color-price);
   font-weight: var(--font-body-weight-bold);
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .price__current {
   font-size: var(--price-size, 1.25em);
+  line-height: 1;
 }
 
 .price__compare {
+  display: inline-flex;
+  align-items: center;
   margin-inline-start: var(--compare-gap, 0);
   color: var(--compare-color, var(--color-compare));
   font-size: var(--compare-size, 0.7em);
   font-weight: var(--compare-weight, var(--font-body-weight));
   letter-spacing: var(--compare-letter, 0);
+  line-height: 1;
   text-decoration: none;
 }
 
@@ -1156,7 +1160,10 @@ textarea.field__input {
 }
 
 .price__savings.badge {
+  align-self: center;
+  padding-block: 4px;
   font-size: var(--save-size, 0.75em);
+  line-height: 1;
 }
 
 .price[style*='--save-color'] .price__savings {
