@@ -22,8 +22,12 @@
       savings_format: s.savings_format,
       compare_prefix: s.compare_prefix,
       compare_size: s.compare_size,
+      compare_size_mobile: s.compare_size_mobile,
       compare_color: s.compare_color,
+      compare_line: s.compare_line,
       compare_weight: s.compare_weight,
+      compare_gap: s.compare_gap,
+      compare_letter: s.compare_letter,
       compare_strike: s.compare_strike,
       savings_text: s.savings_text,
       save_size: s.save_size,
@@ -135,10 +139,21 @@
     {
       "type": "range",
       "id": "compare_size",
-      "label": "Size (0 = default)",
+      "label": "Amount size (0 = default)",
       "min": 0,
-      "max": 48,
-      "step": 1,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "range",
+      "id": "compare_size_mobile",
+      "label": "Amount size, mobile (0 = same)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
       "unit": "px",
       "default": 0,
       "visible_if": "{{ block.settings.show_compare }}"
@@ -146,7 +161,35 @@
     {
       "type": "color",
       "id": "compare_color",
-      "label": "Color",
+      "label": "Amount color",
+      "info": "Colors the price and, unless a line color is set, the strikethrough.",
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "color",
+      "id": "compare_line",
+      "label": "Strikethrough color",
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "range",
+      "id": "compare_gap",
+      "label": "Space before the amount",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_compare }}"
+    },
+    {
+      "type": "range",
+      "id": "compare_letter",
+      "label": "Letter spacing (1/100 em)",
+      "min": -10,
+      "max": 40,
+      "step": 1,
+      "default": 0,
       "visible_if": "{{ block.settings.show_compare }}"
     },
     {

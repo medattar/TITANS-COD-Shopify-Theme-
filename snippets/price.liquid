@@ -25,33 +25,11 @@
     assign percent = saved | times: 100.0 | divided_by: compare | round
   endif
 
-  assign price_style = ''
-  if compare_size > 0
-    assign price_style = price_style | append: '--compare-size:' | append: compare_size | append: 'px;'
-  endif
-  if compare_color != blank
-    assign price_style = price_style | append: '--compare-color:' | append: compare_color | append: ';'
-  endif
-  if compare_weight != blank and compare_weight != 'inherit'
-    assign price_style = price_style | append: '--compare-weight:' | append: compare_weight | append: ';'
-  endif
-  if save_size > 0
-    assign price_style = price_style | append: '--save-size:' | append: save_size | append: 'px;'
-  endif
-  if save_color != blank
-    assign price_style = price_style | append: '--save-color:' | append: save_color | append: ';'
-  endif
-  if save_bg != blank
-    assign price_style = price_style | append: '--save-bg:' | append: save_bg | append: ';'
-  endif
-  if save_radius > 0
-    assign price_style = price_style | append: '--save-radius:' | append: save_radius | append: 'px;'
-  endif
-  if save_pad > 0
-    assign price_style = price_style | append: '--save-pad:' | append: save_pad | append: 'px;'
-  endif
 -%}
-<div class="price{% if on_sale %} price--sale{% endif %}{% if meta_layout == 'below' %} price--meta-below{% endif %}{% if class %} {{ class }}{% endif %}"{% if price_style != blank %} style="{{ price_style }}"{% endif %}>
+<div
+  class="price{% if on_sale %} price--sale{% endif %}{% if meta_layout == 'below' %} price--meta-below{% endif %}{% if class %} {{ class }}{% endif %}"
+  style="{% if compare_size > 0 %}--compare-size: {{ compare_size }}px;{% endif %}{% if compare_size_mobile > 0 %}--compare-size-m: {{ compare_size_mobile }}px;{% endif %}{% if compare_color != blank and compare_color.alpha != 0 %}--compare-color: {{ compare_color }};{% endif %}{% if compare_line != blank and compare_line.alpha != 0 %}--compare-line: {{ compare_line }};{% endif %}{% if compare_weight != blank and compare_weight != 'inherit' %}--compare-weight: {{ compare_weight }};{% endif %}{% if compare_gap > 0 %}--compare-gap: {{ compare_gap }}px;{% endif %}{% if compare_letter != blank and compare_letter != 0 %}--compare-letter: {{ compare_letter | divided_by: 100.0 }}em;{% endif %}{% if save_size > 0 %}--save-size: {{ save_size }}px;{% endif %}{% if save_color != blank and save_color.alpha != 0 %}--save-color: {{ save_color }};{% endif %}{% if save_bg != blank and save_bg.alpha != 0 %}--save-bg: {{ save_bg }};{% endif %}{% if save_radius > 0 %}--save-radius: {{ save_radius }}px;{% endif %}{% if save_pad > 0 %}--save-pad: {{ save_pad }}px;{% endif %}"
+>
   {%- if on_sale -%}<span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>{%- endif -%}
   <span class="price__current" data-price-current>
     {%- if use_range and product.price_varies -%}
@@ -65,7 +43,7 @@
       {%- if on_sale -%}
         <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
         {%- if compare_prefix != blank -%}<span class="price__compare-label">{{ compare_prefix | escape }}</span>{% endif -%}
-        <span class="price__compare-amount">{% render 'format-money', amount: compare %}</span>
+        <span class="price__compare-amount"{% if compare_color != blank and compare_color.alpha != 0 or compare_line != blank and compare_line.alpha != 0 %} style="{% if compare_color != blank and compare_color.alpha != 0 %}color: {{ compare_color }};{% if compare_line == blank or compare_line.alpha == 0 %} text-decoration-color: {{ compare_color }};{% endif %}{% endif %}{% if compare_line != blank and compare_line.alpha != 0 %} text-decoration-color: {{ compare_line }};{% endif %}"{% endif %}>{% render 'format-money', amount: compare %}</span>
       {%- endif -%}
     </s>
   {%- endunless -%}

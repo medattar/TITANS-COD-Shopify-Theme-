@@ -1,7 +1,17 @@
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
-<div class="countdown-block" style="--cd-align: {{ s.align }};" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
+{%- liquid
+  assign cd_text = 'left'
+  if s.align == 'center'
+    assign cd_text = 'center'
+  elsif s.align == 'flex-end'
+    assign cd_text = 'right'
+  endif
+  assign cd_dir = s.label_direction | default: 'vertical'
+  assign cd_label_gap = s.label_gap | default: 8
+-%}
+<div class="countdown-block{% if cd_dir == 'horizontal' %} countdown-block--horizontal{% endif %}" style="--cd-align: {{ s.align | default: 'flex-start' }}; --cd-label-gap: {{ cd_label_gap }}px; --cd-text: {{ cd_text }};" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
     {%- if s.label != blank -%}
       <p class="countdown-block__label">{{ s.label }}</p>
     {%- endif -%}
@@ -47,6 +57,32 @@
       "id": "label",
       "label": "Label",
       "default": "La promoción termina en"
+    },
+    {
+      "type": "select",
+      "id": "label_direction",
+      "label": "Label and timer layout",
+      "default": "vertical",
+      "options": [
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "label_gap",
+      "label": "Space between label and timer",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 8
     },
     {
       "type": "header",
@@ -164,8 +200,9 @@
     {
       "type": "select",
       "id": "align",
-      "label": "Alignment",
+      "label": "Label and timer alignment",
       "default": "flex-start",
+      "info": "Moves the label and the timer together.",
       "options": [
         {
           "value": "flex-start",
@@ -173,7 +210,7 @@
         },
         {
           "value": "center",
-          "label": "Center"
+          "label": "Middle"
         },
         {
           "value": "flex-end",
