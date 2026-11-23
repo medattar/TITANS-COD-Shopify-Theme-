@@ -37,7 +37,7 @@
         "announcement_NLYW4J"
       ],
       "settings": {
-        "color_scheme": "scheme-73515b58-eff1-40ba-bd91-96b271d3ed98",
+        "color_scheme": "scheme-8",
         "mode": "static",
         "rotate_speed": 4,
         "marquee_speed": 16,
@@ -84,6 +84,7 @@
     "header": {
       "type": "header",
       "settings": {
+        "show_cart": true,
         "color_scheme": "scheme-7",
         "use_inverse_logo": true,
         "layout": "center",
@@ -105,7 +106,6 @@
         "cart_icon": "bag",
         "show_search": false,
         "show_account": false,
-        "show_cart": true,
         "drawer_cards_heading": "✦ Tienda ✦",
         "drawer_menu": "",
         "drawer_links_heading": "✦ Ayuda ✦",
