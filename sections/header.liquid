@@ -22,6 +22,14 @@
   --menu-transform: {% if section.settings.menu_uppercase %}uppercase{% else %}none{% endif %};
   --menu-gap: {{ section.settings.menu_gap }}px;
   --header-icon-size: {{ section.settings.icon_size }}px;
+  {%- if section.settings.bar_gradient != blank -%}
+    background: {{ section.settings.bar_gradient }};
+  {%- elsif section.settings.bar_bg != blank and section.settings.bar_bg.alpha != 0 -%}
+    background: {{ section.settings.bar_bg }};
+  {%- endif -%}
+  {%- if section.settings.bar_text != blank and section.settings.bar_text.alpha != 0 -%}
+    color: {{ section.settings.bar_text }};
+  {%- endif -%}
 {%- endcapture -%}
 
 {%- capture icon_menu -%}{% render 'icon-or-image', icon: 'menu', image: section.settings.menu_icon_image %}{%- endcapture -%}
@@ -261,6 +269,28 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "Bar colors"
+    },
+    {
+      "type": "color",
+      "id": "bar_bg",
+      "label": "Background",
+      "info": "Overrides the color scheme on the header bar. Leave empty to keep the scheme."
+    },
+    {
+      "type": "color_background",
+      "id": "bar_gradient",
+      "label": "Background gradient",
+      "info": "Optional. Replaces the background color."
+    },
+    {
+      "type": "color",
+      "id": "bar_text",
+      "label": "Text and icons",
+      "info": "Menu links and icons. Leave empty to keep the scheme."
     },
     {
       "type": "checkbox",
