@@ -1,7 +1,7 @@
 {%- capture box_sel -%}#shopify-section-{{ section.id }} > :not(style, link, script, template){%- endcapture -%}
 {%- render 'box-style', bs: section.settings, sel: box_sel -%}
 <div
-  class="section color-{{ section.settings.color_scheme }} gradient"
+  class="section color-{% render 'scheme', s: section.settings, area: 'sections' %} gradient"
   style="{% render 'section-style' %}"
   {% if section.settings.anchor != blank %}
     id="{{ section.settings.anchor | handle }}"
@@ -30,6 +30,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "anchor",

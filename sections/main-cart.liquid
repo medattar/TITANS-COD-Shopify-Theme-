@@ -26,7 +26,7 @@
   endcase
 -%}
 <section
-  class="section cart-page color-{{ s.color_scheme }} gradient"
+  class="section cart-page color-{% render 'scheme', s: s, area: 'sections' %} gradient"
   style="{% render 'section-style' %}{% if s.card_radius > 0 %}--cart-radius: {{ s.card_radius }}px;{% endif %}{% if s.card_bg != blank and s.card_bg.alpha != 0 %}--cart-card-bg: {{ s.card_bg }};{% endif %}{% if s.card_text != blank and s.card_text.alpha != 0 %}--cart-card-text: {{ s.card_text }};{% endif %}{% if s.card_border != blank and s.card_border.alpha != 0 %}--cart-border: {{ s.card_border }};{% endif %}{% if s.card_border_width > 0 %}--cart-border-width: {{ s.card_border_width }}px;{% endif %}{% if cart_shadow != blank %}--cart-shadow: {{ cart_shadow }};{% endif %}{% if s.card_gap > 0 %}--cart-gap: {{ s.card_gap }}px;{% endif %}{% if s.image_radius > 0 %}--cart-image-radius: {{ s.image_radius }}px;{% endif %}{% if s.title_color != blank and s.title_color.alpha != 0 %}--cart-title: {{ s.title_color }};{% endif %}{% if s.price_color != blank and s.price_color.alpha != 0 %}--cart-price: {{ s.price_color }};{% endif %}{% if s.muted_color != blank and s.muted_color.alpha != 0 %}--cart-muted: {{ s.muted_color }};{% endif %}{% if s.taxes_color != blank and s.taxes_color.alpha != 0 %}--cart-taxes-color: {{ s.taxes_color }};{% endif %}{% if s.taxes_size > 0 %}--cart-taxes-size: {{ s.taxes_size }}px;{% endif %}{% if s.taxes_align == 'center' or s.taxes_align == 'right' %}--cart-taxes-align: {{ s.taxes_align }};{% endif %}"
 >
   <div class="page-width">
@@ -103,6 +103,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "header",
       "content": "Cards"

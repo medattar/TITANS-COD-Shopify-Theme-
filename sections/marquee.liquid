@@ -10,7 +10,7 @@
   endcapture
 -%}
 <div
-  class="marquee-section color-{{ s.color_scheme }} gradient{% if s.border %} marquee-section--border{% endif %}"
+  class="marquee-section color-{% render 'scheme', s: s, area: 'sections' %} gradient{% if s.border %} marquee-section--border{% endif %}"
   style="--marquee-speed: {{ s.speed }}s; --mq-size-d: {{ s.size }}px; --mq-size-m: {{ s.size_mobile }}px;"
 >
   <div class="marquee{% if s.reverse %} marquee--reverse{% endif %}">
@@ -83,6 +83,7 @@
       "label": "Color scheme",
       "default": "scheme-5"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "separator",

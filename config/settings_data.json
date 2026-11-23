@@ -195,37 +195,6 @@
           "icon": "#b9475e"
         }
       },
-      "scheme-3": {
-        "settings": {
-          "background": "#551b25",
-          "background_gradient": "",
-          "surface": "#2e0b12",
-          "surface_text": "#fdf6f1",
-          "highlight": "#f6c9c9",
-          "highlight_text": "#2e0b12",
-          "text": "#fdf6f1",
-          "heading": "#fdf6f1",
-          "muted": "#e6cfcb",
-          "accent": "#f6c9c9",
-          "on_accent": "#2e0b12",
-          "button": "#fdf6f1",
-          "button_label": "#551b25",
-          "button_border": "#fdf6f1",
-          "button_hover": "#f7cdd4",
-          "button_hover_label": "#2e0b12",
-          "secondary_button": "#551b25",
-          "secondary_button_label": "#fdf6f1",
-          "border": "#fdf6f1",
-          "divider": "#7a3f48",
-          "shadow": "#2e0b12",
-          "price": "#fdf6f1",
-          "compare_price": "#e6cfcb",
-          "badge": "#f7cdd4",
-          "badge_label": "#2e0b12",
-          "success": "#7fd6a5",
-          "icon": "#fdf6f1"
-        }
-      },
       "scheme-4": {
         "settings": {
           "background": "#8a2a2b",
@@ -319,37 +288,6 @@
           "icon": "#f7cdd4"
         }
       },
-      "scheme-73515b58-eff1-40ba-bd91-96b271d3ed98": {
-        "settings": {
-          "background": "#fbf8f3",
-          "background_gradient": "",
-          "surface": "#ffffff",
-          "surface_text": "#1c1517",
-          "highlight": "#f7cdd4",
-          "highlight_text": "#1c1517",
-          "text": "#1c1517",
-          "heading": "#1c1517",
-          "muted": "#4a3d40",
-          "accent": "#8a2a2b",
-          "on_accent": "#ffffff",
-          "button": "#8a2a2b",
-          "button_label": "#ffffff",
-          "button_border": "#1c1517",
-          "button_hover": "#6e2122",
-          "button_hover_label": "#ffffff",
-          "secondary_button": "#fbf8f3",
-          "secondary_button_label": "#1c1517",
-          "border": "#1c1517",
-          "divider": "#eed3d2",
-          "shadow": "#1c1517",
-          "price": "#1c1517",
-          "compare_price": "#8c7a7c",
-          "badge": "#8a2a2b",
-          "badge_label": "#ffffff",
-          "success": "#2fa36b",
-          "icon": "#8a2a2b"
-        }
-      },
       "scheme-7": {
         "settings": {
           "background": "#e9f8f3",
@@ -412,68 +350,6 @@
           "icon": "#062a22"
         }
       },
-      "scheme-9": {
-        "settings": {
-          "background": "#fff4e3",
-          "background_gradient": "",
-          "surface": "#ffffff",
-          "surface_text": "#2b1a05",
-          "highlight": "#cff3e8",
-          "highlight_text": "#0b2e27",
-          "text": "#2b1a05",
-          "heading": "#2b1a05",
-          "muted": "#6b5232",
-          "accent": "#b86a00",
-          "on_accent": "#ffffff",
-          "button": "#ffb14b",
-          "button_label": "#2b1a05",
-          "button_border": "#2b1a05",
-          "button_hover": "#f59e2a",
-          "button_hover_label": "#2b1a05",
-          "secondary_button": "#ffffff",
-          "secondary_button_label": "#2b1a05",
-          "border": "#2b1a05",
-          "divider": "#f6ddb6",
-          "shadow": "#0b2e27",
-          "price": "#2b1a05",
-          "compare_price": "#9a8466",
-          "badge": "#04b38d",
-          "badge_label": "#062a22",
-          "success": "#04b38d",
-          "icon": "#e58a12"
-        }
-      },
-      "scheme-10": {
-        "settings": {
-          "background": "#ffb14b",
-          "background_gradient": "",
-          "surface": "#fff4e3",
-          "surface_text": "#2b1a05",
-          "highlight": "#ffffff",
-          "highlight_text": "#2b1a05",
-          "text": "#2b1a05",
-          "heading": "#2b1a05",
-          "muted": "#4a3110",
-          "accent": "#0b2e27",
-          "on_accent": "#ffffff",
-          "button": "#0b2e27",
-          "button_label": "#ffffff",
-          "button_border": "#0b2e27",
-          "button_hover": "#04b38d",
-          "button_hover_label": "#062a22",
-          "secondary_button": "#fff4e3",
-          "secondary_button_label": "#2b1a05",
-          "border": "#2b1a05",
-          "divider": "#ffc678",
-          "shadow": "#0b2e27",
-          "price": "#2b1a05",
-          "compare_price": "#5c4320",
-          "badge": "#0b2e27",
-          "badge_label": "#ffffff",
-          "success": "#0b2e27",
-          "icon": "#0b2e27"
-        }
-      },
       "scheme-11": {
         "settings": {
           "background": "#0b2e27",
@@ -504,101 +380,17 @@
           "success": "#04b38d",
           "icon": "#ffb14b"
         }
-      },
-      "scheme-12": {
-        "settings": {
-          "background": "#ffffff",
-          "background_gradient": "",
-          "surface": "#f6f8f7",
-          "surface_text": "#1a1a1a",
-          "highlight": "#fff1dc",
-          "highlight_text": "#1a1a1a",
-          "text": "#1a1a1a",
-          "heading": "#1a1a1a",
-          "muted": "#55605d",
-          "accent": "#03876b",
-          "on_accent": "#ffffff",
-          "button": "#ffb14b",
-          "button_label": "#1a1a1a",
-          "button_border": "#1a1a1a",
-          "button_hover": "#04b38d",
-          "button_hover_label": "#062a22",
-          "secondary_button": "#f3f6f4",
-          "secondary_button_label": "#1a1a1a",
-          "border": "#1a1a1a",
-          "divider": "#e4ece8",
-          "shadow": "#0b2e27",
-          "price": "#1a1a1a",
-          "compare_price": "#8a938f",
-          "badge": "#04b38d",
-          "badge_label": "#062a22",
-          "success": "#04b38d",
-          "icon": "#04b38d"
-        }
-      },
-      "scheme-eea8dc11-e402-4f7c-a7ce-7a7c295d5acd": {
-        "settings": {
-          "background": "#fbf8f3",
-          "background_gradient": "",
-          "surface": "#ffffff",
-          "surface_text": "#1c1517",
-          "highlight": "#f7cdd4",
-          "highlight_text": "#1c1517",
-          "text": "#1c1517",
-          "heading": "#1c1517",
-          "muted": "#4a3d40",
-          "accent": "#8a2a2b",
-          "on_accent": "#ffffff",
-          "button": "#8a2a2b",
-          "button_label": "#ffffff",
-          "button_border": "#1c1517",
-          "button_hover": "#6e2122",
-          "button_hover_label": "#ffffff",
-          "secondary_button": "#fbf8f3",
-          "secondary_button_label": "#1c1517",
-          "border": "#1c1517",
-          "divider": "#eed3d2",
-          "shadow": "#1c1517",
-          "price": "#1c1517",
-          "compare_price": "#8c7a7c",
-          "badge": "#8a2a2b",
-          "badge_label": "#ffffff",
-          "success": "#2fa36b",
-          "icon": "#8a2a2b"
-        }
-      },
-      "scheme-53b8fe06-a7c7-498a-b55f-7fa1472c044e": {
-        "settings": {
-          "background": "#fbf8f3",
-          "background_gradient": "",
-          "surface": "#ffffff",
-          "surface_text": "#1c1517",
-          "highlight": "#f7cdd4",
-          "highlight_text": "#1c1517",
-          "text": "#1c1517",
-          "heading": "#1c1517",
-          "muted": "#4a3d40",
-          "accent": "#8a2a2b",
-          "on_accent": "#ffffff",
-          "button": "#8a2a2b",
-          "button_label": "#ffffff",
-          "button_border": "#1c1517",
-          "button_hover": "#6e2122",
-          "button_hover_label": "#ffffff",
-          "secondary_button": "#fbf8f3",
-          "secondary_button_label": "#1c1517",
-          "border": "#1c1517",
-          "divider": "#eed3d2",
-          "shadow": "#1c1517",
-          "price": "#1c1517",
-          "compare_price": "#8c7a7c",
-          "badge": "#8a2a2b",
-          "badge_label": "#ffffff",
-          "success": "#2fa36b",
-          "icon": "#8a2a2b"
-        }
       }
-    }
+    },
+    "color_template_name": "TITANS Mint",
+    "color_template_apply": false,
+    "ct_header": "scheme-8",
+    "ct_announcement": "scheme-8",
+    "ct_hero": "scheme-8",
+    "ct_sections": "scheme-8",
+    "ct_product": "scheme-7",
+    "ct_product_grid": "scheme-7",
+    "ct_footer": "scheme-11"
   },
   "presets": {
     "Default": {

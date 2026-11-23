@@ -10,7 +10,7 @@
 
 {%- if blocks_count > 0 -%}
   <announcement-bar
-    class="announcement-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.hide_mobile %} hide-mobile{% endif %}"
+    class="announcement-bar color-{% render 'scheme', s: section.settings, area: 'announcement' %} gradient{% if section.settings.hide_mobile %} hide-mobile{% endif %}"
     style="--announcement-height: {{ section.settings.height }}px; --announcement-size: {{ section.settings.text_size }}px; --announcement-transform: {% if section.settings.uppercase %}uppercase{% else %}none{% endif %}; --announcement-border: {% if section.settings.border %}var(--border-width){% else %}0{% endif %}; --marquee-speed: {{ section.settings.marquee_speed }}s;"
     data-speed="{{ section.settings.rotate_speed }}"
     {% if mode == 'marquee' %}
@@ -82,6 +82,7 @@
       "label": "Color scheme",
       "default": "scheme-4"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "select",
       "id": "mode",

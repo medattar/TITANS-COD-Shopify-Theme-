@@ -3,7 +3,7 @@
 {{ 'section-longform.css' | asset_url | stylesheet_tag }}
 
 <anchor-nav
-  class="anchor-nav color-{{ section.settings.color_scheme }} gradient{% if section.settings.sticky %} anchor-nav--sticky{% endif %}"
+  class="anchor-nav color-{% render 'scheme', s: section.settings, area: 'sections' %} gradient{% if section.settings.sticky %} anchor-nav--sticky{% endif %}"
   aria-label="{{ section.settings.aria_label | escape }}"
   role="navigation"
 >
@@ -34,6 +34,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "checkbox",
       "id": "sticky",

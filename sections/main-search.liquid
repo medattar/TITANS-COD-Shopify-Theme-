@@ -10,7 +10,7 @@
 -%}
 
 {%- paginate search.results by s.results_per_page -%}
-  <facet-filters class="section search-page color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
+  <facet-filters class="section search-page color-{% render 'scheme', s: s, area: 'sections' %} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
     <div class="page-width">
       <header class="collection__header text-center">
         <h1 class="h1 collection__title">{{ 'templates.search.title' | t }}</h1>
@@ -89,6 +89,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "range",
       "id": "results_per_page",

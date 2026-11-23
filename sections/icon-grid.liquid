@@ -18,7 +18,7 @@
   {%- if s.text_color != blank and s.text_color.alpha != 0 %} --ig-text-color: {{ s.text_color }};{% endif -%}
 {%- endcapture -%}
 <section
-  class="section lf-section color-{{ s.color_scheme }} gradient icon-grid icon-grid--{{ s.style }} icon-grid--shape-{{ s.icon_shape }}{% if s.dividers %} icon-grid--dividers{% endif %}"
+  class="section lf-section color-{% render 'scheme', s: s, area: 'sections' %} gradient icon-grid icon-grid--{{ s.style }} icon-grid--shape-{{ s.icon_shape }}{% if s.dividers %} icon-grid--dividers{% endif %}"
   style="{% render 'section-style' %} {{ ig_vars | strip_newlines }}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
@@ -67,6 +67,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "anchor",

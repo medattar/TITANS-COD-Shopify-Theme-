@@ -256,16 +256,86 @@
         }
       },
       {
+        "type": "header",
+        "content": "Color template"
+      },
+      {
+        "type": "paragraph",
+        "content": "Pick a scheme for each area, then turn on Apply. Every section follows this template live. A section with Keep this color scheme on keeps its own scheme."
+      },
+      {
+        "type": "text",
+        "id": "color_template_name",
+        "label": "Template name",
+        "default": "TITANS Mint"
+      },
+      {
+        "type": "checkbox",
+        "id": "color_template_apply",
+        "label": "Apply this color template to the whole theme",
+        "default": false
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_header",
+        "label": "Header",
+        "default": "scheme-8"
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_announcement",
+        "label": "Announcement bar",
+        "default": "scheme-8"
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_hero",
+        "label": "Hero banners",
+        "default": "scheme-8"
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_sections",
+        "label": "All other sections",
+        "default": "scheme-8",
+        "info": "Cart, catalog, contact, FAQ, text, and every other section."
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_product",
+        "label": "Product page",
+        "default": "scheme-7"
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_product_grid",
+        "label": "Product grids",
+        "default": "scheme-7",
+        "info": "Product lists and recommendations."
+      },
+      {
+        "type": "color_scheme",
+        "id": "ct_footer",
+        "label": "Footer",
+        "default": "scheme-11"
+      },
+      {
+        "type": "header",
+        "content": "Always applied"
+      },
+      {
         "type": "color_scheme",
         "id": "page_color_scheme",
         "label": "Page color scheme",
-        "default": "scheme-1"
+        "default": "scheme-8",
+        "info": "Page background behind every section."
       },
       {
         "type": "color_scheme",
         "id": "drawer_color_scheme",
         "label": "Drawers and pop-ups",
-        "default": "scheme-1"
+        "default": "scheme-8",
+        "info": "Cart drawer, menu drawer, and pop-ups."
       }
     ]
   },

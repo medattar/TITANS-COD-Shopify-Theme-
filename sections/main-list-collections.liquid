@@ -3,7 +3,7 @@
 {{ 'section-pages.css' | asset_url | stylesheet_tag }}
 
 {%- assign s = section.settings -%}
-<section class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+<section class="section color-{% render 'scheme', s: s, area: 'sections' %} gradient" style="{% render 'section-style' %}">
   <div class="page-width">
     <header class="collection__header text-center">
       {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
@@ -47,6 +47,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "eyebrow",

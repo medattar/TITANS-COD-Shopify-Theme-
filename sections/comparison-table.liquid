@@ -16,7 +16,7 @@
   endif
 -%}
 <section
-  class="section lf-section color-{{ s.color_scheme }} gradient"
+  class="section lf-section color-{% render 'scheme', s: s, area: 'sections' %} gradient"
   style="{% render 'section-style' %}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
@@ -88,6 +88,7 @@
       "label": "Color scheme",
       "default": "scheme-5"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "anchor",

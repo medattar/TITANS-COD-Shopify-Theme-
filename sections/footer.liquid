@@ -8,7 +8,7 @@
 -%}
 
 <footer
-  class="footer color-{{ section.settings.color_scheme }} gradient{% if section.settings.block_layout == 'row' %} footer--row{% endif %}{% if section.settings.row_on_mobile %} footer--row-mobile{% endif %}"
+  class="footer color-{% render 'scheme', s: section.settings, area: 'footer' %} gradient{% if section.settings.block_layout == 'row' %} footer--row{% endif %}{% if section.settings.row_on_mobile %} footer--row-mobile{% endif %}"
   style="{% render 'section-style' %} --footer-columns: {{ section.settings.columns }}; --footer-justify: {{ section.settings.row_align | default: 'space-between' }}; --footer-border: {% if section.settings.border %}var(--border-width){% else %}0px{% endif %}; --footer-logo-width: {{ section.settings.logo_width }}px;"
 >
   <div class="page-width footer__inner">
@@ -173,8 +173,9 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
-      "default": "scheme-3"
+      "default": "scheme-11"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "checkbox",
       "id": "use_inverse_logo",

@@ -1,0 +1,32 @@
+{%- comment -%}
+  Prints the color scheme id for a section.
+  When Theme settings > Color template is applied, the section takes the template scheme
+  for its area unless the section has "Keep this color scheme" on.
+  Params:
+  - s: section.settings
+  - area: header | announcement | hero | product | product_grid | footer | drawer | sections
+{%- endcomment -%}
+{%- liquid
+  assign chosen = s.color_scheme
+  if settings.color_template_apply and s.own_colors != true
+    case area
+      when 'header'
+        assign chosen = settings.ct_header
+      when 'announcement'
+        assign chosen = settings.ct_announcement
+      when 'hero'
+        assign chosen = settings.ct_hero
+      when 'product'
+        assign chosen = settings.ct_product
+      when 'product_grid'
+        assign chosen = settings.ct_product_grid
+      when 'footer'
+        assign chosen = settings.ct_footer
+      when 'drawer'
+        assign chosen = settings.drawer_color_scheme
+      else
+        assign chosen = settings.ct_sections
+    endcase
+  endif
+  echo chosen
+-%}

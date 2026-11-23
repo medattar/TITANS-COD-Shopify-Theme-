@@ -30,7 +30,7 @@
 -%}
 
 <section
-  class="section product-grid color-{{ s.color_scheme }} gradient"
+  class="section product-grid color-{% render 'scheme', s: s, area: 'product_grid' %} gradient"
   style="{% render 'section-style' %}"
   {% if s.heading != blank %}
     aria-labelledby="ProductGridHeading-{{ section.id }}"
@@ -158,6 +158,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "header",
       "content": "Heading"

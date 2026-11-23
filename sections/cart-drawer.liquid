@@ -1,6 +1,6 @@
 <dialog
   id="CartDrawer"
-  class="drawer drawer--right cart-drawer color-{{ section.settings.color_scheme }}"
+  class="drawer drawer--right cart-drawer color-{% render 'scheme', s: section.settings, area: 'drawer' %}"
   aria-label="{{ 'cart.general.title' | t }}"
 >
   <div class="cart-drawer__inner" data-cart-drawer-inner data-cart-count-value="{{ cart.item_count }}" style="display: contents;">
@@ -108,6 +108,7 @@
   "class": "section-cart-drawer",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     { "type": "paragraph", "content": "Show or hide the checkout button here, or in Theme settings > Cart." },
     { "type": "checkbox", "id": "show_checkout", "label": "Show checkout button", "default": true, "info": "Hides Finalizar pedido only. A COD app button placed here stays visible." },
     { "type": "text", "id": "empty_heading", "label": "Empty cart heading" },

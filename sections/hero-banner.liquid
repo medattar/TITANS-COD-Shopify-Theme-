@@ -35,7 +35,7 @@
   aria-label="{{ s.aria_label | default: shop.name | escape }}"
 >
   <div class="{% if s.inset %}page-width{% endif %}">
-    <div class="hero__card color-{{ s.color_scheme }} gradient{% if s.shadow %} hero__card--shadow{% endif %}">
+    <div class="hero__card color-{% render 'scheme', s: s, area: 'hero' %} gradient{% if s.shadow %} hero__card--shadow{% endif %}">
       {%- if placement != 'none' -%}
         <div class="hero__media">
           {%- if s.video != blank -%}
@@ -246,6 +246,7 @@
       "label": "Color scheme",
       "default": "scheme-4"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "color",
       "id": "section_bg",

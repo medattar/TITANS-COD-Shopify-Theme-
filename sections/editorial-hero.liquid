@@ -4,7 +4,7 @@
 
 {%- assign s = section.settings -%}
 <section
-  class="editorial-hero color-{{ s.color_scheme }} gradient"
+  class="editorial-hero color-{% render 'scheme', s: s, area: 'hero' %} gradient"
   style="{% render 'section-style' %}"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
@@ -69,6 +69,7 @@
       "label": "Color scheme",
       "default": "scheme-4"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "anchor",

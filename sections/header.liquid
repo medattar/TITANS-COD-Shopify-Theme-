@@ -81,7 +81,7 @@
   data-sticky="{{ section.settings.sticky }}"
 >
   <header
-    class="header header--logo-{{ section.settings.layout }} header--icons-{{ section.settings.icon_style }} color-{{ section.settings.color_scheme }} gradient"
+    class="header header--logo-{{ section.settings.layout }} header--icons-{{ section.settings.icon_style }} color-{% render 'scheme', s: section.settings, area: 'header' %} gradient"
     style="{{ menu_style | strip_newlines }}"
   >
     <div class="page-width">
@@ -143,7 +143,7 @@
   class="drawer menu-drawer color-{{ settings.drawer_color_scheme }}"
   aria-label="{{ 'sections.header.menu' | t }}"
 >
-  <div class="drawer__header color-{{ section.settings.color_scheme }} gradient">
+  <div class="drawer__header color-{% render 'scheme', s: section.settings, area: 'header' %} gradient">
     <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name | escape }}">
       {%- if logo != blank -%}
         {{ logo | image_url: width: 240 | image_tag: loading: 'lazy', alt: shop.name, style: 'width: var(--logo-width-mobile); height: auto;' }}
@@ -268,8 +268,9 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
-      "default": "scheme-3"
+      "default": "scheme-8"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "header",
       "content": "Bar colors"

@@ -4,7 +4,7 @@
 
 {%- assign s = section.settings -%}
 <section
-  class="section custom-content color-{{ s.color_scheme }} gradient"
+  class="section custom-content color-{% render 'scheme', s: s, area: 'sections' %} gradient"
   style="{% render 'section-style' %} --cc-cols: {{ s.columns }}; --cc-cols-m: {{ s.columns_mobile }}; --cc-gap: {{ s.gap }}px; --cc-gap-m: {{ s.gap_mobile }}px; --cc-align: {{ s.vertical_align }}; text-align: {{ s.text_align }};"
   {% if s.anchor != blank %}
     id="{{ s.anchor | handle }}"
@@ -38,6 +38,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "anchor",

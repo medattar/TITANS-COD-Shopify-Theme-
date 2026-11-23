@@ -17,7 +17,7 @@
 
 {%- if catalog != blank -%}
 {%- paginate catalog.products by per_page -%}
-  <facet-filters class="section collection color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
+  <facet-filters class="section collection color-{% render 'scheme', s: s, area: 'sections' %} gradient" style="{% render 'section-style' %}" data-section-id="{{ section.id }}">
     <div class="page-width">
       <header class="collection__header text-{{ s.header_align }}">
         {%- if s.show_breadcrumbs -%}
@@ -91,6 +91,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "eyebrow",

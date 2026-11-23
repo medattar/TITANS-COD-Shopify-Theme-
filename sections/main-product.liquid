@@ -23,7 +23,7 @@
 
 <product-info
   id="MainProduct-{{ section.id }}"
-  class="section main-product color-{{ s.color_scheme }} gradient"
+  class="section main-product color-{% render 'scheme', s: s, area: 'product' %} gradient"
   style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-cols-right: {{ s.columns | split: ' ' | reverse | join: ' ' }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px; --product-max: {{ s.single_max_width }}px;"
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -144,6 +144,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "header",
       "content": "Layout"

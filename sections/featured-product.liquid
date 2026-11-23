@@ -10,7 +10,7 @@
 -%}
 
 {%- if fp == blank -%}
-  <div class="section color-{{ s.color_scheme }} gradient" style="{% render 'section-style' %}">
+  <div class="section color-{% render 'scheme', s: s, area: 'product' %} gradient" style="{% render 'section-style' %}">
     <div class="page-width">
       <div class="featured-product__empty">
         <div class="media ratio-portrait">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -34,7 +34,7 @@
   -%}
   <product-info
     id="FeaturedProduct-{{ section.id }}"
-    class="section main-product featured-product color-{{ s.color_scheme }} gradient"
+    class="section main-product featured-product color-{% render 'scheme', s: s, area: 'product' %} gradient"
     style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px;"
     data-section-id="{{ section.id }}"
     data-product-id="{{ fp.id }}"
@@ -133,6 +133,7 @@
       "label": "Color scheme",
       "default": "scheme-1"
     },
+    { "type": "checkbox", "id": "own_colors", "label": "Keep this color scheme", "info": "When Theme settings > Color template is applied, this section keeps the scheme above.", "default": false },
     {
       "type": "text",
       "id": "anchor",
