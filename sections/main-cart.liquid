@@ -27,7 +27,7 @@
 -%}
 <section
   class="section cart-page color-{{ s.color_scheme }} gradient"
-  style="{% render 'section-style' %}{% if s.card_radius > 0 %}--cart-radius: {{ s.card_radius }}px;{% endif %}{% if s.card_bg != blank and s.card_bg.alpha != 0 %}--cart-card-bg: {{ s.card_bg }};{% endif %}{% if s.card_text != blank and s.card_text.alpha != 0 %}--cart-card-text: {{ s.card_text }};{% endif %}{% if s.card_border != blank and s.card_border.alpha != 0 %}--cart-border: {{ s.card_border }};{% endif %}{% if s.card_border_width > 0 %}--cart-border-width: {{ s.card_border_width }}px;{% endif %}{% if cart_shadow != blank %}--cart-shadow: {{ cart_shadow }};{% endif %}{% if s.card_gap > 0 %}--cart-gap: {{ s.card_gap }}px;{% endif %}{% if s.image_radius > 0 %}--cart-image-radius: {{ s.image_radius }}px;{% endif %}{% if s.title_color != blank and s.title_color.alpha != 0 %}--cart-title: {{ s.title_color }};{% endif %}{% if s.price_color != blank and s.price_color.alpha != 0 %}--cart-price: {{ s.price_color }};{% endif %}{% if s.muted_color != blank and s.muted_color.alpha != 0 %}--cart-muted: {{ s.muted_color }};{% endif %}"
+  style="{% render 'section-style' %}{% if s.card_radius > 0 %}--cart-radius: {{ s.card_radius }}px;{% endif %}{% if s.card_bg != blank and s.card_bg.alpha != 0 %}--cart-card-bg: {{ s.card_bg }};{% endif %}{% if s.card_text != blank and s.card_text.alpha != 0 %}--cart-card-text: {{ s.card_text }};{% endif %}{% if s.card_border != blank and s.card_border.alpha != 0 %}--cart-border: {{ s.card_border }};{% endif %}{% if s.card_border_width > 0 %}--cart-border-width: {{ s.card_border_width }}px;{% endif %}{% if cart_shadow != blank %}--cart-shadow: {{ cart_shadow }};{% endif %}{% if s.card_gap > 0 %}--cart-gap: {{ s.card_gap }}px;{% endif %}{% if s.image_radius > 0 %}--cart-image-radius: {{ s.image_radius }}px;{% endif %}{% if s.title_color != blank and s.title_color.alpha != 0 %}--cart-title: {{ s.title_color }};{% endif %}{% if s.price_color != blank and s.price_color.alpha != 0 %}--cart-price: {{ s.price_color }};{% endif %}{% if s.muted_color != blank and s.muted_color.alpha != 0 %}--cart-muted: {{ s.muted_color }};{% endif %}{% if s.taxes_color != blank and s.taxes_color.alpha != 0 %}--cart-taxes-color: {{ s.taxes_color }};{% endif %}{% if s.taxes_size > 0 %}--cart-taxes-size: {{ s.taxes_size }}px;{% endif %}{% if s.taxes_align == 'center' or s.taxes_align == 'right' %}--cart-taxes-align: {{ s.taxes_align }};{% endif %}"
 >
   <div class="page-width">
     <h1 class="h1 cart-page__title">{{ 'cart.general.title' | t }}</h1>
@@ -51,7 +51,15 @@
               <span class="cart-totals__value">{% render 'format-money', amount: cart.total_price %}</span>
             </div>
           </div>
-          <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
+          {%- if s.show_taxes != false -%}
+            <p class="cart-taxes">
+              {%- if s.taxes_text != blank -%}
+                {{ s.taxes_text | escape }}
+              {%- else -%}
+                {{ 'cart.general.taxes_shipping_at_checkout' | t }}
+              {%- endif -%}
+            </p>
+          {%- endif -%}
           <form action="{{ routes.cart_url }}" method="post" id="CartPage-Form">
             {%- if settings.cart_note -%}
               <div class="field cart-note">
@@ -192,6 +200,53 @@
       "type": "color",
       "id": "muted_color",
       "label": "Note color"
+    },
+    {
+      "type": "header",
+      "content": "Tax note"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_taxes",
+      "label": "Show tax note",
+      "info": "The line under the subtotal.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "taxes_text",
+      "label": "Tax note",
+      "info": "Leave empty to keep “Impuestos y envío se calculan al finalizar el pedido.”",
+      "visible_if": "{{ section.settings.show_taxes }}"
+    },
+    {
+      "type": "color",
+      "id": "taxes_color",
+      "label": "Tax note color",
+      "visible_if": "{{ section.settings.show_taxes }}"
+    },
+    {
+      "type": "range",
+      "id": "taxes_size",
+      "label": "Tax note size (0 = theme)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.show_taxes }}"
+    },
+    {
+      "type": "select",
+      "id": "taxes_align",
+      "label": "Tax note alignment",
+      "default": "left",
+      "visible_if": "{{ section.settings.show_taxes }}",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "checkbox",

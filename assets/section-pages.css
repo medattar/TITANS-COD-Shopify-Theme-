@@ -335,11 +335,16 @@ facet-filters[aria-busy='true'] [data-facet-update='results'] {
   color: var(--cart-price, inherit);
 }
 
-.cart-page .cart-taxes,
 .cart-page .cart-trust,
 .cart-page .cart-page__cod,
 .cart-page .cart-item__meta {
   color: var(--cart-muted, var(--color-muted));
+}
+
+.cart-page .cart-taxes {
+  color: var(--cart-taxes-color, var(--cart-muted, var(--color-muted)));
+  font-size: var(--cart-taxes-size, 12.5px);
+  text-align: var(--cart-taxes-align, left);
 }
 
 cart-items.cart-page__items {
