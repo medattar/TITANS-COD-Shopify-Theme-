@@ -85,7 +85,10 @@
       "type": "header",
       "settings": {
         "show_cart": true,
-        "color_scheme": "scheme-7",
+        "color_scheme": "scheme-8",
+        "bar_bg": "#E4FFF8",
+        "bar_gradient": "",
+        "bar_text": "",
         "use_inverse_logo": true,
         "layout": "center",
         "sticky": "always",
