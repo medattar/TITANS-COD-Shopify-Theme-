@@ -115,7 +115,7 @@
       "cart-drawer": {
         "type": "cart-drawer",
         "settings": {
-          "color_scheme": "",
+          "color_scheme": "scheme-8",
           "empty_heading": "",
           "empty_text": ""
         }
