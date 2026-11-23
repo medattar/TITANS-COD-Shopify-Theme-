@@ -105,6 +105,7 @@
         "cart_icon": "bag",
         "show_search": false,
         "show_account": false,
+        "show_cart": true,
         "drawer_cards_heading": "✦ Tienda ✦",
         "drawer_menu": "",
         "drawer_links_heading": "✦ Ayuda ✦",

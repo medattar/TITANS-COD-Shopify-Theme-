@@ -70,17 +70,21 @@
           <span class="cart-totals__value">{% render 'format-money', amount: cart.total_price %}</span>
         </div>
         <p class="cart-taxes">{{ 'cart.general.taxes_shipping_at_checkout' | t }}</p>
-        <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form">
-          {%- if settings.cart_note -%}
-            <div class="field cart-note">
-              <label class="field__label" for="CartDrawer-Note">{{ 'cart.general.note' | t }}</label>
-              <textarea id="CartDrawer-Note" class="field__input" name="note" rows="2">{{ cart.note }}</textarea>
-            </div>
-          {%- endif -%}
-          <button type="submit" name="checkout" class="button button--full button--large">
-            {{- 'cart.general.checkout' | t -}}
-          </button>
-        </form>
+        {%- if settings.cart_note or section.settings.show_checkout != false -%}
+          <form action="{{ routes.cart_url }}" method="post" id="CartDrawer-Form">
+            {%- if settings.cart_note -%}
+              <div class="field cart-note">
+                <label class="field__label" for="CartDrawer-Note">{{ 'cart.general.note' | t }}</label>
+                <textarea id="CartDrawer-Note" class="field__input" name="note" rows="2">{{ cart.note }}</textarea>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.show_checkout != false -%}
+              <button type="submit" name="checkout" class="button button--full button--large">
+                {{- 'cart.general.checkout' | t -}}
+              </button>
+            {%- endif -%}
+          </form>
+        {%- endif -%}
         {%- if settings.cart_trust_text != blank -%}
           <p class="cart-trust">{{ settings.cart_trust_text }}</p>
         {%- endif -%}
@@ -98,6 +102,7 @@
   "class": "section-cart-drawer",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "show_checkout", "label": "Show checkout button", "default": true },
     { "type": "text", "id": "empty_heading", "label": "Empty cart heading" },
     { "type": "text", "id": "empty_text", "label": "Empty cart text" }
   ]

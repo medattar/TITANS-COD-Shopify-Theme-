@@ -53,17 +53,19 @@
       {{- icon_account -}}
     </a>
   {%- endif -%}
-  <a
-    href="{{ routes.cart_url }}"
-    class="header__icon"
-    {% if settings.cart_type == 'drawer' %}
-      data-open-dialog="CartDrawer" aria-controls="CartDrawer" aria-expanded="false" role="button"
-    {% endif %}
-    aria-label="{{ 'sections.header.cart' | t }}"
-  >
-    {{- icon_cart -}}
-    <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span>
-  </a>
+  {%- if section.settings.show_cart != false -%}
+    <a
+      href="{{ routes.cart_url }}"
+      class="header__icon"
+      {% if settings.cart_type == 'drawer' %}
+        data-open-dialog="CartDrawer" aria-controls="CartDrawer" aria-expanded="false" role="button"
+      {% endif %}
+      aria-label="{{ 'sections.header.cart' | t }}"
+    >
+      {{- icon_cart -}}
+      <span class="cart-count" data-cart-count data-count="{{ cart.item_count }}">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span>
+    </a>
+  {%- endif -%}
 {%- endcapture -%}
 
 <sticky-header
@@ -423,9 +425,16 @@
       "default": 18
     },
     {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show cart",
+      "default": true
+    },
+    {
       "type": "select",
       "id": "cart_icon",
       "label": "Cart icon",
+      "visible_if": "{{ section.settings.show_cart }}",
       "default": "bag",
       "options": [
         {
@@ -445,7 +454,8 @@
     {
       "type": "image_picker",
       "id": "cart_icon_image",
-      "label": "Custom cart icon"
+      "label": "Custom cart icon",
+      "visible_if": "{{ section.settings.show_cart }}"
     },
     {
       "type": "image_picker",
