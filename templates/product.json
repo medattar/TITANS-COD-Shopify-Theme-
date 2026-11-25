@@ -1431,7 +1431,7 @@
                 "empty_color": "#e5dcd6",
                 "star_size": 18,
                 "star_gap": 2,
-                "show_value": true,
+                "show_value": false,
                 "show_count": true,
                 "text": "",
                 "text_position": "inline",
