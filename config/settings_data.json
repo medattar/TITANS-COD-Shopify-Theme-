@@ -144,6 +144,11 @@
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
         "disabled": false,
         "settings": {}
+      },
+      "6860625604077830985": {
+        "type": "shopify://apps/securify/blocks/browser-blocker/e3ed2576-9111-486f-86eb-a36b6bee4e94",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
