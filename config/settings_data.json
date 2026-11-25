@@ -150,6 +150,14 @@
         "type": "shopify://apps/ipgeo-redirect/blocks/geo-ip/019b59e5-58bc-7479-9447-c8526f3a574b",
         "disabled": true,
         "settings": {}
+      },
+      "376645177718878688": {
+        "type": "shopify://apps/cordon/blocks/cordon-blocker/019e1c46-b1d4-7aa7-90a3-64dec7768703",
+        "disabled": false,
+        "settings": {
+          "timeout_ms": 1500,
+          "api_base": ""
+        }
       }
     },
     "color_schemes": {
