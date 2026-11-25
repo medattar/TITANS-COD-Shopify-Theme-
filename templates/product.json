@@ -86,7 +86,7 @@
           "settings": {
             "show_on": "selected",
             "show_products": [
-              "gps-prorastreo-localizador-magnetico-e-instantaneo-para-tu-auto"
+              "mini-gps"
             ],
             "icon": "check-circle",
             "glyph": "✦",
@@ -1361,7 +1361,7 @@
               "settings": {
                 "show_on": "selected",
                 "show_products": [
-                  "gps-prorastreo-localizador-magnetico-e-instantaneo-para-tu-auto"
+                  "mini-gps"
                 ],
                 "product": "{{ closest.product }}",
                 "source": "manual",
@@ -1796,7 +1796,7 @@
       "settings": {
         "show_on": "selected",
         "show_products": [
-          "gps-prorastreo-localizador-magnetico-e-instantaneo-para-tu-auto"
+          "mini-gps"
         ],
         "color_scheme": "scheme-8",
         "own_colors": false,
@@ -1873,7 +1873,7 @@
       "settings": {
         "show_on": "selected",
         "show_products": [
-          "gps-prorastreo-localizador-magnetico-e-instantaneo-para-tu-auto"
+          "mini-gps"
         ],
         "color_scheme": "scheme-7",
         "own_colors": false,
