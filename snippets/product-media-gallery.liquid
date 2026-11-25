@@ -2,22 +2,57 @@
   Product media gallery: swipeable viewer + thumbnail rail.
   Params: product, section (settings: gallery_layout, media_ratio, media_fit, media_border,
   media_shadow, thumbs_mobile, video_loop), priority (bool, first media eager)
+  Optional, from the Product media block (blank or 'section' keeps the section style):
+  layout (slider | thumbs_bottom | thumbs_left | single | stacked | grid), arrows (show | hover | hide),
+  arrows_mobile, counter, gap, ratio, radius
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
   assign featured = product.selected_or_first_available_variant.featured_media | default: product.featured_media
-  case s.media_ratio
+  assign pm = layout | default: 'section'
+  assign media_ratio = s.media_ratio
+  if ratio != blank and ratio != 'section'
+    assign media_ratio = ratio
+  endif
+  assign show_thumbs = true
+  if s.gallery_layout == 'stacked'
+    assign show_thumbs = false
+  endif
+  assign show_nav = true
+  case pm
+    when 'slider'
+      assign show_thumbs = false
+    when 'thumbs_bottom', 'thumbs_left'
+      assign show_thumbs = true
+    when 'single', 'stacked', 'grid'
+      assign show_thumbs = false
+      assign show_nav = false
+  endcase
+  assign gallery_class = ''
+  if pm != 'section'
+    assign gallery_class = ' gallery--pm gallery--pm-' | append: pm
+    if show_nav
+      assign gallery_class = gallery_class | append: ' gallery--arrows-' | append: arrows
+      if arrows_mobile
+        assign gallery_class = gallery_class | append: ' gallery--arrows-mobile'
+      endif
+      if counter == false
+        assign gallery_class = gallery_class | append: ' gallery--no-counter'
+      endif
+    endif
+  endif
+  case media_ratio
     when 'square'
-      assign ratio = '1 / 1'
+      assign gallery_ratio = '1 / 1'
     when 'portrait'
-      assign ratio = '4 / 5'
+      assign gallery_ratio = '4 / 5'
     when 'landscape'
-      assign ratio = '4 / 3'
+      assign gallery_ratio = '4 / 3'
     else
       if product.featured_media
-        assign ratio = product.featured_media.aspect_ratio | default: 1
+        assign gallery_ratio = product.featured_media.aspect_ratio | default: 1
       else
-        assign ratio = '4 / 5'
+        assign gallery_ratio = '4 / 5'
       endif
   endcase
   assign media_count = product.media.size
@@ -27,8 +62,8 @@
 -%}
 
 <media-gallery
-  class="gallery gallery--{{ s.gallery_layout }}{% unless s.thumbs_mobile %} gallery--no-thumbs-mobile{% endunless %}{% if s.media_border %} gallery--bordered{% endif %}{% if s.media_shadow %} gallery--shadow{% endif %}"
-  style="--gallery-ratio: {{ ratio }}; --gallery-fit: {{ s.media_fit }};"
+  class="gallery gallery--{{ s.gallery_layout }}{% unless s.thumbs_mobile %} gallery--no-thumbs-mobile{% endunless %}{% if s.media_border %} gallery--bordered{% endif %}{% if s.media_shadow %} gallery--shadow{% endif %}{{ gallery_class }}"
+  style="--gallery-ratio: {{ gallery_ratio }}; --gallery-fit: {{ s.media_fit }};{% if radius > 0 %} --media-radius: {{ radius }}px;{% endif %}{% if pm == 'stacked' or pm == 'grid' %} --pm-gap: {{ gap | default: 10 }}px;{% endif %}"
   data-section-id="{{ section.id }}"
   role="region"
   aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
@@ -46,6 +81,9 @@
             endif
             assign loading = 'lazy'
             assign fetch = 'auto'
+            if pm == 'single' and is_active == false
+              continue
+            endif
             if forloop.first and priority
               assign loading = 'eager'
               assign fetch = 'high'
@@ -99,7 +137,7 @@
         {%- endfor -%}
       </ul>
 
-      {%- if media_count > 1 -%}
+      {%- if media_count > 1 and show_nav -%}
         <button type="button" class="gallery__arrow gallery__arrow--prev" data-gallery-prev aria-label="{{ 'accessibility.previous_slide' | t }}">
           {%- render 'icon', icon: 'chevron-left' -%}
         </button>
@@ -110,7 +148,7 @@
       {%- endif -%}
     </div>
 
-    {%- if media_count > 1 and s.gallery_layout != 'stacked' -%}
+    {%- if media_count > 1 and show_thumbs -%}
       <div class="gallery__thumbs" data-gallery-thumbs>
         {%- for media in product.media -%}
           <button
