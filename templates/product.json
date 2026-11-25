@@ -1433,7 +1433,7 @@
                 "star_gap": 2,
                 "show_value": true,
                 "show_count": true,
-                "text": "Clientes Satisfechos",
+                "text": "",
                 "text_position": "inline",
                 "text_size": 14,
                 "text_color": "",
