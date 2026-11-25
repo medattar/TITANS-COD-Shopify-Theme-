@@ -22,7 +22,18 @@
   data-box="{{ block.id }}" {{ block.shopify_attributes }}
 >
   {%- if p != blank -%}
-    {%- render 'product-media-gallery', product: p, section: section, priority: s.priority -%}
+    {%- render 'product-media-gallery',
+      product: p,
+      section: section,
+      priority: s.priority,
+      layout: s.layout,
+      arrows: s.arrows,
+      arrows_mobile: s.arrows_mobile,
+      counter: s.counter,
+      gap: s.gap,
+      ratio: s.ratio,
+      radius: s.radius
+    -%}
   {%- elsif request.design_mode -%}
     <div class="gallery__viewer">
       <div class="gallery__media media placeholder">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -38,8 +49,29 @@
   "name": "Product media",
   "tag": null,
   "settings": [
-    {"type": "select", "id": "show_on", "label": "Show on", "default": "all", "options": [{"value": "all", "label": "All products"}, {"value": "selected", "label": "Only the products below"}]},
-    {"type": "product_list", "id": "show_products", "label": "Products", "limit": 50, "info": "Used when Show on is set to Only the products below."},
+    {
+      "type": "select",
+      "id": "show_on",
+      "label": "Show on",
+      "default": "all",
+      "options": [
+        {
+          "value": "all",
+          "label": "All products"
+        },
+        {
+          "value": "selected",
+          "label": "Only the products below"
+        }
+      ]
+    },
+    {
+      "type": "product_list",
+      "id": "show_products",
+      "label": "Products",
+      "limit": 50,
+      "info": "Used when Show on is set to Only the products below."
+    },
     {
       "type": "paragraph",
       "content": "Product images and videos. Drag this block anywhere, e.g. under the title or price. Gallery style (thumbnails, ratio, fit, borders) is set in the section settings under Media. To stop the side-by-side gallery, set the section's Media position to \"Inside the blocks\"."
@@ -77,6 +109,130 @@
       "label": "Load first image immediately",
       "default": true,
       "info": "Keep on when this block is near the top of the page."
+    },
+    {
+      "type": "header",
+      "content": "Gallery style"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Show images as",
+      "default": "section",
+      "options": [
+        {
+          "value": "section",
+          "label": "Same as section settings"
+        },
+        {
+          "value": "slider",
+          "label": "One image, arrows to browse"
+        },
+        {
+          "value": "thumbs_bottom",
+          "label": "One image, thumbnails below"
+        },
+        {
+          "value": "thumbs_left",
+          "label": "One image, thumbnails on the left"
+        },
+        {
+          "value": "single",
+          "label": "First image only"
+        },
+        {
+          "value": "stacked",
+          "label": "All images, one under another"
+        },
+        {
+          "value": "grid",
+          "label": "All images, two per row"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": "show",
+      "options": [
+        {
+          "value": "show",
+          "label": "Always show"
+        },
+        {
+          "value": "hover",
+          "label": "Show on hover"
+        },
+        {
+          "value": "hide",
+          "label": "Hide"
+        }
+      ],
+      "visible_if": "{{ block.settings.layout != 'single' and block.settings.layout != 'stacked' and block.settings.layout != 'grid' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_mobile",
+      "label": "Show arrows on mobile",
+      "default": true,
+      "visible_if": "{{ block.settings.layout != 'single' and block.settings.layout != 'stacked' and block.settings.layout != 'grid' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "counter",
+      "label": "Show image counter (1/5)",
+      "default": true,
+      "visible_if": "{{ block.settings.layout != 'single' and block.settings.layout != 'stacked' and block.settings.layout != 'grid' }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between images",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 10,
+      "visible_if": "{{ block.settings.layout == 'stacked' or block.settings.layout == 'grid' }}"
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Image shape",
+      "default": "section",
+      "options": [
+        {
+          "value": "section",
+          "label": "Same as section settings"
+        },
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Image corner radius (0 = section)",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",

@@ -330,6 +330,120 @@ product-info[aria-busy='true'] [data-variant-update] {
   }
 }
 
+/* Product media block styles override the section gallery layout. */
+.gallery.gallery--pm {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gallery.gallery--pm .gallery__viewer {
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.gallery.gallery--pm .gallery__thumbs {
+  order: 0;
+  flex-direction: row;
+  grid-column: auto;
+  grid-row: auto;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.gallery.gallery--pm .gallery__thumb {
+  flex: 0 0 72px;
+  width: auto;
+}
+
+.gallery--pm-stacked .gallery__track,
+.gallery--pm-grid .gallery__track {
+  display: grid;
+  gap: var(--pm-gap, 10px);
+  overflow: visible;
+  scroll-snap-type: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.gallery--pm-grid .gallery__track {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.gallery--pm-stacked .gallery__media,
+.gallery--pm-grid .gallery__media {
+  border-radius: var(--media-radius, 18px);
+}
+
+.gallery--pm-stacked.gallery--bordered .gallery__media,
+.gallery--pm-grid.gallery--bordered .gallery__media {
+  border: var(--border-width) solid var(--color-border);
+}
+
+.gallery--pm-stacked.gallery--shadow .gallery__media,
+.gallery--pm-grid.gallery--shadow .gallery__media {
+  box-shadow: var(--shadow-large);
+}
+
+.gallery.gallery--arrows-show .gallery__arrow {
+  opacity: 1;
+}
+
+.gallery.gallery--arrows-hover .gallery__arrow {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.gallery.gallery--arrows-hover .gallery__viewer:hover .gallery__arrow,
+.gallery.gallery--arrows-hover .gallery__arrow:focus-visible {
+  opacity: 1;
+}
+
+.gallery.gallery--arrows-hide .gallery__arrow,
+.gallery.gallery--no-counter .gallery__counter {
+  display: none;
+}
+
+@media (max-width: 989px) {
+  .gallery.gallery--arrows-mobile:not(.gallery--arrows-hide) .gallery__arrow {
+    display: flex;
+    opacity: 1;
+  }
+}
+
+@media (min-width: 990px) {
+  .gallery.gallery--pm-thumbs_left {
+    grid-template-columns: var(--thumb-rail, 19%) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .gallery.gallery--pm-thumbs_left .gallery__viewer {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .gallery.gallery--pm-thumbs_left .gallery__thumbs {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+    height: 0;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .gallery.gallery--pm-thumbs_left .gallery__thumb {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .gallery.gallery--pm-thumbs_bottom .gallery__thumb {
+    flex-basis: 84px;
+  }
+}
+
 /* ---------- Title, subtitle, price, rating ---------- */
 
 .product-title-block__vendor,

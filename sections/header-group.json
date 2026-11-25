@@ -44,6 +44,7 @@
         "marquee_speed": 16,
         "height": 38,
         "text_size": 12.5,
+        "letter_spacing": 0,
         "uppercase": true,
         "border": false,
         "hide_mobile": false,
