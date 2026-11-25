@@ -91,7 +91,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "show_cart": true,
+        "show_cart": false,
         "color_scheme": "scheme-8",
         "own_colors": false,
         "bar_bg": "#e4fff8",
