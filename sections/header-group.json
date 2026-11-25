@@ -17,7 +17,7 @@
         "announcement_NLYW4J": {
           "type": "announcement",
           "settings": {
-            "text": "🔥 <strong>¡Solo hoy! Envío GRATIS a todo México&nbsp;</strong>",
+            "text": "<strong>🔥 ¡Solo hoy! Envío GRATIS a todo México&nbsp;</strong>",
             "link": "",
             "icon": "none",
             "icon_size": 20,
@@ -62,7 +62,7 @@
         "box_border_width": 0,
         "box_border_style": "solid",
         "box_border_color": "",
-        "box_bg": "#ffb14b",
+        "box_bg": "#0B2E27",
         "box_bg_gradient": "",
         "box_shadow": "none",
         "box_shadow_color": "#000000",
