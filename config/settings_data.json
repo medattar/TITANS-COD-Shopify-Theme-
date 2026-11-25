@@ -145,8 +145,8 @@
         "disabled": false,
         "settings": {}
       },
-      "6860625604077830985": {
-        "type": "shopify://apps/securify/blocks/browser-blocker/e3ed2576-9111-486f-86eb-a36b6bee4e94",
+      "682958007385049286": {
+        "type": "shopify://apps/ipgeo-redirect/blocks/geo-ip/019b59e5-58bc-7479-9447-c8526f3a574b",
         "disabled": false,
         "settings": {}
       }
