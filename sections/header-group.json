@@ -17,7 +17,7 @@
         "announcement_NLYW4J": {
           "type": "announcement",
           "settings": {
-            "text": "Pago contra entrega · Envío a todo México",
+            "text": "🔥 <strong>¡Solo hoy! Envío GRATIS a todo México&nbsp;</strong>",
             "link": "",
             "icon": "none",
             "icon_size": 20,
@@ -38,6 +38,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-8",
+        "own_colors": false,
         "mode": "static",
         "rotate_speed": 4,
         "marquee_speed": 16,
@@ -86,7 +87,8 @@
       "settings": {
         "show_cart": true,
         "color_scheme": "scheme-8",
-        "bar_bg": "#E4FFF8",
+        "own_colors": false,
+        "bar_bg": "#e4fff8",
         "bar_gradient": "",
         "bar_text": "",
         "use_inverse_logo": true,
