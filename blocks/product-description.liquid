@@ -33,10 +33,10 @@
           <div class="rte product-description__preview">{{ p.description | strip_html | truncatewords: s.preview_words }}</div>
           <span class="link">{{ 'products.product.read_more' | t }}</span>
         </summary>
-        <div class="rte">{{ p.description }}</div>
+        <div class="rte">{% render 'lazy-content', html: p.description %}</div>
       </details>
     {%- else -%}
-      <div class="rte">{{ p.description }}</div>
+      <div class="rte">{% render 'lazy-content', html: p.description %}</div>
     {%- endif -%}
   </div>
 {%- else -%}

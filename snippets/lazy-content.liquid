@@ -1,0 +1,18 @@
+{%- comment -%}
+  Merchant HTML (product description, articles) often contains full-size
+  images with no loading attribute, so the browser downloads all of them
+  immediately and they compete with the first product photo.
+  Params: html
+{%- endcomment -%}
+{%- liquid
+  assign lazy_html = html
+  if lazy_html contains '<img '
+    assign lazy_html = lazy_html | replace: '<img ', '<img loading="lazy" decoding="async" fetchpriority="low" '
+    assign lazy_html = lazy_html | replace: '<img loading="lazy" decoding="async" fetchpriority="low" loading=', '<img loading='
+    assign lazy_html = lazy_html | replace: 'width=2400', 'width=1100'
+    assign lazy_html = lazy_html | replace: 'width=2000', 'width=1100'
+    assign lazy_html = lazy_html | replace: 'width=1800', 'width=1100'
+    assign lazy_html = lazy_html | replace: 'width=1600', 'width=1100'
+  endif
+-%}
+{{- lazy_html -}}

@@ -40,7 +40,7 @@
         <div class="rte">{{ s.intro }}</div>
       {%- endif -%}
       {%- if s.show_description and p.description != blank -%}
-        <div class="rte product-details-drawer__description">{{ p.description }}</div>
+        <div class="rte product-details-drawer__description">{% render 'lazy-content', html: p.description %}</div>
       {%- endif -%}
       {%- if s.show_included and included != blank -%}
         <h3 class="product-details-drawer__heading">{{ s.included_heading }}</h3>
