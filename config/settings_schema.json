@@ -1787,6 +1787,117 @@
     ]
   },
   {
+    "name": "Country access",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Show a blocked page to visitors from chosen countries. The server check is instant. The IP check catches visitors who change their country and takes about 0.1 s on their first page only. VPNs can bypass any country block. To stop orders from a country, also remove it in Settings › Markets and Shipping."
+      },
+      {
+        "type": "checkbox",
+        "id": "geo_enable",
+        "label": "Enable country access",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "geo_mode",
+        "label": "Mode",
+        "options": [
+          { "value": "block", "label": "Block the countries listed" },
+          { "value": "allow", "label": "Allow only the countries listed" }
+        ],
+        "default": "block"
+      },
+      {
+        "type": "text",
+        "id": "geo_countries",
+        "label": "Countries",
+        "info": "Two-letter country codes separated by commas, e.g. US, CA, CO. In \"Allow only\" mode, add your own country too or you will be blocked on the live store.",
+        "placeholder": "US, CA, CO"
+      },
+      {
+        "type": "checkbox",
+        "id": "geo_ip_check",
+        "label": "Double-check with the visitor's IP location",
+        "info": "Recommended. Catches visitors who switch their store country.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "geo_test_country",
+        "label": "Preview as country (editor only)",
+        "info": "Type a country code to preview the blocked page here. The editor is never blocked otherwise.",
+        "placeholder": "US"
+      },
+      {
+        "type": "header",
+        "content": "Blocked page"
+      },
+      {
+        "type": "image_picker",
+        "id": "geo_logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "geo_logo_width",
+        "label": "Logo width",
+        "min": 60,
+        "max": 400,
+        "step": 10,
+        "unit": "px",
+        "default": 160
+      },
+      {
+        "type": "text",
+        "id": "geo_title",
+        "label": "Heading",
+        "default": "No disponible en tu país"
+      },
+      {
+        "type": "richtext",
+        "id": "geo_message",
+        "label": "Message",
+        "default": "<p>Lo sentimos, esta tienda no está disponible en tu ubicación.</p>"
+      },
+      {
+        "type": "text",
+        "id": "geo_button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "geo_button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "color",
+        "id": "geo_bg",
+        "label": "Background",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "geo_text",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "geo_button_bg",
+        "label": "Button background",
+        "default": "#04b38d"
+      },
+      {
+        "type": "color",
+        "id": "geo_button_text",
+        "label": "Button text",
+        "default": "#ffffff"
+      }
+    ]
+  },
+  {
     "name": "Currency format",
     "settings": [
       {

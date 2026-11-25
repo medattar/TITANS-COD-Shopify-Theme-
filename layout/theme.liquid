@@ -1,6 +1,73 @@
+{%- liquid
+  assign geo_on = false
+  assign geo_blocked = false
+  if settings.geo_enable and settings.geo_countries != blank
+    assign geo_on = true
+    assign geo_list = settings.geo_countries | upcase | replace: ' ', '' | replace: ';', ',' | split: ','
+    assign geo_country = localization.country.iso_code
+    if request.design_mode
+      assign geo_country = settings.geo_test_country | upcase | strip
+    endif
+    if geo_country != blank
+      assign geo_in_list = false
+      if geo_list contains geo_country
+        assign geo_in_list = true
+      endif
+      if settings.geo_mode == 'allow'
+        unless geo_in_list
+          assign geo_blocked = true
+        endunless
+      elsif geo_in_list
+        assign geo_blocked = true
+      endif
+    endif
+  endif
+-%}
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
+    {%- if geo_on and settings.geo_ip_check and geo_blocked == false and request.design_mode == false -%}
+      <style>html.geo-wait body{visibility:hidden}</style>
+      <script>
+        (function () {
+          var list = {{ geo_list | json }};
+          var allowMode = {{ settings.geo_mode | json }} === 'allow';
+          var root = document.documentElement;
+          var key = 'titans-geo-country';
+          var release = function () { root.classList.remove('geo-wait'); };
+          var block = function () {
+            var run = function () {
+              var tpl = document.getElementById('GeoBlockTemplate');
+              if (!tpl) return release();
+              document.body.innerHTML = '';
+              document.body.appendChild(tpl.content.cloneNode(true));
+              release();
+            };
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+            else run();
+          };
+          var apply = function (cc) {
+            if (!cc) return release();
+            var inList = list.indexOf(cc) > -1;
+            if (allowMode ? !inList : inList) block(); else release();
+          };
+          var cached = null;
+          try { cached = sessionStorage.getItem(key); } catch (e) {}
+          if (cached) return apply(cached);
+          root.classList.add('geo-wait');
+          var timer = setTimeout(release, 1500);
+          fetch('/browsing_context_suggestions.json', { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              var cc = ((data && data.detected_values && data.detected_values.country && data.detected_values.country.handle) || '').toUpperCase();
+              if (cc) { try { sessionStorage.setItem(key, cc); } catch (e) {} }
+              clearTimeout(timer);
+              apply(cc);
+            })
+            .catch(function () { clearTimeout(timer); release(); });
+        })();
+      </script>
+    {%- endif -%}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -73,6 +140,12 @@
   <body
     class="color-{{ settings.page_color_scheme }} template-{{ template.name | handle }}{% if template.suffix %} template-suffix-{{ template.suffix | handle }}{% endif %}{% if settings.animations_reveal %} has-reveal reveal-{{ settings.animation_style }}{% endif %}{% if settings.hover_effects %} has-hover{% endif %} accent-{{ settings.accent_style }} button-hover-{{ settings.button_hover_effect }}"
   >
+    {%- if geo_blocked -%}
+      {% render 'geo-block' %}
+    {%- else -%}
+    {%- if geo_on and settings.geo_ip_check and request.design_mode == false -%}
+      <template id="GeoBlockTemplate">{% render 'geo-block' %}</template>
+    {%- endif -%}
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}
@@ -88,5 +161,6 @@
     {%- endif -%}
 
     <div class="toast-region" aria-live="polite" role="status" data-toast-region></div>
+    {%- endif -%}
   </body>
 </html>

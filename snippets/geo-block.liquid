@@ -1,0 +1,35 @@
+<div class="geo-block" role="main">
+  <style>
+    .geo-block {
+      position: fixed; inset: 0; z-index: 2147483647;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; overflow: auto; text-align: center;
+      background: {{ settings.geo_bg }}; color: {{ settings.geo_text }};
+      font-family: var(--font-body-family, system-ui, sans-serif);
+    }
+    .geo-block__inner { max-width: 520px; }
+    .geo-block__logo { display: block; margin: 0 auto 28px; height: auto; max-width: 100%; }
+    .geo-block__title { margin: 0 0 14px; font-size: clamp(24px, 5vw, 36px); line-height: 1.2; color: inherit; }
+    .geo-block__text { font-size: 16px; line-height: 1.6; opacity: .85; }
+    .geo-block__text p { margin: 0 0 10px; }
+    .geo-block__button {
+      display: inline-block; margin-top: 22px; padding: 14px 28px; border-radius: 999px;
+      background: {{ settings.geo_button_bg }}; color: {{ settings.geo_button_text }};
+      font-weight: 700; text-decoration: none;
+    }
+  </style>
+  <div class="geo-block__inner">
+    {%- if settings.geo_logo != blank -%}
+      {{ settings.geo_logo | image_url: width: 400 | image_tag: class: 'geo-block__logo', width: settings.geo_logo_width, alt: shop.name }}
+    {%- endif -%}
+    {%- if settings.geo_title != blank -%}
+      <h1 class="geo-block__title">{{ settings.geo_title }}</h1>
+    {%- endif -%}
+    {%- if settings.geo_message != blank -%}
+      <div class="geo-block__text">{{ settings.geo_message }}</div>
+    {%- endif -%}
+    {%- if settings.geo_button_label != blank and settings.geo_button_link != blank -%}
+      <a class="geo-block__button" href="{{ settings.geo_button_link }}">{{ settings.geo_button_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
