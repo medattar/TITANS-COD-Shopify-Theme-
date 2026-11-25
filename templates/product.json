@@ -791,7 +791,6 @@
         },
         "cod_notice_10": {
           "type": "cod-notice",
-          "disabled": true,
           "settings": {
             "show_on": "all",
             "show_products": [],
@@ -1411,9 +1410,12 @@
             },
             "product_rating_3": {
               "type": "product-rating",
+              "disabled": true,
               "settings": {
-                "show_on": "all",
-                "show_products": [],
+                "show_on": "selected",
+                "show_products": [
+                  "gps-prorastreo-localizador-magnetico-e-instantaneo-para-tu-auto"
+                ],
                 "product": "{{ closest.product }}",
                 "source": "manual",
                 "manual_rating": 4.5,
@@ -1716,10 +1718,88 @@
         "tx_align": "inherit",
         "tx_color": ""
       }
+    },
+    "faq_h8QYax": {
+      "type": "faq",
+      "blocks": {
+        "question_Tj9Pxc": {
+          "type": "question",
+          "settings": {
+            "question": "Envíos y devoluciones",
+            "answer": "<p>Todos los pedidos son procesados ​​por nuestro equipo de logística, que se encarga de que se esfuercen al máximo, en un plazo de 24 a 72 horas. Los plazos de entrega, dependiendo de su ubicación, oscilarán entre 2 y 10 días.</p>"
+          }
+        },
+        "question_pDMEcC": {
+          "type": "question",
+          "settings": {
+            "question": "Nuestra garantía para usted",
+            "answer": "<p>Queremos que quede completamente satisfecho con su compra, y por eso ofrecemos una garantía de devolución de dinero de 30 días.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_Tj9Pxc",
+        "question_pDMEcC"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "show_on": "all",
+        "show_products": [],
+        "color_scheme": "scheme-7",
+        "own_colors": false,
+        "anchor": "faq",
+        "eyebrow": "✦ Preguntas ✦",
+        "heading": "lo que nos preguntan",
+        "subheading": "",
+        "heading_align": "left",
+        "layout": "split",
+        "style": "cards",
+        "contact_label": "",
+        "contact_link": "",
+        "schema_markup": true,
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "padding_top_mobile": 56,
+        "padding_bottom_mobile": 56,
+        "box_enable": false,
+        "box_mt": 0,
+        "box_mb": 0,
+        "box_mt_m": 0,
+        "box_mb_m": 0,
+        "box_inset": 0,
+        "box_radius": 0,
+        "box_radius_split": false,
+        "box_radius_tl": 0,
+        "box_radius_tr": 0,
+        "box_radius_br": 0,
+        "box_radius_bl": 0,
+        "box_border_width": 0,
+        "box_border_style": "solid",
+        "box_border_color": "",
+        "box_bg": "",
+        "box_bg_gradient": "",
+        "box_shadow": "none",
+        "box_shadow_color": "#000000",
+        "box_effect": "none",
+        "box_max_width": 0,
+        "box_align": "center",
+        "tx_enable": false,
+        "tx_font": "inherit",
+        "tx_weight": "inherit",
+        "tx_size": 0,
+        "tx_size_m": 0,
+        "tx_letter": 0,
+        "tx_word": 0,
+        "tx_line": 0,
+        "tx_transform": "inherit",
+        "tx_align": "inherit",
+        "tx_color": ""
+      }
     }
   },
   "order": [
     "main",
-    "recommendations"
+    "recommendations",
+    "faq_h8QYax"
   ]
 }
