@@ -1731,6 +1731,62 @@
     ]
   },
   {
+    "name": "Store protection",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "These options make it harder to copy your content, images and design. They are deterrents: no website can fully stop a determined person. They never run in the theme editor, so test them on the preview or live store. Form fields (search, cart notes, checkout forms) always stay usable."
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_right_click",
+        "label": "Disable right click",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_text_selection",
+        "label": "Disable text selection",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_copy",
+        "label": "Block copy and cut",
+        "info": "Blocks Ctrl/Cmd + C and X outside form fields.",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_images",
+        "label": "Protect images and videos",
+        "info": "Stops dragging, right click saving and long-press saving on phones.",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_devtools",
+        "label": "Block developer tools shortcuts",
+        "info": "Blocks F12, Ctrl/Cmd + Shift + I, J, C, K, view source (Ctrl/Cmd + U) and save page (Ctrl/Cmd + S). Browser menus can still open developer tools.",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_print",
+        "label": "Block printing the page",
+        "info": "Prints a blank page.",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "protect_framing",
+        "label": "Stop other websites from embedding your store",
+        "info": "Prevents copycat sites from showing your store inside their page. Shopify admin and previews keep working.",
+        "default": false
+      }
+    ]
+  },
+  {
     "name": "Currency format",
     "settings": [
       {

@@ -1,0 +1,107 @@
+{%- comment -%}
+  Deterrents only: anyone determined can still read the page source.
+  Never runs in the theme editor, so editing keeps working.
+{%- endcomment -%}
+{%- liquid
+  assign p_click = settings.protect_right_click
+  assign p_select = settings.protect_text_selection
+  assign p_copy = settings.protect_copy
+  assign p_images = settings.protect_images
+  assign p_tools = settings.protect_devtools
+  assign p_print = settings.protect_print
+  assign p_frame = settings.protect_framing
+-%}
+{%- unless request.design_mode -%}
+  {%- if p_select or p_images or p_print -%}
+    <style>
+      {%- if p_select %}
+        body { -webkit-user-select: none; user-select: none; }
+        input, textarea, select, [contenteditable="true"] { -webkit-user-select: text; user-select: text; }
+      {%- endif -%}
+      {%- if p_images %}
+        img, video, picture { -webkit-user-drag: none; user-drag: none; -webkit-touch-callout: none; }
+      {%- endif -%}
+      {%- if p_print %}
+        @media print { body * { visibility: hidden !important; } }
+      {%- endif %}
+    </style>
+  {%- endif -%}
+
+  {%- if p_click or p_select or p_copy or p_images or p_tools or p_frame -%}
+    <script>
+      (function () {
+        var opts = {
+          click: {{ p_click | json }},
+          select: {{ p_select | json }},
+          copy: {{ p_copy | json }},
+          images: {{ p_images | json }},
+          tools: {{ p_tools | json }},
+          frame: {{ p_frame | json }}
+        };
+        var isField = function (el) {
+          return el && el.closest && el.closest('input, textarea, select, [contenteditable="true"]');
+        };
+        var isMedia = function (el) {
+          return el && el.closest && el.closest('img, video, picture');
+        };
+
+        if (opts.frame && window.top !== window.self) {
+          var host = '';
+          try {
+            host = (window.location.ancestorOrigins && window.location.ancestorOrigins[0]) || document.referrer;
+            host = host ? new URL(host).hostname : '';
+          } catch (e) {}
+          var allowed = !host || host === location.hostname ||
+            /(^|\.)(shopify\.com|myshopify\.com|shopifypreview\.com|shopifyapps\.com)$/.test(host);
+          if (!allowed) {
+            try { window.top.location = window.location.href; } catch (e) {
+              document.documentElement.style.display = 'none';
+            }
+          }
+        }
+
+        document.addEventListener('contextmenu', function (e) {
+          if (isField(e.target)) return;
+          if (opts.click || (opts.images && isMedia(e.target))) e.preventDefault();
+        });
+
+        if (opts.images) {
+          document.addEventListener('dragstart', function (e) {
+            if (isMedia(e.target)) e.preventDefault();
+          });
+        }
+
+        if (opts.select) {
+          document.addEventListener('selectstart', function (e) {
+            if (!isField(e.target)) e.preventDefault();
+          });
+        }
+
+        if (opts.copy) {
+          ['copy', 'cut'].forEach(function (type) {
+            document.addEventListener(type, function (e) {
+              if (!isField(e.target)) e.preventDefault();
+            });
+          });
+        }
+
+        document.addEventListener('keydown', function (e) {
+          var key = (e.key || '').toLowerCase();
+          var mod = e.ctrlKey || e.metaKey;
+          var block = false;
+          if (opts.tools) {
+            if (key === 'f12') block = true;
+            if (mod && (e.shiftKey || e.altKey) && ['i', 'j', 'c', 'k'].indexOf(key) > -1) block = true;
+            if (mod && ['u', 's'].indexOf(key) > -1) block = true;
+          }
+          if (opts.copy && mod && ['c', 'x'].indexOf(key) > -1 && !isField(e.target) && !e.shiftKey) block = true;
+          if (opts.select && mod && key === 'a' && !isField(e.target)) block = true;
+          if (block) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+      })();
+    </script>
+  {%- endif -%}
+{%- endunless -%}
