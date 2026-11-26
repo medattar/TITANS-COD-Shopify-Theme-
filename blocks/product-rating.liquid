@@ -59,6 +59,8 @@
   endif
 -%}
 {%- if rating_value != nil -%}
+  {%- capture fs -%}[data-box="{{ block.id }}"] :is(.product-rating__value, .product-rating__count, .product-rating__text){%- endcapture -%}
+  {%- render 'block-font-size', sel: fs, mobile: s.text_size, desktop: s.text_size -%}
   <div
     class="product-rating product-rating--{{ s.text_position }}"
     style="justify-content: {{ s.align }}; --rating-align: {{ s.align }}; --rating-gap: {{ s.gap }}px; --rating-text-size: {{ s.text_size }}px;{% if s.text_color != blank and s.text_color.alpha != 0 %} --rating-text-color: {{ s.text_color }};{% endif %}"

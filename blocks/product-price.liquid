@@ -20,6 +20,18 @@
   assign s = block.settings
   assign v = p.selected_or_first_available_variant
 -%}
+{%- liquid
+  case s.size
+    when 'large'
+      assign price_size = '1.75em'
+    when 'xlarge'
+      assign price_size = '2.2em'
+    else
+      assign price_size = '1.35em'
+  endcase
+-%}
+{%- capture fs -%}[data-box="{{ block.id }}"] .price__current{%- endcapture -%}
+{%- render 'block-font-size', sel: fs, mobile: price_size, desktop: price_size, unit: 'none' -%}
 <div
   class="product-price-block product-price-block--{{ s.size }}"
   data-variant-update="price-{{ block.id }}"

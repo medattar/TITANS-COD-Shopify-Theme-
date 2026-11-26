@@ -97,7 +97,9 @@
   margin: 0;
 }
 
-.hero__heading {
+h1.hero__heading,
+h2.hero__heading,
+p.hero__heading {
   margin: 0;
   font-size: var(--size-m);
   line-height: 0.92;
@@ -207,7 +209,9 @@
     padding: var(--hero-pad-td, var(--hero-pad-t, 72px)) var(--hero-pad-rd, var(--hero-pad-r, 56px)) var(--hero-pad-bd, var(--hero-pad-b, 72px)) var(--hero-pad-ld, var(--hero-pad-l, 56px));
   }
 
-  .hero__heading,
+  h1.hero__heading,
+  h2.hero__heading,
+  p.hero__heading,
   .hero__text {
     font-size: var(--size-d);
   }

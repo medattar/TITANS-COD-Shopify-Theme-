@@ -13,6 +13,8 @@
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
+{%- capture fs -%}[data-box="{{ block.id }}"] .trust-badge__text{%- endcapture -%}
+{%- render 'block-font-size', sel: fs, mobile: s.text_size_mobile, desktop: s.text_size -%}
 <ul
   class="trust-badges trust-badges--{{ s.style }} trust-badges--align-{{ s.align }}"
   role="list"

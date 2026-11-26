@@ -28,6 +28,8 @@
     assign icon_svg = icon_svg | strip_newlines | replace: 'stroke-linecap', 'stroke-width="2" stroke-linecap' | replace: '"', "'" | replace: '<', '%3C' | replace: '>', '%3E' | replace: '#', '%23'
   endif
 -%}
+{%- capture fs -%}[data-box="{{ block.id }}"] .feature-list__text{%- endcapture -%}
+{%- render 'block-font-size', sel: fs, mobile: s.text_size_mobile, desktop: s.text_size -%}
 <ul
   class="feature-list feature-list--{{ s.layout }} feature-list--{{ s.align }} feature-list--icon-{{ mode }}"
   role="list"

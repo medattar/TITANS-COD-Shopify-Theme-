@@ -21,6 +21,8 @@
   assign lines = s.lines | newline_to_br | split: '<br />'
   assign highlight_list = p.metafields.custom.highlights.value
 -%}
+{%- capture fs -%}[data-box="{{ block.id }}"] :is(.product-subtitle__lead, .product-subtitle__list, .product-subtitle__list li){%- endcapture -%}
+{%- render 'block-font-size', sel: fs, mobile: s.size_mobile, desktop: s.size_desktop -%}
 <div class="product-subtitle" style="--ps-size-d: {{ s.size_desktop }}px; --ps-size-m: {{ s.size_mobile }}px;" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
   {%- if s.text != blank -%}
     <p class="product-subtitle__lead">{{ s.text }}</p>

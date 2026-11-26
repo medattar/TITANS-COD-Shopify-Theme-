@@ -26,9 +26,11 @@
   endif
 -%}
 {%- if s.text != blank -%}
+  {%- capture hb_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
+  {%- render 'resolve-heading-size', size: s.size, desktop: s.size_desktop, mobile: s.size_mobile, sel: hb_sel -%}
   <{{ s.tag }}
     class="{{ classes }}"
-    style="text-align: {{ s.align }}; --hb-color: var(--color-{{ s.color }});{% if s.size == 'custom' %} --hb-size-d: {{ s.size_desktop }}px; --hb-size-m: {{ s.size_mobile }}px;{% endif %}{% if s.max_width > 0 %} max-width: {{ s.max_width }}px;{% if s.align == 'center' %} margin-inline: auto;{% endif %}{% endif %}"
+    style="text-align: {{ s.align }}; --hb-color: var(--color-{{ s.color }});{% if s.max_width > 0 %} max-width: {{ s.max_width }}px;{% if s.align == 'center' %} margin-inline: auto;{% endif %}{% endif %}"
     data-box="{{ block.id }}" {{ block.shopify_attributes }}
   >
     {{- s.text -}}
@@ -56,6 +58,7 @@
       "type": "select",
       "id": "size",
       "label": "Size",
+      "info": "Heading 1 is the largest and Heading 4 the smallest. Choose Custom to set an exact size.",
       "default": "h2",
       "options": [
         {
@@ -83,22 +86,24 @@
     {
       "type": "range",
       "id": "size_desktop",
-      "label": "Custom size (desktop)",
+      "label": "Exact size (desktop)",
       "min": 14,
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 48,
+      "visible_if": "{{ block.settings.size == 'custom' }}"
     },
     {
       "type": "range",
       "id": "size_mobile",
-      "label": "Custom size (mobile)",
+      "label": "Exact size (mobile)",
       "min": 14,
       "max": 80,
       "step": 1,
       "unit": "px",
-      "default": 32
+      "default": 32,
+      "visible_if": "{{ block.settings.size == 'custom' }}"
     },
     {
       "type": "select",

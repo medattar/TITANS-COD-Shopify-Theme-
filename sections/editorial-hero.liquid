@@ -24,6 +24,8 @@
 >
   <div class="editorial-hero__grid page-width">
     {%- if s.heading != blank -%}
+      {%- capture fs -%}.editorial-hero__heading{%- endcapture -%}
+      {%- render 'block-font-size', sel: fs, mobile: s.heading_size_mobile, desktop: s.heading_size -%}
       <h2 class="editorial-hero__heading" style="--eh-size-d: {{ s.heading_size }}px; --eh-size-m: {{ s.heading_size_mobile }}px;">{{ s.heading | newline_to_br }}</h2>
     {%- endif -%}
 

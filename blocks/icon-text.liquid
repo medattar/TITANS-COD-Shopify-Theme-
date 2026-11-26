@@ -13,6 +13,8 @@
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
+{%- capture fs -%}[data-box="{{ block.id }}"] .icon-text__title{%- endcapture -%}
+{%- render 'block-font-size', sel: fs, mobile: s.title_size, desktop: s.title_size -%}
 <div
   class="icon-text icon-text--{{ s.layout }}"
   style="--it-icon: {{ s.icon_size }}px; --it-color: var(--color-{{ s.icon_color }}); --it-title: {{ s.title_size }}px;"
