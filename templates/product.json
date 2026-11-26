@@ -1414,7 +1414,7 @@
               "type": "product-media",
               "name": "Product media",
               "settings": {
-                "product": "",
+                "product": "plagastop",
                 "show_on": "selected",
                 "show_products": [
                   "cargamax"
