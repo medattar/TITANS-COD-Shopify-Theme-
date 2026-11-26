@@ -1396,14 +1396,14 @@
                 "box_effect": "none",
                 "box_max_width": 0,
                 "box_align": "center",
-                "tx_enable": false,
+                "tx_enable": true,
                 "tx_font": "inherit",
                 "tx_weight": "inherit",
                 "tx_size": 0,
                 "tx_size_m": 0,
                 "tx_letter": 0,
                 "tx_word": 0,
-                "tx_line": 0,
+                "tx_line": 10,
                 "tx_transform": "inherit",
                 "tx_align": "inherit",
                 "tx_color": ""
@@ -1414,6 +1414,7 @@
               "type": "product-media",
               "name": "Product media",
               "settings": {
+                "product": "",
                 "show_on": "selected",
                 "show_products": [
                   "cargamax"
