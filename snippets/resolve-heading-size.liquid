@@ -1,0 +1,56 @@
+{%- comment -%}
+  Resolves a heading size into a rule that beats the theme heading
+  styles and a parent section text style.
+  Params: size (h1, h2, h3, h4, custom), desktop, mobile, sel
+{%- endcomment -%}
+{%- liquid
+  assign hb_d = settings.h2_size_desktop
+  assign hb_m = settings.h2_size_mobile
+  case size
+    when 'h1'
+      assign hb_d = settings.h1_size_desktop
+      assign hb_m = settings.h1_size_mobile
+      if hb_d <= settings.h2_size_desktop
+        assign hb_d = settings.h2_size_desktop | plus: 14
+      endif
+      if hb_m <= settings.h2_size_mobile
+        assign hb_m = settings.h2_size_mobile | plus: 6
+      endif
+    when 'h3'
+      assign hb_d = settings.h3_size_desktop
+      assign hb_m = settings.h3_size_mobile
+      if hb_d >= settings.h2_size_desktop
+        assign hb_d = settings.h2_size_desktop | minus: 12
+      endif
+      if hb_m >= settings.h2_size_mobile
+        assign hb_m = settings.h2_size_mobile | minus: 6
+      endif
+    when 'h4'
+      assign hb_d = 22
+      assign hb_m = 18
+    when 'custom'
+      assign hb_d = desktop | default: 48
+      assign hb_m = mobile | default: 32
+    else
+      assign hb_d = settings.h2_size_desktop
+      assign hb_m = settings.h2_size_mobile
+  endcase
+  if hb_d < 12
+    assign hb_d = 12
+  endif
+  if hb_m < 12
+    assign hb_m = 12
+  endif
+-%}
+{%- if sel != blank -%}
+  {% style %}
+    #shopify-section-{{ section.id }} {{ sel }} {
+      font-size: {{ hb_m }}px;
+    }
+    @media (min-width: 990px) {
+      #shopify-section-{{ section.id }} {{ sel }} {
+        font-size: {{ hb_d }}px;
+      }
+    }
+  {% endstyle %}
+{%- endif -%}

@@ -27,6 +27,8 @@
     endif
   endif
 -%}
+{%- capture fs -%}[data-box="{{ block.id }}"] .product-title, #shopify-section-{{ section.id }} [data-box="{{ block.id }}"] .product-title a{%- endcapture -%}
+{%- render 'block-font-size', sel: fs, mobile: s.size_mobile, desktop: s.size_desktop -%}
 <div class="product-title-block" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
   {%- if s.show_vendor and p.vendor != blank -%}
     <p class="product-title-block__vendor">{{ p.vendor | escape }}</p>

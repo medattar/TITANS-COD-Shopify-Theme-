@@ -14,9 +14,35 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 {%- if s.text != blank -%}
+  {%- liquid
+    case s.size
+      when 'small'
+        assign text_d = 13
+        assign text_m = 13
+      when 'large'
+        assign text_d = 20
+        assign text_m = 18
+      when 'lead'
+        assign text_d = 19
+        assign text_m = 17
+      else
+        assign text_d = settings.body_size_desktop
+        assign text_m = settings.body_size_mobile
+    endcase
+    if s.size_desktop > 0
+      assign text_d = s.size_desktop
+    endif
+    if s.size_mobile > 0
+      assign text_m = s.size_mobile
+    elsif s.size_desktop > 0
+      assign text_m = s.size_desktop
+    endif
+  -%}
+  {%- capture fs -%}[data-box="{{ block.id }}"], #shopify-section-{{ section.id }} [data-box="{{ block.id }}"] :is(p, li){%- endcapture -%}
+  {%- render 'block-font-size', sel: fs, mobile: text_m, desktop: text_d -%}
   <div
     class="text-block rte text-block--{{ s.size }}"
-    style="text-align: {{ s.align }}; --tb-color: var(--color-{{ s.color }});{% if s.max_width > 0 %} max-width: {{ s.max_width }}px;{% if s.align == 'center' %} margin-inline: auto;{% endif %}{% endif %}"
+    style="text-align: {{ s.align }}; --tb-color: var(--color-{{ s.color }});{% if s.size_desktop > 0 %} --tb-size-d: {{ s.size_desktop }}px;{% endif %}{% if s.size_mobile > 0 %} --tb-size-m: {{ s.size_mobile }}px;{% endif %}{% if s.max_width > 0 %} max-width: {{ s.max_width }}px;{% if s.align == 'center' %} margin-inline: auto;{% endif %}{% endif %}"
     data-box="{{ block.id }}" {{ block.shopify_attributes }}
   >
     {{- s.text -}}
@@ -62,6 +88,27 @@
           "label": "Lead"
         }
       ]
+    },
+    {
+      "type": "range",
+      "id": "size_desktop",
+      "label": "Exact size (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Exact size (mobile)",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size, or the size above when both are 0."
     },
     {
       "type": "select",

@@ -135,6 +135,8 @@
                     assign accent_paint = block.settings.color
                   endif
                 -%}
+                {%- capture fs -%}#shopify-block-{{ block.id }}{%- endcapture -%}
+                {%- render 'block-font-size', sel: fs, mobile: block.settings.size_mobile, desktop: block.settings.size_desktop -%}
                 <{{ tag }}
                   class="hero__heading font-{{ block.settings.font }}{% if block.settings.effect != 'none' %} fx-{{ block.settings.effect }}{% endif %}"
                   style="--size-d: {{ block.settings.size_desktop }}px; --size-m: {{ block.settings.size_mobile }}px;{% if block.settings.color != blank and block.settings.color.alpha != 0 %}color: {{ block.settings.color }};{% endif %}{% if accent_paint != blank %}--hero-accent: {{ accent_paint }};{% endif %}{% if block.settings.weight != blank and block.settings.weight != 'inherit' %}font-weight: {{ block.settings.weight }};{% endif %}{% if block.settings.letter != 0 %}letter-spacing: {{ block.settings.letter | divided_by: 100.0 }}em;{% endif %}{% if block.settings.line > 0 %}line-height: {{ block.settings.line | divided_by: 100.0 }};{% endif %}{% if block.settings.max_width > 0 %}max-width: {{ block.settings.max_width }}px;{% endif %}"
@@ -147,11 +149,21 @@
                 </{{ tag }}>
 
               {%- when 'text' -%}
+                {%- capture fs -%}#shopify-block-{{ block.id }}, #shopify-section-{{ section.id }} #shopify-block-{{ block.id }} :is(p, li){%- endcapture -%}
+                {%- render 'block-font-size', sel: fs, mobile: block.settings.size_mobile, desktop: block.settings.size_desktop -%}
                 <div class="hero__text rte" style="--size-d: {{ block.settings.size_desktop }}px; --size-m: {{ block.settings.size_mobile }}px;{% if block.settings.color != blank %}color: {{ block.settings.color }};{% endif %}{% if block.settings.weight != blank and block.settings.weight != 'inherit' %}font-weight: {{ block.settings.weight }};{% endif %}{% if block.settings.line > 0 %}line-height: {{ block.settings.line | divided_by: 100.0 }};{% endif %}{% if block.settings.max_width > 0 %}max-width: {{ block.settings.max_width }}px;{% endif %}{% if block.settings.letter != 0 %}letter-spacing: {{ block.settings.letter | divided_by: 100.0 }}em;{% endif %}" {{ block.shopify_attributes }}>
                   {{- block.settings.text -}}
                 </div>
 
               {%- when 'countdown' -%}
+                {%- if block.settings.number_size > 0 -%}
+                  {%- capture fs -%}#shopify-block-{{ block.id }} .countdown__value{%- endcapture -%}
+                  {%- render 'block-font-size', sel: fs, mobile: block.settings.number_size, desktop: block.settings.number_size -%}
+                {%- endif -%}
+                {%- if block.settings.label_size > 0 -%}
+                  {%- capture fs -%}#shopify-block-{{ block.id }} .countdown__unit small{%- endcapture -%}
+                  {%- render 'block-font-size', sel: fs, mobile: block.settings.label_size, desktop: block.settings.label_size -%}
+                {%- endif -%}
                 <div class="hero__countdown" {{ block.shopify_attributes }}>
                   {%- if block.settings.label != blank and block.settings.date != blank -%}
                     <p class="hero__countdown-label">{{ block.settings.label }}</p>

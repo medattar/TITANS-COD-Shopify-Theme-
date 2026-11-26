@@ -21,6 +21,22 @@
       </p>
     {%- endif -%}
     {%- if s.heading != blank -%}
+      {%- liquid
+        assign hs = s.heading_size | default: 'h2'
+        assign hd = s.heading_size_px | default: 0
+        assign hm = s.heading_size_mobile | default: 0
+        if hd > 0 or hm > 0
+          assign hs = 'custom'
+          if hd == 0
+            assign hd = hm
+          endif
+          if hm == 0
+            assign hm = hd
+          endif
+        endif
+      -%}
+      {%- capture hb_sel -%}.section-header__title{%- endcapture -%}
+      {%- render 'resolve-heading-size', size: hs, desktop: hd, mobile: hm, sel: hb_sel -%}
       <{{ heading_tag }} class="section-header__title {{ s.heading_size | default: 'h2' }}"{% if heading_id != blank %} id="{{ heading_id }}"{% endif %}>{{ s.heading }}</{{ heading_tag }}>
     {%- endif -%}
     {%- if s.subheading != blank -%}

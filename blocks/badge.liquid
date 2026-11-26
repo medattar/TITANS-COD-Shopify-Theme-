@@ -14,6 +14,20 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 {%- if s.text != blank -%}
+  {%- liquid
+    assign badge_unit = 'none'
+    if s.font_size > 0
+      assign badge_size = s.font_size | append: 'px'
+    elsif s.size == 'large'
+      assign badge_size = 'calc(var(--badge-size) * 1.15)'
+    else
+      assign badge_size = 'var(--badge-size)'
+    endif
+  -%}
+  {%- unless s.style == 'eyebrow' and s.font_size == 0 -%}
+    {%- capture fs -%}[data-box="{{ block.id }}"] :is(.badge, .eyebrow){%- endcapture -%}
+    {%- render 'block-font-size', sel: fs, mobile: badge_size, desktop: badge_size, unit: badge_unit -%}
+  {%- endunless -%}
   {%- capture badge_style -%}
     {%- if s.font_size > 0 %}font-size: {{ s.font_size }}px;{% endif -%}
     {%- if s.pad_y > 0 or s.pad_x > 0 %}padding: {% if s.pad_y > 0 %}{{ s.pad_y }}{% else %}5{% endif %}px {% if s.pad_x > 0 %}{{ s.pad_x }}{% else %}11{% endif %}px;{% endif -%}

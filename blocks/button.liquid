@@ -14,6 +14,21 @@
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- assign s = block.settings -%}
 {%- if s.label != blank -%}
+  {%- liquid
+    case s.size
+      when 'small'
+        assign button_m = 'calc(var(--button-size-mobile) * 0.85)'
+        assign button_d = 'calc(var(--button-size-desktop) * 0.85)'
+      when 'large'
+        assign button_m = 'calc(var(--button-size-mobile) * 1.2)'
+        assign button_d = 'calc(var(--button-size-desktop) * 1.25)'
+      else
+        assign button_m = 'var(--button-size-mobile)'
+        assign button_d = 'var(--button-size-desktop)'
+    endcase
+  -%}
+  {%- capture fs -%}[data-box="{{ block.id }}"] .button{%- endcapture -%}
+  {%- render 'block-font-size', sel: fs, mobile: button_m, desktop: button_d, unit: 'none' -%}
   <div class="button-block" style="justify-content: {{ s.align }};" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
     <a
       class="button button--{{ s.style }}{% if s.size != 'medium' %} button--{{ s.size }}{% endif %}{% if s.full_width %} button--full{% endif %}"

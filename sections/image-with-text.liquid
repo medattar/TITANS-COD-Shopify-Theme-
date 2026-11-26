@@ -50,7 +50,9 @@
             {%- when 'eyebrow' -%}
               <p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
             {%- when 'heading' -%}
-              <h2 class="h2 image-text__heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+              {%- capture hb_sel -%}#shopify-block-{{ block.id }}{%- endcapture -%}
+              {%- render 'resolve-heading-size', size: block.settings.size, desktop: block.settings.size_desktop, mobile: block.settings.size_mobile, sel: hb_sel -%}
+              <h2 class="block-heading image-text__heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
             {%- when 'text' -%}
               <div class="rte image-text__text" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
             {%- when 'spark' -%}
@@ -707,10 +709,45 @@
       "settings": [
         {
           "type": "inline_richtext",
-          "id": "text",
-          "label": "Heading",
-          "default": "va contigo a todas partes"
-        }
+      "id": "text",
+      "label": "Heading",
+      "default": "va contigo a todas partes"
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Size",
+      "info": "Large, medium and small are different sizes. Choose Custom to set an exact size.",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" },
+        { "value": "custom", "label": "Custom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "size_desktop",
+      "label": "Exact size (desktop)",
+      "min": 14,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 48,
+      "visible_if": "{{ block.settings.size == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Exact size (mobile)",
+      "min": 14,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 32,
+      "visible_if": "{{ block.settings.size == 'custom' }}"
+    }
       ]
     },
     {

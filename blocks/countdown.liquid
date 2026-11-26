@@ -23,6 +23,14 @@
   assign cd_dir = s.label_direction | default: 'vertical'
   assign cd_label_gap = s.label_gap | default: 8
 -%}
+{%- if s.number_size > 0 -%}
+  {%- capture fs -%}[data-box="{{ block.id }}"] .countdown__value{%- endcapture -%}
+  {%- render 'block-font-size', sel: fs, mobile: s.number_size, desktop: s.number_size -%}
+{%- endif -%}
+{%- if s.label_size > 0 -%}
+  {%- capture fs -%}[data-box="{{ block.id }}"] .countdown__unit small{%- endcapture -%}
+  {%- render 'block-font-size', sel: fs, mobile: s.label_size, desktop: s.label_size -%}
+{%- endif -%}
 <div class="countdown-block{% if cd_dir == 'horizontal' %} countdown-block--horizontal{% endif %}" style="--cd-align: {{ s.align | default: 'flex-start' }}; --cd-label-gap: {{ cd_label_gap }}px; --cd-text: {{ cd_text }};" data-box="{{ block.id }}" {{ block.shopify_attributes }}>
     {%- if s.label != blank -%}
       <p class="countdown-block__label">{{ s.label }}</p>
