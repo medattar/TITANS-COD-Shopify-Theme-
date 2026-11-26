@@ -78,7 +78,7 @@ facet-filters[aria-busy='true'] [data-facet-update='results'] {
 
 .facets__sort {
   margin-left: auto;
-  min-width: 180px;
+  min-width: 0;
 }
 
 .facets__sort .select__select {
@@ -129,16 +129,34 @@ facet-filters[aria-busy='true'] [data-facet-update='results'] {
   padding-top: 4px;
 }
 
-.facets__group {
-  border-bottom: 1px solid rgba(var(--color-text-rgb), 0.14);
+.facets__group + .facets__group {
+  margin-top: 12px;
 }
 
 .facets__group .accordion__summary {
-  padding: 16px 0;
+  padding: 14px 14px;
+}
+
+.facets__group .accordion__icon-chevron {
+  display: block;
+}
+
+.facets__group[open] .accordion__toggle {
+  transform: rotate(180deg);
+}
+
+.facets__group > summary {
+  list-style: none;
+}
+
+.facets__group > summary::marker,
+.facets__group > summary::-webkit-details-marker {
+  content: none;
+  display: none;
 }
 
 .facets__options {
-  padding-bottom: 16px;
+  padding: 0 14px 16px;
 }
 
 .facets__list {
@@ -224,14 +242,76 @@ facet-filters[aria-busy='true'] [data-facet-update='results'] {
 
 .facets__price {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
+}
+
+.facets__price .field,
+.facets__price .field__input {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .facets__footer {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: 10px;
+}
+
+.facets__footer .button {
+  min-width: 0;
+  padding-inline: 12px;
+  letter-spacing: 0;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+@media (max-width: 749px) {
+  .facets__bar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px 12px;
+  }
+
+  .facets__count {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .facets__sort {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .facets__drawer {
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border: 0;
+  }
+
+  .facets__drawer .drawer__header {
+    padding-top: max(14px, env(safe-area-inset-top));
+  }
+
+  .facets__drawer .drawer__footer {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .facets__price .field__input {
+    padding-inline: 12px;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 750px) {
+  .facets__sort {
+    min-width: 220px;
+  }
 }
 
 /* ---------- Collection list ---------- */

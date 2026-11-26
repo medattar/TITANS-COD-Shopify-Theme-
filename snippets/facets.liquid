@@ -108,7 +108,7 @@
                     </div>
                     <div class="field">
                       <label class="field__label" for="{{ filter_id }}-max">{{ 'products.facets.to' | t }}</label>
-                      <input class="field__input" id="{{ filter_id }}-max" type="number" inputmode="decimal" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100.0 }}{% endif %}" placeholder="{{ filter.range_max | divided_by: 100.0 }}">
+                      <input class="field__input" id="{{ filter_id }}-max" type="number" inputmode="decimal" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 }}" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100.0 }}{% endif %}" placeholder="{{ filter.range_max | divided_by: 100 }}">
                     </div>
                   </div>
                 {%- else -%}
