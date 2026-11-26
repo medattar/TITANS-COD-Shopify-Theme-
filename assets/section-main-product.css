@@ -3,12 +3,16 @@
 .product {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: 'head' 'gal' 'buy';
+  grid-template-areas: 'gal' 'head' 'buy';
   gap: 18px;
 }
 
-.product--mobile-gallery-first {
-  grid-template-areas: 'gal' 'head' 'buy';
+.product--mobile-head-first {
+  grid-template-areas: 'head' 'gal' 'buy';
+}
+
+.product--single {
+  grid-template-areas: 'head' 'buy';
 }
 
 .product__head {
@@ -35,7 +39,7 @@
 
 @media (min-width: 990px) {
   .product,
-  .product--mobile-gallery-first {
+  .product--mobile-head-first {
     grid-template-columns: var(--product-cols, 1.05fr 1fr);
     grid-template-rows: auto 1fr;
     grid-template-areas: 'gal head' 'gal buy';

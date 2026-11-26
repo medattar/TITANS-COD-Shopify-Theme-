@@ -33,13 +33,21 @@
 >
   <div class="page-width">
     <div class="product{% if s.sticky_gallery %} product--sticky-gallery{% endif %} product--mobile-{{ s.mobile_order }} product--thumbs-{{ s.gallery_layout }}{% if media_in_blocks %} product--single{% elsif s.media_position == 'right' %} product--media-right{% endif %}">
-      <div class="product__head">
-        {{ header_html }}
-      </div>
+      {%- if s.mobile_order == 'head-first' -%}
+        <div class="product__head">
+          {{ header_html }}
+        </div>
+      {%- endif -%}
 
       {%- unless media_in_blocks -%}
         <div class="product__gallery">
           {%- render 'product-media-gallery', product: product, section: section, priority: true -%}
+        </div>
+      {%- endunless -%}
+
+      {%- unless s.mobile_order == 'head-first' -%}
+        <div class="product__head">
+          {{ header_html }}
         </div>
       {%- endunless -%}
 
@@ -228,15 +236,16 @@
       "type": "select",
       "id": "mobile_order",
       "label": "Mobile order",
-      "default": "head-first",
+      "info": "Phones show the product image first, then the title and the rest. Choose Title first only if you want the title above the image.",
+      "default": "gallery-first",
       "options": [
         {
-          "value": "head-first",
-          "label": "Title, gallery, buy area"
+          "value": "gallery-first",
+          "label": "Image, then title and details"
         },
         {
-          "value": "gallery-first",
-          "label": "Gallery, title, buy area"
+          "value": "head-first",
+          "label": "Title first, then image"
         }
       ]
     },

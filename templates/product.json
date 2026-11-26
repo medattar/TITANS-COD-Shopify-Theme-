@@ -1346,7 +1346,7 @@
         "columns": "1.05fr 1fr",
         "column_gap": 52,
         "sticky_gallery": true,
-        "mobile_order": "head-first",
+        "mobile_order": "gallery-first",
         "gallery_layout": "stacked",
         "thumb_rail_width": 19,
         "thumbs_mobile": false,
