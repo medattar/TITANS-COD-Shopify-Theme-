@@ -9,6 +9,10 @@
   {%- style -%}
     {%- if bs.box_enable -%}
       {%- liquid
+        assign box_root = sel
+        unless sel contains 'shopify-section'
+          assign box_root = '#shopify-section-' | append: section.id | append: ' ' | append: sel
+        endunless
         case bs.box_shadow
           when 'soft'
             assign shadow_alpha = bs.box_shadow_color | color_modify: 'alpha', 0.16
@@ -25,7 +29,7 @@
             assign shadow = 'none'
         endcase
       -%}
-      {{ sel }} {
+      {{ box_root }} {
         margin-top: {{ bs.box_mt_m }}px;
         margin-bottom: {{ bs.box_mb_m }}px;
         {%- if bs.box_py != nil %}
@@ -56,7 +60,9 @@
         {%- if bs.box_bg_gradient != blank %}
           background: {{ bs.box_bg_gradient }};
         {%- endif %}
-        box-shadow: {{ shadow }};
+        {%- unless shadow == 'none' %}
+          box-shadow: {{ shadow }};
+        {%- endunless %}
         {%- if bs.box_max_width > 0 %}
           max-width: {{ bs.box_max_width }}px;
           {%- case bs.box_align -%}
@@ -73,7 +79,7 @@
         {%- endif %}
       }
       @media (min-width: 750px) {
-        {{ sel }} {
+        {{ box_root }} {
           margin-top: {{ bs.box_mt }}px;
           margin-bottom: {{ bs.box_mb }}px;
           {%- if bs.box_py != nil %}
@@ -87,59 +93,60 @@
       @media (hover: hover) and (prefers-reduced-motion: no-preference) {
         {%- case bs.box_effect -%}
           {%- when 'lift' %}
-            {{ sel }}:hover { transform: translateY(-4px); }
+            {{ box_root }}:hover { transform: translateY(-4px); }
           {%- when 'grow' %}
-            {{ sel }}:hover { transform: scale(1.03); }
+            {{ box_root }}:hover { transform: scale(1.03); }
           {%- when 'glow' %}
-            {{ sel }}:hover { box-shadow: 0 0 0 3px {{ bs.box_shadow_color | color_modify: 'alpha', 0.25 }}, 0 12px 34px {{ bs.box_shadow_color | color_modify: 'alpha', 0.3 }}; }
+            {{ box_root }}:hover { box-shadow: 0 0 0 3px {{ bs.box_shadow_color | color_modify: 'alpha', 0.25 }}, 0 12px 34px {{ bs.box_shadow_color | color_modify: 'alpha', 0.3 }}; }
           {%- when 'dim' %}
-            {{ sel }}:hover { filter: brightness(0.94); }
+            {{ box_root }}:hover { filter: brightness(0.94); }
         {%- endcase %}
       }
     {%- endif -%}
 
     {%- if bs.tx_enable -%}
-      {{ sel }},
-      {{ sel }} :is(h1, h2, h3, h4, h5, h6, p, li, span, a, label, summary, button, .button) {
+      {%- liquid
+        assign font_root = sel
+        unless sel contains 'shopify-section'
+          assign font_root = '#shopify-section-' | append: section.id | append: ' ' | append: sel
+        endunless
+        assign tx_targets = 'h1, h2, h3, h4, h5, h6, p, li, span, a, b, strong, em, div, label, summary, button, small, .button, .heading-block, .block-heading, .product-title, .product-subtitle, .price__current, .countdown__value, .countdown__unit, .badge, .eyebrow, .rte'
+      -%}
+      {{ font_root }},
+      {{ font_root }} :is({{ tx_targets }}) {
         {%- if bs.tx_font != 'inherit' %}
-          font-family: var(--font-{{ bs.tx_font }}-family);
+          font-family: var(--font-{{ bs.tx_font }}-family) !important;
         {%- endif %}
         {%- if bs.tx_weight != 'inherit' %}
-          font-weight: {{ bs.tx_weight }};
+          font-weight: {{ bs.tx_weight }} !important;
         {%- endif %}
-        letter-spacing: {{ bs.tx_letter | divided_by: 100.0 }}em;
-        word-spacing: {{ bs.tx_word | divided_by: 100.0 }}em;
+        letter-spacing: {{ bs.tx_letter | default: 0 | divided_by: 100.0 }}em !important;
+        word-spacing: {{ bs.tx_word | default: 0 | divided_by: 100.0 }}em !important;
         {%- if bs.tx_line > 0 %}
-          line-height: {{ bs.tx_line | divided_by: 10.0 }};
+          line-height: {{ bs.tx_line | divided_by: 10.0 }} !important;
         {%- endif %}
         {%- if bs.tx_transform != 'inherit' %}
-          text-transform: {{ bs.tx_transform }};
+          text-transform: {{ bs.tx_transform }} !important;
         {%- endif %}
         {%- if bs.tx_color != blank and bs.tx_color.alpha != 0 %}
-          color: {{ bs.tx_color }};
+          color: {{ bs.tx_color }} !important;
         {%- endif %}
       }
-      {{ sel }} {
-        {%- if bs.tx_align != 'inherit' %}
-          text-align: {{ bs.tx_align }};
-          justify-content: {% case bs.tx_align %}{% when 'center' %}center{% when 'right' %}flex-end{% else %}flex-start{% endcase %};
-        {%- endif %}
-      }
+      {%- if bs.tx_align != 'inherit' %}
+        {{ font_root }} {
+          text-align: {{ bs.tx_align }} !important;
+          justify-content: {% case bs.tx_align %}{% when 'center' %}center{% when 'right' %}flex-end{% else %}flex-start{% endcase %} !important;
+        }
+      {%- endif %}
       {%- if bs.tx_size_m > 0 or bs.tx_size > 0 %}
-        {%- liquid
-          assign font_root = sel
-          unless sel contains 'shopify-section'
-            assign font_root = '#shopify-section-' | append: section.id | append: ' ' | append: sel
-          endunless
-        -%}
-        {{ font_root }}:is(h1, h2, h3, h4, h5, h6, p, li, span, a),
-        {{ font_root }} :is(h1, h2, h3, h4, h5, h6, p, li) {
-          {%- if bs.tx_size_m > 0 %} font-size: {{ bs.tx_size_m }}px;{% endif %}
+        {{ font_root }},
+        {{ font_root }} :is({{ tx_targets }}) {
+          {%- if bs.tx_size_m > 0 %} font-size: {{ bs.tx_size_m }}px !important;{% endif %}
         }
         @media (min-width: 750px) {
-          {{ font_root }}:is(h1, h2, h3, h4, h5, h6, p, li, span, a),
-          {{ font_root }} :is(h1, h2, h3, h4, h5, h6, p, li) {
-            {%- if bs.tx_size > 0 %} font-size: {{ bs.tx_size }}px;{% endif %}
+          {{ font_root }},
+          {{ font_root }} :is({{ tx_targets }}) {
+            {%- if bs.tx_size > 0 %} font-size: {{ bs.tx_size }}px !important;{% endif %}
           }
         }
       {%- endif %}
