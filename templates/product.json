@@ -1414,7 +1414,7 @@
               "type": "product-media",
               "name": "Product media",
               "settings": {
-                "product": "plagastop",
+                "product": "mini-gps",
                 "show_on": "selected",
                 "show_products": [
                   "cargamax"
