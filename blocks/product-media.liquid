@@ -1,10 +1,22 @@
 {%- liquid
+  assign page_product = closest.product | default: product
+  assign chosen = block.settings.product
   assign show_here = true
-  if block.settings.show_on == 'selected'
+  assign media_product = page_product
+  if chosen != blank and chosen.id != blank
+    assign media_product = chosen
     assign show_here = false
-    assign show_for = block.settings.product | default: product
+    if page_product != blank and page_product.id == chosen.id
+      assign show_here = true
+    endif
+  elsif block.settings.show_on == 'selected'
+    assign show_here = false
     assign show_ids = block.settings.show_products | map: 'id'
-    if show_for and show_ids contains show_for.id
+    if show_ids.size > 0
+      if page_product != blank and show_ids contains page_product.id
+        assign show_here = true
+      endif
+    elsif request.design_mode
       assign show_here = true
     endif
   endif
@@ -13,7 +25,7 @@
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
 {%- liquid
-  assign p = closest.product
+  assign p = media_product
   assign s = block.settings
 -%}
 <div
@@ -21,6 +33,9 @@
   style="--pm-width: {{ s.width }}%; --pm-width-m: {{ s.width_mobile }}%;"
   data-box="{{ block.id }}" {{ block.shopify_attributes }}
 >
+  {%- if chosen == blank and block.settings.show_on == 'selected' and show_ids.size == 0 and request.design_mode -%}
+    <p class="theme-placeholder">Choose this product in the Product setting. This gallery then stays on that product only.</p>
+  {%- endif -%}
   {%- if p != blank -%}
     {%- render 'product-media-gallery',
       product: p,
@@ -41,7 +56,13 @@
   {%- endif -%}
 </div>
 {%- else -%}
-  {%- render 'block-placeholder', message: 'Hidden on this product. Change Show on to display it here.' -%}
+  {%- liquid
+    assign hidden_message = 'Hidden on this product.'
+    if chosen != blank and chosen.title != blank
+      assign hidden_message = 'This gallery is only for ' | append: chosen.title | append: '. Other products keep their own.'
+    endif
+  -%}
+  {%- render 'block-placeholder', message: hidden_message -%}
 {%- endif -%}
 
 {% schema %}
@@ -50,10 +71,17 @@
   "tag": null,
   "settings": [
     {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "This gallery is only for this product. Add the block again on another product to set that product's own images, width and layout. Clear it only if you want one shared gallery on every product."
+    },
+    {
       "type": "select",
       "id": "show_on",
       "label": "Show on",
-      "default": "all",
+      "default": "selected",
+      "visible_if": "{{ block.settings.product == blank }}",
       "options": [
         {
           "value": "all",
@@ -70,11 +98,12 @@
       "id": "show_products",
       "label": "Products",
       "limit": 50,
-      "info": "Used when Show on is set to Only the products below."
+      "info": "Used when Show on is set to Only the products below.",
+      "visible_if": "{{ block.settings.product == blank and block.settings.show_on == 'selected' }}"
     },
     {
       "type": "paragraph",
-      "content": "Product images and videos. Drag this block anywhere, e.g. under the title or price. Gallery style (thumbnails, ratio, fit, borders) is set in the section settings under Media. To stop the side-by-side gallery, set the section's Media position to \"Inside the blocks\"."
+      "content": "Shows this product's images and videos. Drag the block above or below the title. Each product keeps the settings you give its own block."
     },
     {
       "type": "range",
@@ -736,7 +765,10 @@
   ],
   "presets": [
     {
-      "name": "Product media"
+      "name": "Product media",
+      "settings": {
+        "show_on": "selected"
+      }
     }
   ]
 }

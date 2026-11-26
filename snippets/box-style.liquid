@@ -126,13 +126,19 @@
         {%- endif %}
       }
       {%- if bs.tx_size_m > 0 or bs.tx_size > 0 %}
-        {{ sel }},
-        {{ sel }} :is(h1, h2, h3, h4, h5, h6, p, li) {
+        {%- liquid
+          assign font_root = sel
+          unless sel contains 'shopify-section'
+            assign font_root = '#shopify-section-' | append: section.id | append: ' ' | append: sel
+          endunless
+        -%}
+        {{ font_root }}:is(h1, h2, h3, h4, h5, h6, p, li, span, a),
+        {{ font_root }} :is(h1, h2, h3, h4, h5, h6, p, li) {
           {%- if bs.tx_size_m > 0 %} font-size: {{ bs.tx_size_m }}px;{% endif %}
         }
         @media (min-width: 750px) {
-          {{ sel }},
-          {{ sel }} :is(h1, h2, h3, h4, h5, h6, p, li) {
+          {{ font_root }}:is(h1, h2, h3, h4, h5, h6, p, li, span, a),
+          {{ font_root }} :is(h1, h2, h3, h4, h5, h6, p, li) {
             {%- if bs.tx_size > 0 %} font-size: {{ bs.tx_size }}px;{% endif %}
           }
         }
