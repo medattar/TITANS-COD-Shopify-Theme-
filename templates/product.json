@@ -1300,7 +1300,7 @@
               "settings": {
                 "show_on": "all",
                 "show_products": [],
-                "text": "¡Que no te tome por sorpresa! Lleva siempre CargaMax™ contigo y recarga fácilmente la batería de tu vehículo con este cargador inteligente de 12V.",
+                "text": "<strong>¿Te imaginas quedarte varado en plena carretera por una batería descargada? 🔋&nbsp;</strong>",
                 "size": "h3",
                 "size_desktop": 48,
                 "size_mobile": 32,
@@ -1336,7 +1336,7 @@
                 "box_effect": "none",
                 "box_max_width": 0,
                 "box_align": "center",
-                "tx_enable": false,
+                "tx_enable": true,
                 "tx_font": "inherit",
                 "tx_weight": "inherit",
                 "tx_size": 0,
@@ -1346,7 +1346,7 @@
                 "tx_line": 0,
                 "tx_transform": "inherit",
                 "tx_align": "inherit",
-                "tx_color": ""
+                "tx_color": "#F68300"
               },
               "blocks": {}
             },
