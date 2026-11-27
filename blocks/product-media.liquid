@@ -4,6 +4,7 @@
 -%}
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
+<section class="pm-slot">
 <div
   class="product-media-block{% if s.sticky %} product-media-block--sticky{% endif %}"
   style="--pm-width: {{ s.width }}%; --pm-width-m: {{ s.width_mobile }}%;"
@@ -28,6 +29,7 @@
     </div>
   {%- endif -%}
 </div>
+</section>
 
 {% schema %}
 {
@@ -36,7 +38,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Shows the images and videos of the product you are editing. Drag the block above or below the title."
+      "content": "Shows the images and videos of the product you are editing. Desktop left, right, or in the page flow is set on the Product information section: Media position."
     },
     {
       "type": "range",

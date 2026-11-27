@@ -1254,7 +1254,7 @@
       "settings": {
         "color_scheme": "scheme-7",
         "own_colors": false,
-        "media_position": "left",
+        "media_position": "blocks",
         "single_max_width": 760,
         "columns": "1.05fr 1fr",
         "column_gap": 52,
