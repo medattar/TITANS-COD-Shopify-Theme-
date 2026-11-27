@@ -70,10 +70,76 @@
     grid-template-columns: var(--product-cols-right, 1fr 1.05fr);
     grid-template-areas: 'head gal' 'buy gal';
   }
+
+  .product.product--desk-col {
+    max-width: none;
+    margin-inline: 0;
+    grid-template-columns: var(--product-cols, 1.05fr 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'gal head' 'gal buy';
+    column-gap: var(--product-gap, 56px);
+    row-gap: 16px;
+  }
+
+  .product.product--desk-col.product--media-right {
+    grid-template-columns: var(--product-cols-right, 1fr 1.05fr);
+    grid-template-areas: 'head gal' 'buy gal';
+  }
+
+  .product--desk-col .pm-slot {
+    display: block;
+    height: 0;
+    overflow: visible;
+  }
+
+  .product--desk-col .product-media-block {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    max-width: none;
+    z-index: 1;
+  }
+
+  .product--desk-col:not(.product--media-right) .product-media-block {
+    left: 0;
+    width: calc((100% - var(--product-gap, 56px)) * var(--gal-share, 0.512195));
+  }
+
+  .product--desk-col.product--media-right .product-media-block {
+    right: 0;
+    left: auto;
+    width: calc((100% - var(--product-gap, 56px)) * var(--gal-share, 0.512195));
+  }
+
+  .product--desk-col .product-media-block .gallery {
+    width: var(--pm-width, 100%);
+    max-width: 100%;
+  }
+
+  .product--desk-col .product-media-block--col-sticky .gallery {
+    position: sticky;
+    top: calc(var(--header-offset, 0px) + 20px);
+  }
 }
 
+.product__stack,
 .pm-slot {
   display: contents;
+}
+
+.product.product--desk-col {
+  position: relative;
+}
+
+@media (max-width: 989px) {
+  .product.product--desk-col,
+  .product.product--desk-col.product--mobile-head-first {
+    max-width: var(--product-max, 760px);
+    margin-inline: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'head' 'buy';
+  }
 }
 
 .product-media-block {
@@ -289,6 +355,10 @@ product-info[aria-busy='true'] [data-variant-update] {
 @media (min-width: 990px) {
   .gallery__counter {
     display: none;
+  }
+
+  .gallery.gallery--pm:not(.gallery--no-counter) .gallery__counter {
+    display: block;
   }
 
   .gallery--no-thumbs-mobile .gallery__thumbs {

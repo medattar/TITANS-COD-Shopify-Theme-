@@ -1,12 +1,39 @@
 {%- liquid
   assign p = closest.product | default: product
   assign s = block.settings
+  assign desk = s.desktop_position | default: 'flow'
+  assign col_split = s.column_split | default: '1.05fr 1fr'
+  assign gal_share = 0.512195
+  case col_split
+    when '1fr 1fr'
+      assign gal_share = 0.5
+    when '1.05fr 1fr'
+      assign gal_share = 0.512195
+    when '1.25fr 1fr'
+      assign gal_share = 0.555556
+    when '1.5fr 1fr'
+      assign gal_share = 0.6
+    when '1fr 1.15fr'
+      assign gal_share = 0.465116
+  endcase
+  assign col_right = col_split | split: ' ' | reverse | join: ' '
 -%}
 {%- capture box_sel -%}[data-box="{{ block.id }}"]{%- endcapture -%}
 {%- render 'box-style', bs: block.settings, sel: box_sel, clip: true -%}
+<style>
+  #shopify-section-{{ section.id }} .product {
+    --product-max: {{ s.flow_width | default: 760 }}px;
+    {%- if desk == 'left' or desk == 'right' -%}
+      --product-cols: {{ col_split }};
+      --product-cols-right: {{ col_right }};
+      --product-gap: {{ s.column_gap | default: 56 }}px;
+      --gal-share: {{ gal_share }};
+    {%- endif -%}
+  }
+</style>
 <section class="pm-slot">
 <div
-  class="product-media-block{% if s.sticky %} product-media-block--sticky{% endif %}"
+  class="product-media-block product-media-block--desk-{{ desk }}{% if s.sticky %} product-media-block--sticky{% endif %}{% if desk != 'flow' and s.column_sticky %} product-media-block--col-sticky{% endif %}"
   style="--pm-width: {{ s.width }}%; --pm-width-m: {{ s.width_mobile }}%;"
   data-box="{{ block.id }}" {{ block.shopify_attributes }}
 >
@@ -38,7 +65,62 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Shows the images and videos of the product you are editing. Desktop left, right, or in the page flow is set on the Product information section: Media position."
+      "content": "Shows the images and videos of the product you are editing. Drag this block to set its place on phones. Desktop position does not change that order."
+    },
+    {
+      "type": "select",
+      "id": "desktop_position",
+      "label": "Desktop position",
+      "default": "flow",
+      "options": [
+        { "value": "flow", "label": "In the page flow" },
+        { "value": "left", "label": "Left, other blocks on the right" },
+        { "value": "right", "label": "Right, other blocks on the left" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "column_split",
+      "label": "Gallery / info width",
+      "default": "1.05fr 1fr",
+      "visible_if": "{{ block.settings.desktop_position != 'flow' }}",
+      "options": [
+        { "value": "1fr 1fr", "label": "50 / 50" },
+        { "value": "1.05fr 1fr", "label": "Gallery slightly wider" },
+        { "value": "1.25fr 1fr", "label": "Gallery wider" },
+        { "value": "1.5fr 1fr", "label": "Gallery much wider" },
+        { "value": "1fr 1.15fr", "label": "Info wider" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 56,
+      "visible_if": "{{ block.settings.desktop_position != 'flow' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "column_sticky",
+      "label": "Stick gallery while scrolling",
+      "default": true,
+      "visible_if": "{{ block.settings.desktop_position != 'flow' }}"
+    },
+    {
+      "type": "range",
+      "id": "flow_width",
+      "label": "Content width",
+      "min": 480,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 760,
+      "info": "Used on phones, and on desktop when the gallery stays in the page flow.",
+      "visible_if": "{{ block.settings.desktop_position == 'flow' }}"
     },
     {
       "type": "range",
@@ -49,7 +131,7 @@
       "step": 5,
       "unit": "%",
       "default": 100,
-      "info": "Use less than 100% to place it beside other blocks inside a horizontal Group."
+      "info": "In a left or right column, this is the image width inside that column. In the page flow, use less than 100% beside other blocks in a horizontal Group."
     },
     {
       "type": "range",

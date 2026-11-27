@@ -19,34 +19,18 @@
   if blocks_html contains 'product-media-block' or header_html contains 'product-media-block'
     assign has_media_block = true
   endif
-  assign gallery_html = ''
-  if has_media_block and s.media_position != 'blocks'
-    if header_html contains '<section class="pm-slot">'
-      assign slot_parts = header_html | split: '<section class="pm-slot">'
-      assign header_html = slot_parts[0]
-      assign slot_rest = slot_parts[1] | split: '</section>'
-      assign gallery_html = slot_rest[0]
-      assign header_html = header_html | append: slot_rest[1]
-    elsif blocks_html contains '<section class="pm-slot">'
-      assign slot_parts = blocks_html | split: '<section class="pm-slot">'
-      assign blocks_html = slot_parts[0]
-      assign slot_rest = slot_parts[1] | split: '</section>'
-      assign gallery_html = slot_rest[0]
-      assign blocks_html = blocks_html | append: slot_rest[1]
-    endif
-  endif
-  assign media_in_blocks = false
-  if gallery_html == blank
-    if s.media_position == 'blocks' or has_media_block
-      assign media_in_blocks = true
-    endif
+  assign desk = ''
+  if header_html contains 'product-media-block--desk-left' or blocks_html contains 'product-media-block--desk-left'
+    assign desk = 'left'
+  elsif header_html contains 'product-media-block--desk-right' or blocks_html contains 'product-media-block--desk-right'
+    assign desk = 'right'
   endif
 -%}
 
 <product-info
   id="MainProduct-{{ section.id }}"
   class="section main-product color-{% render 'scheme', s: s, area: 'product' %} gradient"
-  style="{% render 'section-style' %} --product-cols: {{ s.columns }}; --product-cols-right: {{ s.columns | split: ' ' | reverse | join: ' ' }}; --product-gap: {{ s.column_gap }}px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px; --product-max: {{ s.single_max_width }}px;"
+  style="{% render 'section-style' %} --product-cols: 1.05fr 1fr; --product-cols-right: 1fr 1.05fr; --product-gap: 56px; --thumb-rail: {{ s.thumb_rail_width }}%; --media-radius: {{ s.media_radius }}px; --product-max: 760px;"
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
   data-product-url="{{ product.url }}"
@@ -54,22 +38,19 @@
   data-update-url="{{ s.update_url }}"
 >
   <div class="page-width">
-    <div class="product{% if s.sticky_gallery %} product--sticky-gallery{% endif %} product--mobile-{{ s.mobile_order }} product--thumbs-{{ s.gallery_layout }}{% if media_in_blocks %} product--single{% elsif s.media_position == 'right' %} product--media-right{% endif %}">
+    <div class="product{% unless has_media_block %} product--sticky-gallery{% endunless %} product--mobile-{{ s.mobile_order }} product--thumbs-{{ s.gallery_layout }}{% if desk == 'left' or desk == 'right' %} product--desk-col{% if desk == 'right' %} product--media-right{% endif %}{% elsif has_media_block %} product--single{% endif %}">
+      <div class="product__stack">
       {%- if s.mobile_order == 'head-first' -%}
         <div class="product__head">
           {{ header_html }}
         </div>
       {%- endif -%}
 
-      {%- if gallery_html != blank -%}
-        <div class="product__gallery">
-          {{ gallery_html }}
-        </div>
-      {%- elsif media_in_blocks == false -%}
+      {%- unless has_media_block -%}
         <div class="product__gallery">
           {%- render 'product-media-gallery', product: product, section: section, priority: true -%}
         </div>
-      {%- endif -%}
+      {%- endunless -%}
 
       {%- unless s.mobile_order == 'head-first' -%}
         <div class="product__head">
@@ -85,8 +66,31 @@
         {%- endunless -%}
         {{ blocks_html }}
       </div>
+      </div>
     </div>
   </div>
+  <script>
+    (function () {
+      var wide = window.matchMedia('(min-width: 990px)');
+      function fit() {
+        document.querySelectorAll('.product--desk-col').forEach(function (product) {
+          var gallery = product.querySelector('.product-media-block .gallery, .product-media-block .gallery__viewer');
+          if (!gallery || !wide.matches) {
+            product.style.minHeight = '';
+            return;
+          }
+          var content = product.querySelector('.product__stack');
+          var needed = Math.ceil(gallery.getBoundingClientRect().height);
+          var contentH = content ? Math.ceil(content.getBoundingClientRect().height) : 0;
+          product.style.minHeight = Math.max(needed, contentH) + 'px';
+        });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit);
+      else fit();
+      window.addEventListener('load', fit);
+      window.addEventListener('resize', fit);
+    })();
+  </script>
 
   {%- if settings.sticky_bar_enable and s.sticky_bar -%}
     {%- render 'sticky-buy-bar', product: product, variant: current_variant, form_id: form_id, section: section -%}
@@ -185,88 +189,9 @@
     },
     {
       "type": "select",
-      "id": "media_position",
-      "label": "Media position (desktop)",
-      "default": "left",
-      "options": [
-        {
-          "value": "blocks",
-          "label": "In the page flow"
-        },
-        {
-          "value": "left",
-          "label": "Left, other blocks on the right"
-        },
-        {
-          "value": "right",
-          "label": "Right, other blocks on the left"
-        }
-      ],
-      "info": "In the page flow keeps the Product media block where you dragged it. Left or right puts that gallery in its own column on desktop, with the other blocks on the opposite side. Phones follow Mobile order."
-    },
-    {
-      "type": "range",
-      "id": "single_max_width",
-      "label": "Content width when media is in the page flow",
-      "min": 480,
-      "max": 1400,
-      "step": 20,
-      "unit": "px",
-      "default": 760,
-      "visible_if": "{{ section.settings.media_position == 'blocks' }}"
-    },
-    {
-      "type": "select",
-      "id": "columns",
-      "label": "Gallery / info width (desktop)",
-      "visible_if": "{{ section.settings.media_position != 'blocks' }}",
-      "default": "1.05fr 1fr",
-      "options": [
-        {
-          "value": "1fr 1fr",
-          "label": "50 / 50"
-        },
-        {
-          "value": "1.05fr 1fr",
-          "label": "Gallery slightly wider"
-        },
-        {
-          "value": "1.25fr 1fr",
-          "label": "Gallery wider"
-        },
-        {
-          "value": "1.5fr 1fr",
-          "label": "Gallery much wider"
-        },
-        {
-          "value": "1fr 1.15fr",
-          "label": "Info wider"
-        }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "column_gap",
-      "label": "Column gap (desktop)",
-      "visible_if": "{{ section.settings.media_position != 'blocks' }}",
-      "min": 16,
-      "max": 96,
-      "step": 4,
-      "unit": "px",
-      "default": 56
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky_gallery",
-      "label": "Sticky gallery on desktop",
-      "visible_if": "{{ section.settings.media_position != 'blocks' }}",
-      "default": true
-    },
-    {
-      "type": "select",
       "id": "mobile_order",
       "label": "Mobile order",
-      "info": "Phones show the product image first, then the title and the rest. Choose Title first only if you want the title above the image.",
+      "info": "Used when this section draws the gallery itself. With a Product media block, drag that block to set the phone order. Desktop position does not change it.",
       "default": "gallery-first",
       "options": [
         {
