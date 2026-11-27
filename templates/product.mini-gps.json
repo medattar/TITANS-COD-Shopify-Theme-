@@ -16,9 +16,6 @@
           "type": "product-price",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
-            "product": "{{ closest.product }}",
             "size": "large",
             "show_compare": true,
             "show_savings": true,
@@ -84,10 +81,6 @@
           "type": "feature-list",
           "name": "Checklist",
           "settings": {
-            "show_on": "selected",
-            "show_products": [
-              "mini-gps"
-            ],
             "icon": "check-circle",
             "glyph": "✦",
             "icon_color": "#04b38d",
@@ -508,8 +501,6 @@
           "name": "Countdown",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
             "label": "La promoción termina en",
             "label_direction": "horizontal",
             "label_gap": 8,
@@ -586,9 +577,6 @@
           "type": "variant-picker",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
-            "product": "{{ closest.product }}",
             "style": "buttons",
             "show_selected": true,
             "use_swatches": true,
@@ -637,9 +625,6 @@
           "type": "quantity",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
-            "product": "{{ closest.product }}",
             "label": "Cantidad",
             "box_enable": false,
             "box_mt": 0,
@@ -684,8 +669,6 @@
           "type": "delivery-estimate",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
             "text": "Llega entre el [start] y el [end]",
             "fallback": "Entrega estimada de 2 a 6 días hábiles",
             "min_days": 2,
@@ -738,9 +721,6 @@
           "type": "buy-buttons",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
-            "product": "{{ closest.product }}",
             "purchase_mode": "inherit",
             "label": "",
             "button_style": "primary",
@@ -793,8 +773,6 @@
           "type": "cod-notice",
           "disabled": true,
           "settings": {
-            "show_on": "all",
-            "show_products": [],
             "style": "soft",
             "use_scheme": false,
             "color_scheme": "scheme-7",
@@ -845,8 +823,6 @@
         "trust_badges_15": {
           "type": "trust-badges",
           "settings": {
-            "show_on": "all",
-            "show_products": [],
             "style": "row",
             "columns": 3,
             "columns_mobile": 3,
@@ -1197,9 +1173,6 @@
         "product_description_16": {
           "type": "product-description",
           "settings": {
-            "show_on": "all",
-            "show_products": [],
-            "product": "{{ closest.product }}",
             "heading": "",
             "collapsible": false,
             "preview_words": 30,
@@ -1294,122 +1267,6 @@
             "tx_color": ""
           },
           "blocks": {
-            "heading_xdVU9E": {
-              "type": "heading",
-              "name": "Heading",
-              "settings": {
-                "show_on": "selected",
-                "show_products": [
-                  "cargamax"
-                ],
-                "text": "<strong>¿Te imaginas quedarte varado en plena carretera por una batería descargada? 🔋&nbsp;</strong>",
-                "size": "h3",
-                "size_desktop": 48,
-                "size_mobile": 32,
-                "font": "inherit",
-                "transform": "inherit",
-                "color": "heading",
-                "align": "left",
-                "max_width": 0,
-                "effect": "none",
-                "tag": "h2",
-                "box_enable": false,
-                "box_mt": 0,
-                "box_mb": 0,
-                "box_mt_m": 0,
-                "box_mb_m": 0,
-                "box_py": 0,
-                "box_px": 0,
-                "box_py_m": 0,
-                "box_px_m": 0,
-                "box_radius": 0,
-                "box_radius_split": false,
-                "box_radius_tl": 0,
-                "box_radius_tr": 0,
-                "box_radius_br": 0,
-                "box_radius_bl": 0,
-                "box_border_width": 0,
-                "box_border_style": "solid",
-                "box_border_color": "",
-                "box_bg": "",
-                "box_bg_gradient": "",
-                "box_shadow": "none",
-                "box_shadow_color": "#000000",
-                "box_effect": "none",
-                "box_max_width": 0,
-                "box_align": "center",
-                "tx_enable": true,
-                "tx_font": "inherit",
-                "tx_weight": "inherit",
-                "tx_size": 0,
-                "tx_size_m": 0,
-                "tx_letter": 0,
-                "tx_word": 0,
-                "tx_line": 0,
-                "tx_transform": "inherit",
-                "tx_align": "inherit",
-                "tx_color": "#f68300"
-              },
-              "blocks": {}
-            },
-            "heading_efzkRc": {
-              "type": "heading",
-              "name": "Heading",
-              "settings": {
-                "show_on": "selected",
-                "show_products": [
-                  "cargamax"
-                ],
-                "text": "¡Que no te tome por sorpresa! Lleva siempre CargaMax™ contigo y recarga fácilmente la batería de tu vehículo con este cargador inteligente de 12V.",
-                "size": "h3",
-                "size_desktop": 48,
-                "size_mobile": 32,
-                "font": "inherit",
-                "transform": "inherit",
-                "color": "heading",
-                "align": "left",
-                "max_width": 0,
-                "effect": "none",
-                "tag": "h2",
-                "box_enable": false,
-                "box_mt": 0,
-                "box_mb": 0,
-                "box_mt_m": 0,
-                "box_mb_m": 0,
-                "box_py": 0,
-                "box_px": 0,
-                "box_py_m": 0,
-                "box_px_m": 0,
-                "box_radius": 0,
-                "box_radius_split": false,
-                "box_radius_tl": 0,
-                "box_radius_tr": 0,
-                "box_radius_br": 0,
-                "box_radius_bl": 0,
-                "box_border_width": 0,
-                "box_border_style": "solid",
-                "box_border_color": "",
-                "box_bg": "",
-                "box_bg_gradient": "",
-                "box_shadow": "none",
-                "box_shadow_color": "#000000",
-                "box_effect": "none",
-                "box_max_width": 0,
-                "box_align": "center",
-                "tx_enable": true,
-                "tx_font": "inherit",
-                "tx_weight": "inherit",
-                "tx_size": 0,
-                "tx_size_m": 0,
-                "tx_letter": 0,
-                "tx_word": 0,
-                "tx_line": 10,
-                "tx_transform": "inherit",
-                "tx_align": "inherit",
-                "tx_color": ""
-              },
-              "blocks": {}
-            },
             "product_media_Mch7zt": {
               "type": "product-media",
               "name": "Product media",
@@ -1467,8 +1324,6 @@
             "badge_1": {
               "type": "badge",
               "settings": {
-                "show_on": "all",
-                "show_products": [],
                 "text": "<strong>✦ Alta demanda</strong> - Ordena ahora mientras tenemos stock",
                 "style": "highlight",
                 "size": "large",
@@ -1529,11 +1384,6 @@
             "product_rating_3": {
               "type": "product-rating",
               "settings": {
-                "show_on": "selected",
-                "show_products": [
-                  "mini-gps"
-                ],
-                "product": "{{ closest.product }}",
                 "source": "manual",
                 "manual_rating": 4.5,
                 "manual_count": 17596,
@@ -1594,9 +1444,6 @@
             "product_title_2": {
               "type": "product-title",
               "settings": {
-                "show_on": "all",
-                "show_products": [],
-                "product": "{{ closest.product }}",
                 "font": "body",
                 "size_desktop": 32,
                 "size_mobile": 24,
@@ -1646,9 +1493,6 @@
               "type": "product-subtitle",
               "disabled": true,
               "settings": {
-                "show_on": "all",
-                "show_products": [],
-                "product": "{{ closest.product }}",
                 "text": "",
                 "source": "metafield",
                 "lines": "",
@@ -1696,8 +1540,6 @@
             }
           },
           "block_order": [
-            "heading_xdVU9E",
-            "heading_efzkRc",
             "product_media_Mch7zt",
             "badge_1",
             "product_rating_3",
@@ -1785,8 +1627,6 @@
     "recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "show_on": "all",
-        "show_products": [],
         "enabled": true,
         "source": "auto",
         "products": [],
@@ -1967,10 +1807,6 @@
       ],
       "name": "Testimonials",
       "settings": {
-        "show_on": "selected",
-        "show_products": [
-          "mini-gps"
-        ],
         "color_scheme": "scheme-8",
         "own_colors": false,
         "anchor": "opiniones",
@@ -2044,10 +1880,6 @@
       ],
       "name": "FAQ",
       "settings": {
-        "show_on": "selected",
-        "show_products": [
-          "mini-gps"
-        ],
         "color_scheme": "scheme-7",
         "own_colors": false,
         "anchor": "faq",
