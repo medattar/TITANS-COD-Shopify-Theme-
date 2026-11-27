@@ -15,9 +15,31 @@
   if blocks_html contains 'data-purchase-mode='
     assign has_buy_buttons = true
   endif
+  assign has_media_block = false
+  if blocks_html contains 'product-media-block' or header_html contains 'product-media-block'
+    assign has_media_block = true
+  endif
+  assign gallery_html = ''
+  if has_media_block and s.media_position != 'blocks'
+    if header_html contains '<section class="pm-slot">'
+      assign slot_parts = header_html | split: '<section class="pm-slot">'
+      assign header_html = slot_parts[0]
+      assign slot_rest = slot_parts[1] | split: '</section>'
+      assign gallery_html = slot_rest[0]
+      assign header_html = header_html | append: slot_rest[1]
+    elsif blocks_html contains '<section class="pm-slot">'
+      assign slot_parts = blocks_html | split: '<section class="pm-slot">'
+      assign blocks_html = slot_parts[0]
+      assign slot_rest = slot_parts[1] | split: '</section>'
+      assign gallery_html = slot_rest[0]
+      assign blocks_html = blocks_html | append: slot_rest[1]
+    endif
+  endif
   assign media_in_blocks = false
-  if s.media_position == 'blocks' or blocks_html contains 'product-media-block' or header_html contains 'product-media-block'
-    assign media_in_blocks = true
+  if gallery_html == blank
+    if s.media_position == 'blocks' or has_media_block
+      assign media_in_blocks = true
+    endif
   endif
 -%}
 
@@ -39,11 +61,15 @@
         </div>
       {%- endif -%}
 
-      {%- unless media_in_blocks -%}
+      {%- if gallery_html != blank -%}
+        <div class="product__gallery">
+          {{ gallery_html }}
+        </div>
+      {%- elsif media_in_blocks == false -%}
         <div class="product__gallery">
           {%- render 'product-media-gallery', product: product, section: section, priority: true -%}
         </div>
-      {%- endunless -%}
+      {%- endif -%}
 
       {%- unless s.mobile_order == 'head-first' -%}
         <div class="product__head">
@@ -160,38 +186,40 @@
     {
       "type": "select",
       "id": "media_position",
-      "label": "Media position",
+      "label": "Media position (desktop)",
       "default": "left",
       "options": [
         {
+          "value": "blocks",
+          "label": "In the page flow"
+        },
+        {
           "value": "left",
-          "label": "Gallery column, left"
+          "label": "Left, other blocks on the right"
         },
         {
           "value": "right",
-          "label": "Gallery column, right"
-        },
-        {
-          "value": "blocks",
-          "label": "Inside the blocks (use the Product media block)"
+          "label": "Right, other blocks on the left"
         }
       ],
-      "info": "Adding a Product media block switches to \"Inside the blocks\" automatically."
+      "info": "In the page flow keeps the Product media block where you dragged it. Left or right puts that gallery in its own column on desktop, with the other blocks on the opposite side. Phones follow Mobile order."
     },
     {
       "type": "range",
       "id": "single_max_width",
-      "label": "Content width when media is inside the blocks",
+      "label": "Content width when media is in the page flow",
       "min": 480,
       "max": 1400,
       "step": 20,
       "unit": "px",
-      "default": 760
+      "default": 760,
+      "visible_if": "{{ section.settings.media_position == 'blocks' }}"
     },
     {
       "type": "select",
       "id": "columns",
       "label": "Gallery / info width (desktop)",
+      "visible_if": "{{ section.settings.media_position != 'blocks' }}",
       "default": "1.05fr 1fr",
       "options": [
         {
@@ -220,6 +248,7 @@
       "type": "range",
       "id": "column_gap",
       "label": "Column gap (desktop)",
+      "visible_if": "{{ section.settings.media_position != 'blocks' }}",
       "min": 16,
       "max": 96,
       "step": 4,
@@ -230,6 +259,7 @@
       "type": "checkbox",
       "id": "sticky_gallery",
       "label": "Sticky gallery on desktop",
+      "visible_if": "{{ section.settings.media_position != 'blocks' }}",
       "default": true
     },
     {
