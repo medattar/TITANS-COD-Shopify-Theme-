@@ -12,8 +12,7 @@
     "main": {
       "type": "main-product",
       "settings": {
-        "gallery_layout": "bottom",
-        "sticky_gallery": false
+        "gallery_layout": "bottom"
       },
       "blocks": {
         "product-header": {
