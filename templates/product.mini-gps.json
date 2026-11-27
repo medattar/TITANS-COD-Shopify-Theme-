@@ -1723,6 +1723,89 @@
         "tx_color": ""
       }
     },
+    "faq_h8QYax": {
+      "type": "faq",
+      "blocks": {
+        "question_y3FLrk": {
+          "type": "question",
+          "settings": {
+            "question": "¿Tengo que pagar alguna mensualidad o suscripción para utilizar el GPS?",
+            "answer": "<p>No! Solo pagas una vez al comprar tu GPSMax™ y podrás disfrutar de todas sus funciones sin mensualidades, suscripciones anuales ni cargos adicionales. ¡Sin cuotas recurrentes ni costos ocultos!</p>"
+          }
+        },
+        "question_Tj9Pxc": {
+          "type": "question",
+          "settings": {
+            "question": "Envíos y devoluciones",
+            "answer": "<p>Todos los pedidos son procesados ​​por nuestro equipo de logística, que se encarga de que se esfuercen al máximo, en un plazo de 24 a 72 horas. Los plazos de entrega, dependiendo de su ubicación, oscilarán entre 2 y 10 días.</p>"
+          }
+        },
+        "question_pDMEcC": {
+          "type": "question",
+          "settings": {
+            "question": "Nuestra garantía para usted",
+            "answer": "<p>Queremos que quede completamente satisfecho con su compra, y por eso ofrecemos una garantía de devolución de dinero de 30 días.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_y3FLrk",
+        "question_Tj9Pxc",
+        "question_pDMEcC"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "color_scheme": "scheme-7",
+        "own_colors": false,
+        "anchor": "faq",
+        "eyebrow": "✦ Preguntas ✦",
+        "heading": "lo que nos preguntan",
+        "subheading": "",
+        "heading_align": "left",
+        "layout": "split",
+        "style": "cards",
+        "contact_label": "",
+        "contact_link": "",
+        "schema_markup": true,
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "padding_top_mobile": 56,
+        "padding_bottom_mobile": 56,
+        "box_enable": false,
+        "box_mt": 0,
+        "box_mb": 0,
+        "box_mt_m": 0,
+        "box_mb_m": 0,
+        "box_inset": 0,
+        "box_radius": 0,
+        "box_radius_split": false,
+        "box_radius_tl": 0,
+        "box_radius_tr": 0,
+        "box_radius_br": 0,
+        "box_radius_bl": 0,
+        "box_border_width": 0,
+        "box_border_style": "solid",
+        "box_border_color": "",
+        "box_bg": "",
+        "box_bg_gradient": "",
+        "box_shadow": "none",
+        "box_shadow_color": "#000000",
+        "box_effect": "none",
+        "box_max_width": 0,
+        "box_align": "center",
+        "tx_enable": false,
+        "tx_font": "inherit",
+        "tx_weight": "inherit",
+        "tx_size": 0,
+        "tx_size_m": 0,
+        "tx_letter": 0,
+        "tx_word": 0,
+        "tx_line": 0,
+        "tx_transform": "inherit",
+        "tx_align": "inherit",
+        "tx_color": ""
+      }
+    },
     "testimonials_CYNLyw": {
       "type": "testimonials",
       "blocks": {
@@ -1900,95 +1983,12 @@
         "tx_align": "inherit",
         "tx_color": ""
       }
-    },
-    "faq_h8QYax": {
-      "type": "faq",
-      "blocks": {
-        "question_y3FLrk": {
-          "type": "question",
-          "settings": {
-            "question": "¿Tengo que pagar alguna mensualidad o suscripción para utilizar el GPS?",
-            "answer": "<p>No! Solo pagas una vez al comprar tu GPSMax™ y podrás disfrutar de todas sus funciones sin mensualidades, suscripciones anuales ni cargos adicionales. ¡Sin cuotas recurrentes ni costos ocultos!</p>"
-          }
-        },
-        "question_Tj9Pxc": {
-          "type": "question",
-          "settings": {
-            "question": "Envíos y devoluciones",
-            "answer": "<p>Todos los pedidos son procesados ​​por nuestro equipo de logística, que se encarga de que se esfuercen al máximo, en un plazo de 24 a 72 horas. Los plazos de entrega, dependiendo de su ubicación, oscilarán entre 2 y 10 días.</p>"
-          }
-        },
-        "question_pDMEcC": {
-          "type": "question",
-          "settings": {
-            "question": "Nuestra garantía para usted",
-            "answer": "<p>Queremos que quede completamente satisfecho con su compra, y por eso ofrecemos una garantía de devolución de dinero de 30 días.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "question_y3FLrk",
-        "question_Tj9Pxc",
-        "question_pDMEcC"
-      ],
-      "name": "FAQ",
-      "settings": {
-        "color_scheme": "scheme-7",
-        "own_colors": false,
-        "anchor": "faq",
-        "eyebrow": "✦ Preguntas ✦",
-        "heading": "lo que nos preguntan",
-        "subheading": "",
-        "heading_align": "left",
-        "layout": "split",
-        "style": "cards",
-        "contact_label": "",
-        "contact_link": "",
-        "schema_markup": true,
-        "padding_top": 96,
-        "padding_bottom": 96,
-        "padding_top_mobile": 56,
-        "padding_bottom_mobile": 56,
-        "box_enable": false,
-        "box_mt": 0,
-        "box_mb": 0,
-        "box_mt_m": 0,
-        "box_mb_m": 0,
-        "box_inset": 0,
-        "box_radius": 0,
-        "box_radius_split": false,
-        "box_radius_tl": 0,
-        "box_radius_tr": 0,
-        "box_radius_br": 0,
-        "box_radius_bl": 0,
-        "box_border_width": 0,
-        "box_border_style": "solid",
-        "box_border_color": "",
-        "box_bg": "",
-        "box_bg_gradient": "",
-        "box_shadow": "none",
-        "box_shadow_color": "#000000",
-        "box_effect": "none",
-        "box_max_width": 0,
-        "box_align": "center",
-        "tx_enable": false,
-        "tx_font": "inherit",
-        "tx_weight": "inherit",
-        "tx_size": 0,
-        "tx_size_m": 0,
-        "tx_letter": 0,
-        "tx_word": 0,
-        "tx_line": 0,
-        "tx_transform": "inherit",
-        "tx_align": "inherit",
-        "tx_color": ""
-      }
     }
   },
   "order": [
     "main",
     "recommendations",
-    "testimonials_CYNLyw",
-    "faq_h8QYax"
+    "faq_h8QYax",
+    "testimonials_CYNLyw"
   ]
 }
