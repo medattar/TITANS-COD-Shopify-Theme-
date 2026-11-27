@@ -1904,18 +1904,18 @@
     "faq_h8QYax": {
       "type": "faq",
       "blocks": {
-        "question_Tj9Pxc": {
-          "type": "question",
-          "settings": {
-            "question": "Envíos y devoluciones",
-            "answer": "<p>Todos los pedidos son procesados ​​por nuestro equipo de logística, que se encarga de que se esfuercen al máximo, en un plazo de 24 a 72 horas. Los plazos de entrega, dependiendo de su ubicación, oscilarán entre 2 y 10 días.</p>"
-          }
-        },
         "question_y3FLrk": {
           "type": "question",
           "settings": {
             "question": "¿Tengo que pagar alguna mensualidad o suscripción para utilizar el GPS?",
             "answer": "<p>No! Solo pagas una vez al comprar tu GPSMax™ y podrás disfrutar de todas sus funciones sin mensualidades, suscripciones anuales ni cargos adicionales. ¡Sin cuotas recurrentes ni costos ocultos!</p>"
+          }
+        },
+        "question_Tj9Pxc": {
+          "type": "question",
+          "settings": {
+            "question": "Envíos y devoluciones",
+            "answer": "<p>Todos los pedidos son procesados ​​por nuestro equipo de logística, que se encarga de que se esfuercen al máximo, en un plazo de 24 a 72 horas. Los plazos de entrega, dependiendo de su ubicación, oscilarán entre 2 y 10 días.</p>"
           }
         },
         "question_pDMEcC": {
@@ -1927,8 +1927,8 @@
         }
       },
       "block_order": [
-        "question_Tj9Pxc",
         "question_y3FLrk",
+        "question_Tj9Pxc",
         "question_pDMEcC"
       ],
       "name": "FAQ",
