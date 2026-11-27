@@ -15,7 +15,6 @@
         "product_price_5": {
           "type": "product-price",
           "settings": {
-            "product": "{{ closest.product }}",
             "size": "large",
             "show_compare": true,
             "show_savings": true,
@@ -351,7 +350,6 @@
           "type": "variant-picker",
           "disabled": true,
           "settings": {
-            "product": "{{ closest.product }}",
             "style": "buttons",
             "show_selected": true,
             "use_swatches": true,
@@ -400,7 +398,6 @@
           "type": "quantity",
           "disabled": true,
           "settings": {
-            "product": "{{ closest.product }}",
             "label": "Cantidad",
             "box_enable": false,
             "box_mt": 0,
@@ -497,7 +494,6 @@
           "type": "buy-buttons",
           "disabled": true,
           "settings": {
-            "product": "{{ closest.product }}",
             "purchase_mode": "inherit",
             "label": "",
             "button_style": "primary",
@@ -1001,7 +997,6 @@
         "product_description_16": {
           "type": "product-description",
           "settings": {
-            "product": "{{ closest.product }}",
             "heading": "",
             "collapsible": false,
             "preview_words": 30,
@@ -1159,7 +1154,6 @@
             "product_rating_3": {
               "type": "product-rating",
               "settings": {
-                "product": "{{ closest.product }}",
                 "source": "manual",
                 "manual_rating": 4.5,
                 "manual_count": 456,
@@ -1220,7 +1214,6 @@
             "product_title_2": {
               "type": "product-title",
               "settings": {
-                "product": "{{ closest.product }}",
                 "font": "body",
                 "size_desktop": 36,
                 "size_mobile": 24,
@@ -1270,7 +1263,6 @@
               "type": "product-subtitle",
               "disabled": true,
               "settings": {
-                "product": "{{ closest.product }}",
                 "text": "",
                 "source": "metafield",
                 "lines": "",

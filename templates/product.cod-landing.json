@@ -21,20 +21,15 @@
             },
             "product_title_22": {
               "type": "product-title",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
+              "settings": {}
             },
             "product_rating_23": {
               "type": "product-rating",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
+              "settings": {}
             },
             "product_subtitle_24": {
               "type": "product-subtitle",
               "settings": {
-                "product": "{{ closest.product }}",
                 "source": "metafield"
               }
             }
@@ -58,14 +53,12 @@
             "stock_status_25": {
               "type": "stock-status",
               "settings": {
-                "product": "{{ closest.product }}",
                 "style": "inline"
               }
             },
             "product_details_26": {
               "type": "product-details",
               "settings": {
-                "product": "{{ closest.product }}",
                 "button_style": "secondary"
               }
             }
@@ -77,9 +70,7 @@
         },
         "offer_stack_31": {
           "type": "offer-stack",
-          "settings": {
-            "product": "{{ closest.product }}"
-          },
+          "settings": {},
           "blocks": {
             "offer_item_28": {
               "type": "_offer-item",
@@ -115,7 +106,6 @@
         "variant_picker_32": {
           "type": "variant-picker",
           "settings": {
-            "product": "{{ closest.product }}",
             "style": "cards"
           }
         },
@@ -126,7 +116,6 @@
         "buy_buttons_34": {
           "type": "buy-buttons",
           "settings": {
-            "product": "{{ closest.product }}",
             "purchase_mode": "inherit"
           }
         },
@@ -211,7 +200,6 @@
                 "product_description_43": {
                   "type": "product-description",
                   "settings": {
-                    "product": "{{ closest.product }}",
                     "collapsible": false
                   }
                 }

@@ -23,20 +23,15 @@
             },
             "product_title_57": {
               "type": "product-title",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
+              "settings": {}
             },
             "product_rating_58": {
               "type": "product-rating",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
+              "settings": {}
             },
             "product_subtitle_59": {
               "type": "product-subtitle",
               "settings": {
-                "product": "{{ closest.product }}",
                 "source": "metafield"
               }
             }
@@ -73,14 +68,11 @@
         },
         "product_price_64": {
           "type": "product-price",
-          "settings": {
-            "product": "{{ closest.product }}"
-          }
+          "settings": {}
         },
         "variant_picker_65": {
           "type": "variant-picker",
           "settings": {
-            "product": "{{ closest.product }}",
             "style": "buttons"
           }
         },
@@ -91,7 +83,6 @@
         "buy_buttons_67": {
           "type": "buy-buttons",
           "settings": {
-            "product": "{{ closest.product }}",
             "purchase_mode": "inherit"
           }
         },
@@ -199,7 +190,6 @@
                 "product_description_78": {
                   "type": "product-description",
                   "settings": {
-                    "product": "{{ closest.product }}",
                     "collapsible": false
                   }
                 }

@@ -1,15 +1,3 @@
-{%- liquid
-  assign show_here = true
-  if section.settings.show_on == 'selected'
-    assign show_here = false
-    assign show_for = section.settings.product | default: product
-    assign show_ids = section.settings.show_products | map: 'id'
-    if show_for and show_ids contains show_for.id
-      assign show_here = true
-    endif
-  endif
--%}
-{%- if show_here -%}
 {%- capture box_sel -%}#shopify-section-{{ section.id }} > :not(style, link, script, template){%- endcapture -%}
 {%- render 'box-style', bs: section.settings, sel: box_sel -%}
 {{ 'section-longform.css' | asset_url | stylesheet_tag }}
@@ -50,9 +38,6 @@
     {%- endif -%}
   </div>
 </section>
-{%- elsif request.design_mode -%}
-  <div class="page-width"><div class="theme-placeholder">Hidden on this product. Change Show on to display this section here.</div></div>
-{%- endif -%}
 
 {% schema %}
 {
@@ -61,8 +46,6 @@
   "tag": "div",
   "max_blocks": 6,
   "settings": [
-    {"type": "select", "id": "show_on", "label": "Show on", "default": "all", "options": [{"value": "all", "label": "All products"}, {"value": "selected", "label": "Only the products below"}]},
-    {"type": "product_list", "id": "show_products", "label": "Products", "limit": 50, "info": "Used when Show on is set to Only the products below."},
     {
       "type": "color_scheme",
       "id": "color_scheme",
