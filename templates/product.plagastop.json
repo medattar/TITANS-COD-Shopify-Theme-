@@ -1531,7 +1531,7 @@
               "settings": {
                 "show_on": "selected",
                 "show_products": [
-                  "mini-gps"
+                  "plagastop"
                 ],
                 "product": "{{ closest.product }}",
                 "source": "manual",
