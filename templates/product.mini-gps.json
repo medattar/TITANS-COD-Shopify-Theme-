@@ -1424,6 +1424,11 @@
               "type": "product-media",
               "name": "Product media",
               "settings": {
+                "desktop_position": "left",
+                "column_split": "1.05fr 1fr",
+                "column_gap": 56,
+                "column_sticky": true,
+                "flow_width": 760,
                 "width": 100,
                 "width_mobile": 100,
                 "sticky": false,
