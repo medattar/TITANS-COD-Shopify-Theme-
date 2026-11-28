@@ -1424,7 +1424,7 @@
               "type": "product-media",
               "name": "Product media",
               "settings": {
-                "desktop_position": "left",
+                "desktop_position": "flow",
                 "column_split": "1.05fr 1fr",
                 "column_gap": 56,
                 "column_sticky": true,
